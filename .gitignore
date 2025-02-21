@@ -3,5 +3,4 @@ config/settings.json
 __pycache__/
 *.log
 
-git add .
-git commit -m "Initial commit - NFL Stats Project"
+".env" 

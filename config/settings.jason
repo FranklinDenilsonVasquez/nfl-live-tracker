@@ -1,0 +1,9 @@
+{
+  "api_key": "your_api_key_here",
+  "database": {
+    "host": "localhost",
+    "user": "root",
+    "password": "your_password",
+    "name": "sports_stats"
+  }
+}
