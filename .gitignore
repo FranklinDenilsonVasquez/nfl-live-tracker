@@ -3,4 +3,5 @@ config/settings.json
 __pycache__/
 *.log
 
-".env" 
+
+.env 
