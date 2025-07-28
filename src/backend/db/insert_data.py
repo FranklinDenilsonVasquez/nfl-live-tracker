@@ -131,3 +131,43 @@ def insert_players(players, team_id):
     cursor.close()
     conn.close()
     logger.info(f"Finished inserting players for team ID {team_id}.")
+
+# Function to insert coaches into the database
+def insert_coach_from_team(team):
+    # Establish database connection
+    conn = get_db_connection()
+    
+    if conn is None:
+        logger.error("Could not connect to the database.")
+        return      
+    cursor = conn.cursor()
+
+    try:
+        team_id = team['id']
+        coach_name = team.get("coach", None)
+
+        # If no coach is listed for the team send a warning 
+        if not coach_name:
+            logger.warning(f"No coach info found for team {team_id} - {team['name']}")
+            return 
+        
+        # strip() = remove leading and trailing characters
+        coach_name = coach_name.strip()
+        
+        # Prepare the SQL statment to insert coaches into the coach table
+        sql = """
+            INSERT INTO coach (teamId, fullName)
+            VALUES (%s, %s)
+            ON DUPLICATE KEY UPDATE 
+                fullName = VALUES(fullName)
+            """
+        cursor.execute(sql, (team_id, coach_name))
+
+    except Exception as e:
+        logger.warning(f"Failed to insert coach from team {team_id} - {team['name']}: {e}")
+
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+        logger.info("Finished inserting coaches into database")
