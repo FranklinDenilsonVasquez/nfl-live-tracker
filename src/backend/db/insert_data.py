@@ -2,6 +2,7 @@ from backend.db.db_connection import get_db_connection
 from backend.db.db_config import get_db_config
 from backend.utils.logging import setup_logger
 import mysql.connector
+from datetime import datetime
 
 
 logger = setup_logger()
@@ -171,3 +172,122 @@ def insert_coach_from_team(team):
         cursor.close()
         conn.close()
         logger.info("Finished inserting coaches into database")
+
+
+def insert_seasons(season_years):
+    # Establish database connection
+    conn = get_db_connection()
+    if conn is None:
+        logger.error("Could not connect to the database.")
+        return     
+
+    cursor = conn.cursor()
+
+    try:
+        for year in season_years:
+            sql = """
+                INSERT INTO season (seasonYear)
+                VALUES (%s)
+                ON DUPLICATE KEY UPDATE seasonYear = VALUES(seasonYear)
+            """
+
+            cursor.execute(sql, (year,))
+            logger.info(f"Inserted/Updated season: {year}")
+
+    except Exception as e:
+        logger.warning(f"Failed to insert/update season: {e}")
+        
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+        logger.info("Finished inserting seasons into database")
+
+def insert_games(games:list):
+    # Establish database connection
+    conn = get_db_connection()
+    if conn is None:
+        logger.error("Could not connect to the database.")
+        return     
+
+    cursor = conn.cursor()
+
+    try:
+        # Function that goes through the Season table in database and retruns it's primary key
+        def get_season_id(cursor, year):
+            cursor.execute("SELECT seasonId FROM season WHERE seasonYear = %s",(year,))
+            row = cursor.fetchone()
+
+            if row:
+                return row[0]
+            else:
+                return None
+            
+        for game_obj in games:
+            # Extract nested data by "zooming in" through the JSON structure.
+            # The API response is a dictionary with keys like 'game', 'teams', etc.,
+            # and each of those contains another dictionary with the actual values we need.
+            # We access these step by step to safely get the data. 
+            game_data = game_obj['game']
+            league_data = game_obj['league']
+            teams_data = game_obj['teams']
+            scores_data = game_obj['scores']
+            
+            # Get data from the "zoomed in" JSON response
+            game_id = game_data['id']
+            home_team = teams_data['home']['id']
+            away_team = teams_data['away']['id']
+            game_date = game_data['date']['date'] # e.g., "2023-08-04"
+
+            home_score = scores_data['home'].get('total', 0) # Get total if set to None return 0 to not raise an error
+            away_score = scores_data['away'].get('total', 0) # Get total if set to None return 0 to not raise an error
+            
+            # If score is NULL pass 0
+            home_score = home_score if home_score is not None else 0
+            away_score = away_score if away_score is not None else 0
+
+            status = game_data['status']['long']
+            stage = game_data.get('stage')
+            week = game_data.get('week')
+            game_venue = game_data['venue'].get('name', 0)
+            game_city = game_data['venue'].get('city', 0)
+            game_season = league_data['season']
+
+            season_id = get_season_id(cursor, game_season)
+
+            if not season_id:
+                logger.warning(f"SeasonId dosen't exist in database. Skipping game {game_id}")
+                continue
+
+
+            sql = """
+                INSERT INTO game(gameId, homeTeamId, awayTeamId, gameDate, 
+                                homeTeamScore, awayTeamScore, seasonId, status, stage, week, venue, city)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON DUPLICATE KEY UPDATE 
+                    homeTeamScore = VALUES(homeTeamScore),
+                    awayTeamScore = VALUES(awayTeamScore),
+                    gameDate = VALUES(gameDate),
+                    seasonId = VALUES(seasonId),
+                    status = VALUES(status), 
+                    stage = VALUES(stage),
+                    week = VALUES(week),
+                    venue = VALUES(venue),
+                    city = VALUES(city) 
+            """
+
+            data = (game_id, home_team, away_team,game_date, home_score, 
+                    away_score, season_id, status, stage, week, game_venue, game_city)
+
+            cursor.execute(sql, data)
+
+    except Exception as e:
+        logger.warning(f"Failed to insert game data: {e}")
+
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+        logger.info("Finished inserting games into database")
+
+
