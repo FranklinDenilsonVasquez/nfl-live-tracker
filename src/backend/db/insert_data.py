@@ -3,6 +3,8 @@ from backend.db.db_config import get_db_config
 from backend.utils.logging import setup_logger
 import mysql.connector
 from datetime import datetime
+from backend.api.fetch_data import fetch_player_stats
+from collections import defaultdict
 
 
 logger = setup_logger()
@@ -38,7 +40,7 @@ def insert_teams(teams):
     conn.close()
 
 
-def insert_players(players, team_id):
+def insert_players(players, team_id, season):
     # Establish database connection
     conn = get_db_connection()
     
@@ -47,6 +49,7 @@ def insert_players(players, team_id):
         return      
     cursor = conn.cursor()
 
+    season_year = season
     # Normalize the roster status of each player to keep track of their current status
     def get_roster_status(group):
             if not group:
@@ -110,16 +113,17 @@ def insert_players(players, team_id):
 
             # Prepare insert (ON DUPLICATE KEY UPDATE only updates if player already exists)
             sql = """
-                INSERT INTO player (playerId, teamId, positionId, positionType, fullName, rosterStatus)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO player (playerId, teamId, positionId, positionType, fullName, rosterStatus, seasonYear)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
                 ON DUPLICATE KEY UPDATE
                     teamId = VALUES(teamId),
                     positionId = VALUES(positionId),
                     positionType = VALUES(positionType),
                     fullName = VALUES(fullName),
-                    rosterStatus = VALUES(rosterStatus)
+                    rosterStatus = VALUES(rosterStatus),
+                    seasonYear = VALUES(seasonYear)
                 """
-            player_data = (player_id, team_id, position_id, position_type, full_name, roster_status)
+            player_data = (player_id, team_id, position_id, position_type, full_name, roster_status, season_year)
 
             cursor.execute(sql, player_data)
 
@@ -157,10 +161,12 @@ def insert_coach_from_team(team):
         
         # Prepare the SQL statment to insert coaches into the coach table
         sql = """
-            INSERT INTO coach (teamId, fullName)
-            VALUES (%s, %s)
+            INSERT INTO coach (coachId, teamId, fullName)
+            VALUES (%s, %s, %s)
             ON DUPLICATE KEY UPDATE 
+                teamId = VALUES(teamId),
                 fullName = VALUES(fullName)
+
             """
         cursor.execute(sql, (team_id, coach_name))
 
@@ -241,7 +247,7 @@ def insert_games(games:list):
 
             home_score = scores_data['home'].get('total', 0) # Get total if set to None return 0 to not raise an error
             away_score = scores_data['away'].get('total', 0) # Get total if set to None return 0 to not raise an error
-            
+
             # If score is NULL pass 0
             home_score = home_score if home_score is not None else 0
             away_score = away_score if away_score is not None else 0
@@ -291,3 +297,205 @@ def insert_games(games:list):
         logger.info("Finished inserting games into database")
 
 
+# Function to insert player stats in the offensive side of the ball
+def insert_offensive_player_stats(stats):
+    conn = get_db_connection()
+    if conn is None:
+        logger.error("Could not connect to the database.")
+        return     
+
+    cursor = conn.cursor()
+
+    try:
+        sql = """
+            INSERT INTO offensiveplayerstats(gameId, playerId, teamId, seasonId, passingTouchdowns,
+                receivingTouchdowns, rushingTouchdowns, rushingYards, passingYards, receivingYards,
+                completions, attempts, rating)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE
+                passingTouchdowns = VALUES(passingTouchdowns),
+                receivingTouchdowns = VALUES(receivingTouchdowns), 
+                rushingTouchdowns = VALUES(rushingTouchdowns), 
+                rushingYards = VALUES(rushingYards), 
+                passingYards = VALUES(passingYards), 
+                receivingYards = VALUES(receivingYards),
+                completions = VALUES(completions),
+                attempts = VALUES(attempts),
+                rating = VALUES(rating)
+        """
+    
+        cursor.executemany(sql, stats)
+    except Exception as e:
+        logger.warning(f"Failed to insert game data: {e}")
+
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+        logger.info("Inserted/updated offensive stats for multiple games")
+    
+
+    # Function to insert player stats in the defensive side of the ball
+def insert_defensive_player_stats(stats):
+    conn = get_db_connection()
+    if conn is None:
+        logger.error("Could not connect to the database.")
+        return     
+
+    cursor = conn.cursor()
+    try:
+        sql = """
+            INSERT INTO defensiveplayerstats(gameId, playerId, teamId, seasonId, tackles, 
+            sacks, interceptions, forcedFumbles)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE 
+                tackles = VALUES(tackles), 
+                sacks = VALUES(sacks),
+                interceptions = VALUES(interceptions),
+                forcedFumbles = VALUES(forcedFumbles)
+        """
+
+        cursor.executemany(sql, stats)
+    except Exception as e:
+        logger.warning(f"Failed to insert game data: {e}")
+    
+    finally:
+        conn.commit()
+        cursor.close()
+        conn.close()
+        logger.info("Inserted/updated defensive stats for multiple games")
+
+# Function that processes and inserts stats into the appropriate table in db 
+def process_and_insert_stats(gameId, season):
+
+    # Only allow seasons 2021–2023 for free plan
+    if season not in [2021, 2022, 2023]:
+        logger.info(f"Skipping game {gameId} for season {season} (not available on free plan).")
+        return
+    
+    conn = get_db_connection()
+    if conn is None:
+        logger.error("Could not connect to the database.")
+        return     
+
+    cursor = conn.cursor()
+
+    player_stats = fetch_player_stats(gameId)
+    print(player_stats)
+
+    # Aggregate offensive stats by (season, gameId, playerId, teamId)
+    offensive_agg = defaultdict(lambda: {
+        "passingYards": 0,
+        "passingTouchdowns": 0,
+        "rushingYards": 0,
+        "rushingTouchdowns": 0,
+        "receivingYards": 0,
+        "receivingTouchdowns": 0,
+        "completions": 0,
+        "attempts": 0,
+        "rating": 0
+    })
+
+    # Aggregate defensive stats by (season, gameId, playerId, teamId)
+    defensive_agg = defaultdict(lambda:{
+        "tackles": 0,
+        "sacks": 0,
+        "interceptions": 0,
+        "forcedFumbles": 0
+    })
+
+    # Loop through each team in the response 
+    for team_data in player_stats:
+        teamId = team_data["team"]["id"]
+
+        # Loop through each stat group (passing, rushing, receiving, defense, etc.)
+        for group in team_data.get("groups", []):
+            cat_name = group["name"].lower()
+
+            # Loop through all players in this group
+            for players_data in group.get("players", []):
+                playerId = players_data["player"]["id"]
+                key = (season, gameId, playerId, teamId)
+
+                # Loop through individual stats for the player
+                for stat in players_data.get("statistics", []):
+                    statName = stat["name"].lower()
+                    statValue = stat["value"]
+
+                    # Handle "completions/attempts" strings
+                    if isinstance(statValue, str) and '/' in statValue:
+                        # e.g. "13/19" completions/attempts
+                        try:
+                            completions, attempts = map(int, statValue.split("/"))
+                            offensive_agg[key]["completions"] += completions
+                            offensive_agg[key]["attempts"] += attempts
+                        except ValueError:
+                            continue
+                        continue
+
+                    # skip null values
+                    if statValue is None:
+                        statValue = 0
+
+                # Convert rating or numeric strings
+                try:
+                    stat_value = float(stat_value) if "." in str(stat_value) else int(stat_value)
+                except (ValueError, TypeError):
+                    stat_value = 0
+
+                # Map stats into offense
+                if cat_name == "passing":
+                    if statName == "passing touch downs":
+                        offensive_agg[key]["passingTouchdowns"] += statValue
+                    elif statName == "yards":
+                        offensive_agg[key]["passingYards"] += statValue
+                elif cat_name == "rushing":
+                    if statName == "rushing touch downs":
+                        offensive_agg[key]["rushingTouchdowns"] += statValue
+                    elif statName == "yards":
+                        offensive_agg[key]["rushingYards"] += statValue
+                elif cat_name == "receiving":
+                    if statName == "receiving touch downs":
+                        offensive_agg[key]["receivingTouchdowns"] += statValue
+                    elif statName == "yards":
+                        offensive_agg[key]["receivingYards"] += statValue
+
+                # Map stats into defense
+                elif cat_name == "defensive":
+                    if statName == "tackles":
+                        defensive_agg[key]["tackles"] += statValue
+                    elif statName == "sacks":
+                        defensive_agg[key]["sacks"] += statValue
+                    elif statName == "ff":
+                        defensive_agg[key]["forcedFumbles"] += statValue
+
+                elif cat_name == "interceptions":
+                    if statName == "total interceptions":
+                        defensive_agg[key]["interceptions"] += statValue
+
+
+    # Prepare and insert offensive stats
+    if offensive_agg:
+        offensive_batch = [
+            (season, playerId, teamId,
+            stats["passingYards"], stats["passingTouchdowns"],
+            stats["rushingYards"], stats["rushingTouchdowns"],
+            stats["receivingYards"], stats["receivingTouchdowns"],
+            stats["completions"], stats["attempts"], stats["rating"])
+            for (season, playerId, teamId), stats in offensive_agg.items()
+        ]
+        insert_offensive_player_stats(offensive_batch)
+
+    # Prepare and insert defensive stats
+    if defensive_agg:
+        defensive_batch= [
+            (season, playerId, teamId,
+             stats["tackles"], stats["sacks"], stats["interceptions"], 
+             stats["forcedFumbles"])
+             for (season, playerId, teamId), stats in defensive_agg.items()
+        ]
+        insert_defensive_player_stats(defensive_batch)
+    
+    cursor.close()
+    conn.close()
+    logger.info(f"Finished processing stats for game {gameId} in season {season}")

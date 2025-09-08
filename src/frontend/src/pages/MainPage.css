@@ -1,0 +1,28 @@
+/* background color */
+body {
+  background-color: rgb(122, 255, 162);
+  margin: 0;
+  padding: 0;
+}
+
+/* Main container */
+.header {
+  background-color: rgb(57, 204, 101);
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  z-index: 1000;
+}
+
+/* CSS for header button */
+.header .right-buttons {
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  right: 20px;
+}
