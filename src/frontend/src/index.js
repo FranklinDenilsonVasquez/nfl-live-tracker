@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Header from "./pages/MainPage";
-import DateScroller from "./components/DateScroller";
+import HomePage from "./pages/MainPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Header />
+    <HomePage />
   </React.StrictMode>
 );

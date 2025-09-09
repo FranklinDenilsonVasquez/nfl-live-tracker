@@ -1,26 +1,14 @@
 import React from "react";
 import "./MainPage.css";
-
-function Header() {
-  return (
-    <div className="background">
-      <div className="header">
-        <h1>NFL Stat Tracker</h1>
-        <div className="right-buttons">
-          <button>Menu</button>
-          <button>Search</button>
-        </div>
-      </div>
-
-      <div className="header">Here will be the dates</div>
-    </div>
-  );
-}
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function HomePage() {
   return (
-    <section>
+    <div className="app-container">
       <Header />
-    </section>
+      <main className="main-container">Main Content not implemented</main>
+      <Footer />
+    </div>
   );
 }

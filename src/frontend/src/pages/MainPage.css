@@ -26,3 +26,21 @@ body {
   position: absolute;
   right: 20px;
 }
+
+.app-container {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-container {
+  flex: 1;
+}
+
+footer,
+.copyright-footer {
+  opacity: 0.5;
+  padding: 10px;
+  text-align: center;
+}
