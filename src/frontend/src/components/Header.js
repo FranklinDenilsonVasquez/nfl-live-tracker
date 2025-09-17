@@ -1,15 +1,19 @@
+import './Header.css'
+import SearchBar from './SearchBar';
+
 function Header() {
+
+  const handleSearch = (text) => console.log('User typed: %s', text)
   return (
     <div className="background">
       <div className="header">
-        <h1>NFL Stat Tracker</h1>
+        <h1 className="h1-header">FootyStats</h1>
+        <SearchBar onChange={handleSearch}/>
         <div className="right-buttons">
-          <button>Menu</button>
-          <button>Search</button>
+          <button>About Us</button>
+          <button>Gear</button>
         </div>
       </div>
-
-      <div className="header">Here will be the dates</div>
     </div>
   );
 }

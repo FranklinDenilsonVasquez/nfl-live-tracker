@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <div className="app-container">
       <Header />
-      <main className="main-container">Main Content not implemented</main>
+      <main className="main-container" color="white">Main Content not implemented</main>
       <Footer />
     </div>
   );
