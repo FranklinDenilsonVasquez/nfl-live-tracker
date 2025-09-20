@@ -8,7 +8,6 @@ function SearchBar({placeholder, onChange}){
         <div className="search-wrapper">
             <FaSearch className="search-icon"/>
             <input 
-                
                 type="search"
                 placeholder={placeholder || 'Search'}    
                 className="search-input"
