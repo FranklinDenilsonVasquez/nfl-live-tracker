@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./DateScroller.css";
 
-function DateScroller() {}
+function DateScroller() {
+
+    
+}
 
 export default DateScroller;
