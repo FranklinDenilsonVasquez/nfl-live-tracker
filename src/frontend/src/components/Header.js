@@ -5,7 +5,7 @@ function Header() {
 
   const handleSearch = (text) => console.log('User typed: %s', text)
   return (
-    <div className="background">
+    <div className="main-div">
       <div className="header">
         <h1 className="h1-header">FootyStats</h1>
         <SearchBar onChange={handleSearch}/>

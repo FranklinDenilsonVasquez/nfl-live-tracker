@@ -26,7 +26,7 @@ function TeamList(){
                     </ul>
                 </div>
                 </div>
-                <div className="schedule-div-container"> 
+                <div className="resizable-div-container"> 
                     {teamSelected ? (<p>Selected team {teamSelected}</p>):(<p>Select a team for their schedule</p>)}
                 </div>
                 <div className="team-info-div-container">Standings

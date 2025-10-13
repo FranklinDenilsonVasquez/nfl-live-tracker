@@ -15,3 +15,16 @@ li:hover {
 ul{
     padding: 0px
 }
+
+.resizable-div-container{
+    width: 50vw;
+    height: 100vh;
+    resize:horizontal;
+    overflow: auto;
+    margin: 20px 10px;
+    background-color: rgb(36, 35, 35);
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-flex;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
