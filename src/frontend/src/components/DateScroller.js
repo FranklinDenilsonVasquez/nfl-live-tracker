@@ -3,7 +3,6 @@ import "./DateScroller.css";
 
 function DateScroller() {
 
-    
 }
 
 export default DateScroller;
