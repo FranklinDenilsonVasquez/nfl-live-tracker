@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./TeamList.css";
 import FieldContainer from "./FieldContainer";
+import StandingsContainer from "./StandingsContainer";
 
 function TeamList(){
 
@@ -30,11 +31,7 @@ function TeamList(){
                 <div className="resizable-div-container"> 
                     <FieldContainer team={teamSelected}/>
                 </div>
-                <div className="team-info-div-container">Standings
-                    {
-                        teamSelected ? (<p>{teamSelected} current standings</p>):(<p>Overall standings</p>)
-                    }
-                </div>
+                <StandingsContainer team={teamSelected} />
             </main>
         </div>
     )
