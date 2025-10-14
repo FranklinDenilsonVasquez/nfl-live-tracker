@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./TeamList.css";
+import FieldContainer from "./FieldContainer";
 
 function TeamList(){
 
@@ -27,9 +28,7 @@ function TeamList(){
                 </div>
                 </div>
                 <div className="resizable-div-container"> 
-                    <div className="field-container">
-                        {teamSelected ? (<p>Selected team {teamSelected}</p>):(<p>Select a team for their schedule</p>)}
-                    </div>
+                    <FieldContainer team={teamSelected}/>
                 </div>
                 <div className="team-info-div-container">Standings
                     {

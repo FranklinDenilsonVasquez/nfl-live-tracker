@@ -29,13 +29,3 @@ ul{
     font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-.field-container{
-    color: white;
-    background-color:rgb(55, 61, 55);
-    border-style: solid;
-    margin: 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    width: 50vw;
-    height:cals(inherit - 5px);
-}
