@@ -1,10 +1,44 @@
 .field-container{
     color: white;
-    background-color:rgb(55, 61, 55);
+    background-color:rgb(18, 42, 18);
     border-style: solid;
-    margin: 10px;
-    padding: 5px 10px;
+    margin: 0px;
+    padding: 0px;
     border-radius: 5px;
+    border-color: white;
     width: 50vw;
-    height:cals(inherit - 5px);
+    height: calc(inherit - 5px);
+    position: relative;
+}
+
+.top-endzone{
+    display: flex;
+    background-color: rgb(13, 27, 68);
+    width: calc(inherit);
+    height: 8vw;
+    margin-top: 0px;
+    border-color: white;
+    border: inherit;
+    border-bottom: 2px;
+    border-style: solid;
+    border-bottom-left-radius: 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-endzone {
+    display: flex;
+    background-color: rgb(13, 27, 68);
+    width: 49.3vw;
+    height: 8vw;
+    margin-bottom: 0px;
+    position: absolute;
+    bottom: 0;
+    border-color: white;
+    border: inherit;
+    border-top: 2px;
+    border-style: solid;
+    justify-content: center;
+    align-items: center;
+
 }

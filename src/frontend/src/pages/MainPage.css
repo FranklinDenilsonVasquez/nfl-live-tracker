@@ -5,7 +5,7 @@ body {
   padding: 0;
 }
 
-/* Main container */
+/* Header container */
 .header {
   background-color: rgb(36, 35, 35);
   position: fixed;
@@ -46,7 +46,7 @@ body {
   justify-content: space-around;
   color: white;
   align-items: center;
-  margin-top: 75px;
+  margin-top: 65px;
 }
 
 footer,

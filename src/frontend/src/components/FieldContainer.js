@@ -5,7 +5,12 @@ function FieldContainer({team}){
 
     return(
         <div className="field-container">
-            {teamSelected ? (<p>Selected team {teamSelected}</p>):(<p>Select a team for their schedule</p>)}
+            <div className="top-endzone">
+                {teamSelected ? (<p>Logo Here {teamSelected}</p>):(<p>NFL</p>)}
+            </div>
+            <div className="bottom-endzone">
+                {teamSelected ? (<p>Logo Here {teamSelected}</p>):(<p>NFL</p>)}
+            </div>
         </div>
     )
 
