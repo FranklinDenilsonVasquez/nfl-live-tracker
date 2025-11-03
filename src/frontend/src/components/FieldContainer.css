@@ -1,44 +1,42 @@
-.field-container{
+.field-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Keeps top and bottom zones separated */
     color: white;
-    background-color:rgb(18, 42, 18);
-    border-style: solid;
-    margin: 0px;
-    padding: 0px;
+    background-color: rgb(24, 26, 24);
+    border: solid white;
+    border-width: 1px;
     border-radius: 5px;
-    border-color: white;
     width: 50vw;
-    height: calc(inherit - 5px);
-    position: relative;
+    height: calc(inherit); /* Example: make it responsive */
+    margin: 0;
+    padding: 0;
 }
 
-.top-endzone{
+.top-endzone,
+.bottom-endzone {
     display: flex;
-    background-color: rgb(13, 27, 68);
-    width: calc(inherit);
+    background-color: rgb(20, 22, 26);
+    width: 100%;
     height: 8vw;
-    margin-top: 0px;
-    border-color: white;
-    border: inherit;
-    border-bottom: 2px;
-    border-style: solid;
-    border-bottom-left-radius: 0px;
     justify-content: center;
     align-items: center;
+    border-color: white;
+    border: inherit;
+    box-sizing: border-box; /* ensures borders are included in width */
+}
+
+.top-endzone {
+    border-bottom-width: 2px;
+        width: 100%;
 }
 
 .bottom-endzone {
-    display: flex;
-    background-color: rgb(13, 27, 68);
-    width: 49.3vw;
-    height: 8vw;
-    margin-bottom: 0px;
-    position: absolute;
-    bottom: 0;
-    border-color: white;
-    border: inherit;
-    border-top: 2px;
-    border-style: solid;
-    justify-content: center;
-    align-items: center;
+    border-top-width: 2px;
+    width: 100%;
+}
 
+html, body {
+    margin: 0;
+    padding: 0;
 }
