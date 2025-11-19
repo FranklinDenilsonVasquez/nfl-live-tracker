@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./DateScroller.css";
-import DatePicker from 'react-date-picker';
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
 
 
 function DateScroller(){
     <div>
-        
+        <h1>Hello</h1>
     </div>
 }
 

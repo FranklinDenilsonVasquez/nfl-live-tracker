@@ -1,22 +1,17 @@
 import React from "react";
 import "./MainPage.css";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
+import TeamList from "../components/TeamList";
 import DateScroller from "../components/DateScroller";
 
-function Header() {
+export default function HomePage() {
   return (
-    <div className="background">
-      <div className="header">
-        <h1>NFL Stat Tracker</h1>
-        <div className="right-buttons">
-          <button>Menu</button>
-          <button>Search</button>
-        </div>
-      </div>
-
+    <div className="app-container">
+      <Header />
       <DateScroller />
+      <TeamList/>
+      <Footer />
     </div>
   );
 }
-
-export default Header() 

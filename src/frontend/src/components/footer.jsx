@@ -1,11 +1,14 @@
+import "./Footer.css";
 
-function Footer(){
-    const CurrentYear = new Date().getFullYear();
-    const CompanyName = "FootballMod" //Place holde
+function Footer() {
+  const CurrentYear = new Date().getFullYear();
+  const CompanyName = "FootballMod"; // Placeholder
 
-    return (<Footer>
-        <p>&copy; {CurrentYear} {CompanyName}. All rights reserved.</p>
-    </Footer>)
+  return (
+    <footer className="copyright-footer">
+      <p>&copy; {CurrentYear} {CompanyName}. All rights reserved.</p>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;
