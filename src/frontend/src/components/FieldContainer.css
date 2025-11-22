@@ -7,8 +7,8 @@
     border: solid white;
     border-width: 1px;
     border-radius: 5px;
-    width: 50vw;
-    height: calc(inherit); /* Example: make it responsive */
+    height: 100%; /* 80% of viewport height */
+    width: 50vw;/* Example: make it responsive */
     margin: 0;
     padding: 0;
 }
@@ -34,6 +34,10 @@
 .bottom-endzone {
     border-top-width: 2px;
     width: 100%;
+}
+
+.field-container-defense {
+    background-color: aquamarine;
 }
 
 html, body {

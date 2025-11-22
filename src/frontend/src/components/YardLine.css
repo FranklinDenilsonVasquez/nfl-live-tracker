@@ -1,0 +1,27 @@
+.yard-line{
+    postition: relative;
+    width: 100%;
+    height: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+
+.hash {
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    background-color: white;
+    top: -6px;
+}
+
+.hash.left {
+    margin-right: auto;
+    left: 20%;
+}
+
+.hash.right {
+    margin-left: auto;
+    right: 20%;
+}
