@@ -4,8 +4,7 @@
     justify-content: space-between; /* Keeps top and bottom zones separated */
     color: white;
     background-color: rgb(24, 26, 24);
-    border: solid white;
-    border-width: 1px;
+    border: thick;
     border-radius: 5px;
     height: 100%; /* 80% of viewport height */
     width: 50vw;/* Example: make it responsive */
@@ -21,7 +20,6 @@
     height: 8vw;
     justify-content: center;
     align-items: center;
-    border-color: white;
     border: inherit;
     box-sizing: border-box; /* ensures borders are included in width */
 }
