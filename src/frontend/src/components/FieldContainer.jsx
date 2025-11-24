@@ -16,7 +16,7 @@ function FieldContainer({team}){
                         <Field/>
                     <div>
                         <div className="field-container-padding">
-                            {/*<PlayerContainer/>*/}
+                            <PlayerContainer/>
                         </div>
                         <div className="bottom-endzone">
                             {teamSelected ? (<p>Logo Here {teamSelected}</p>):(<p>NFL</p>)}

@@ -1,3 +1,67 @@
-.playerButton {
-    border-radius: 10px
+.player-button {
+    border-radius: 50%;
+    height: clamp(25px, 4vw, 60px);
+    width: clamp(25px, 4vw, 60px);
+    background-color: #262525;
+    border: 2px solid white;
+    color: white;
+    position: absolute;
+    background-image: url('src/frontend/src/img/cj_stroud.jpg');
 }
+
+.QB {
+    top: 65%;
+    left: 47%;
+}
+
+.OL-C {
+    top: 50%;
+    left: 47%;
+}
+
+.OL-RG {
+    left: 55%;
+    top: 52%
+}
+
+.OL-RT {
+    left: 63%;
+    top: 52%
+}
+
+.OL-LG {
+    left: 39%;
+    top: 52%
+}
+
+.OL-LT {
+    left: 31%;
+    top: 52%
+}
+
+.RB {
+    top: 70%;
+    left: 54%;
+}
+
+.WR1 {
+    top: 54%;
+    left: 4%;
+}
+
+.WR2 {
+    top: 52%;
+    left: 16%;
+}
+
+.WR3 {
+    top: 54%;
+    left: 90%
+}
+
+.TE {
+    top: 54%;
+    left: 74%
+}
+
+
