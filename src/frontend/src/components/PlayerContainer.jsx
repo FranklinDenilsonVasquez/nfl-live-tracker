@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./PlayerContainer.css";
 import cjStroud from "../img/cj_stroud.jpg";
+import PlayerButton from "./PlayerButton";
 
 function PlayerContainer({team}) {
 
@@ -8,6 +9,8 @@ function PlayerContainer({team}) {
 
     return(
         <div>
+            {/*<PlayerContainer className="QB"/>*/}
+            {/*<PlayerContainer className="RB"/>*/}
             <button className="player-button WR1">WR1</button>
             <button className="player-button WR2">WR2</button>
             <button className="player-button OL-LT">LT</button>
