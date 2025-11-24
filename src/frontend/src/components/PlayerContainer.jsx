@@ -11,6 +11,7 @@ function PlayerContainer({team}) {
         <div>
             {/*<PlayerContainer className="QB"/>*/}
             {/*<PlayerContainer className="RB"/>*/}
+            {/* OFFENSE */}
             <button className="player-button WR1">WR1</button>
             <button className="player-button WR2">WR2</button>
             <button className="player-button OL-LT">LT</button>
@@ -26,6 +27,20 @@ function PlayerContainer({team}) {
                 backgroundPosition: "center"
             }}/>
             <button className="player-button RB">RB</button>
+
+            {/* DEFENSE */}
+            <button className="player-button DT1">DT1</button>
+            <button className="player-button DT2">DT2</button>
+            <button className="player-button DE1">DE1</button>
+            <button className="player-button DE2">DE2</button>
+            <button className="player-button CB1">CB1</button>
+            <button className="player-button CB2">CB2</button>
+            <button className="player-button CB3">CB3</button>
+            <button className="player-button LB1">LB1</button>
+            <button className="player-button LB2">LB2</button>
+            <button className="player-button FS">FS</button>
+            <button className="player-button SS">SS</button>
+
         </div>
     )
 }
