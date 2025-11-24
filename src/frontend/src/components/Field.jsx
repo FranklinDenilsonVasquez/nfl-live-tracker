@@ -3,7 +3,7 @@ import YardLine from "./YardLine";
 import "./Field.css"
 
 const Field = () => {
-    const lines = Array.from({length: 11}, (_, i) => i);
+    const lines = Array.from({length: 10}, (_, i) => i);
 
     return (
         <div className="field">

@@ -25,17 +25,21 @@
 }
 
 .top-endzone {
-    border-bottom-width: 2px;
-        width: 100%;
-}
-
-.bottom-endzone {
-    border-top-width: 2px;
+    border: 2px solid white;
     width: 100%;
 }
 
-.field-container-defense {
-    background-color: aquamarine;
+.bottom-endzone {
+    border: 2px solid white;
+    width: 100%;
+}
+
+.field-container-padding {
+    background-color: #0c5623;
+    border-left: 2px solid white;
+    border-right: 2px solid white;
+    height: 40px;
+
 }
 
 html, body {
