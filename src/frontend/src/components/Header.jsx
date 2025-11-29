@@ -10,7 +10,7 @@ function Header() {
         <h1 className="h1-header">FootyStats</h1>
         <SearchBar onChange={handleSearch}/>
         <div className="right-buttons">
-          <button className="search-icon">About Us</button>
+          <button>About Us</button>
           <button>Gear</button>
         </div>
       </div>

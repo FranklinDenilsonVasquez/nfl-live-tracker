@@ -9,21 +9,20 @@
   left: 20px;
   padding-right: 15px;
   text-shadow: 5px 5px rgb(0, 0, 0);
-
 }
 
 .search-wrapper{
+    display: flex;
     position: relative;
-    display: inline-block;
-    width: 250px; /* adjust as needed */
+    width: 260px; /* adjust as needed */
     margin-right: 100px;
+    align-content: center;
 }
 
-.button .search-icon{
+.search-icon{
     position: absolute;
-    top: 50%;
     left: 20px;
-    transform: translateY(-50%);
+    top: 6px;
     color: gray;
     pointer-events: none;
 }
@@ -35,7 +34,7 @@
     text-indent: 15px;
     color: rgb(255, 255, 255);
     background-color: rgb(36, 35, 35);
-    padding: 15px;
+    padding-left: 45px;
     margin-left: 10px;
 }
 

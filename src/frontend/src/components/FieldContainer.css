@@ -7,8 +7,8 @@
     background-color: rgb(24, 26, 24);
     border: thick;
     border-radius: 5px;
-    height: 100%; /* 80% of viewport height */
-    width: 50vw;/* Example: make it responsive */
+    height: 120vh; /* 80% of viewport height */
+    width: 60vw;/* Example: make it responsive */
     margin: 0;
     padding: 0;
 }

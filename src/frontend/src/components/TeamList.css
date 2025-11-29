@@ -13,13 +13,13 @@ li:hover {
 }
 
 ul{
-    padding: 0px
+    padding: 0px;
 }
 
 .resizable-div-container{
-    width: 50vw;
-    height: 100vh;
-    resize:horizontal;
+    width: 60vw;
+    height: fit-content;
+    resize: horizontal;
     overflow: auto;
     margin: 20px 10px;
     background-color: rgb(36, 35, 35);

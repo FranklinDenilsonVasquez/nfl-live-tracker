@@ -9,6 +9,6 @@ node_modules/
 package-lock.json
 # IDE configs
 .idea/
+venv/
 
 .env 
-.DS_Store
