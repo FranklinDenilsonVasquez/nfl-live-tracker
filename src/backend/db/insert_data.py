@@ -1,9 +1,9 @@
-from backend.db.db_connection import get_db_connection
-from backend.db.db_config import get_db_config
-from backend.utils.logging import setup_logger
+from src.backend.db.db_connection import get_db_connection
+from src.backend.db.db_config import get_db_config
+from src.backend.utils.logging import setup_logger
 import mysql.connector
 from datetime import datetime
-from backend.api.fetch_data import fetch_player_stats
+from src.backend.api.fetch_data import fetch_player_stats
 from collections import defaultdict
 
 
@@ -92,6 +92,8 @@ def insert_players(players, team_id, season):
             group = player.get('group')
             position_type = normalize_position_type(group)
             roster_status = get_roster_status(group)
+            image_url = player.get('image')
+            jersey_number = player.get('number')
 
             if position_type is None:
                 logger.warning(f"Unknown positionType for player {player_id} - {full_name}, group='{player.get('group')}', inserting with NULL.")
@@ -113,17 +115,21 @@ def insert_players(players, team_id, season):
 
             # Prepare insert (ON DUPLICATE KEY UPDATE only updates if player already exists)
             sql = """
-                INSERT INTO player (playerId, teamId, positionId, positionType, fullName, rosterStatus, seasonYear)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO player (playerId, teamId, positionId, positionType, fullName, rosterStatus, seasonYear, 
+                                    imageUrl, jerseyNumber)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON DUPLICATE KEY UPDATE
                     teamId = VALUES(teamId),
                     positionId = VALUES(positionId),
                     positionType = VALUES(positionType),
                     fullName = VALUES(fullName),
                     rosterStatus = VALUES(rosterStatus),
-                    seasonYear = VALUES(seasonYear)
+                    seasonYear = VALUES(seasonYear),
+                    imageUrl = VALUES(imageUrl),
+                    jerseyNumber = VALUES(jerseyNumber)
                 """
-            player_data = (player_id, team_id, position_id, position_type, full_name, roster_status, season_year)
+            player_data = (player_id, team_id, position_id, position_type, full_name, roster_status, season_year,
+                           image_url, jersey_number)
 
             cursor.execute(sql, player_data)
 

@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from backend.db.db_config import get_db_config
+from src.backend.db.db_config import get_db_config
 import mysql.connector
 
 # Load enviornment variables from .env file

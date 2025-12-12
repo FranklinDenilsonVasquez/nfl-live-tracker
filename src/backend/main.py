@@ -1,10 +1,10 @@
-from backend.api.fetch_data import fetch_teams, fetch_players, fetch_season, fetch_game_for_season, fetch_player_stats
-from backend.db.insert_data import insert_teams, insert_players, insert_coach_from_team, insert_seasons, insert_games, process_and_insert_stats
-from backend.utils.logging import setup_logger
+from src.backend.api.fetch_data import fetch_teams, fetch_players, fetch_season, fetch_game_for_season, fetch_player_stats
+from src.backend.db.insert_data import insert_teams, insert_players, insert_coach_from_team, insert_seasons, insert_games, process_and_insert_stats
+from src.backend.utils.logging import setup_logger
 from pprint import pprint   
 import pprint                        # Formats the data cleaner
 import time
-from backend.db.db_config import get_db_config
+from src.backend.db.db_config import get_db_config
 
 
 logger = setup_logger() 
@@ -18,7 +18,7 @@ def main():
 
 
     # Insert players and coach team by team 
-    for season_year in range(2021, 2024): # range(2021,2024) to run from 2021-2023 because of the free plan (API)
+    for season_year in range(2021, 2022): # range(2021,2024) to run from 2021-2023 because of the free plan (API)
         logger.info(f"Processing season : {season_year}")
         for team in teams:
             team_id = team['id']
@@ -26,22 +26,24 @@ def main():
             try:
                 players = fetch_players(team_id, season_year)
                 logger.info(f"Fetched {len(players)} players for {team_name} (ID {team_id})")
-                #insert_players(players, team_id, season_year)
+                insert_players(players, team_id, season_year)
                 #insert_coach_from_team(team)
                 time.sleep(1)
             except Exception as e:
                 logger.warning(f"Failed to fetch players for {team_name} (ID {team_id}): {e}")
         
-        logger.info(f"Fetching games for the season {season_year}.")
-        games = fetch_game_for_season(season_year)
+        # logger.info(f"Fetching games for the season {season_year}.")
+
+        # Insert Games and Stats for each game.
+        # games = fetch_game_for_season(season_year)
         # logger.info(f"Fetched {len(games)} games for season {season_year}.")
         # insert_games(games)
-        for game in games:
-            try:
-                process_and_insert_stats(game, season_year)
-            except Exception as e:
-                logger.warning(f"Failed to insert player stats for game {game} in season {season_year}: {e}")
-        time.sleep(1)
+        # for game in games:
+        #     try:
+        #         process_and_insert_stats(game, season_year)
+        #     except Exception as e:
+        #         logger.warning(f"Failed to insert player stats for game {game} in season {season_year}: {e}")
+        # time.sleep(1)
 
     # Conditionally run this if the season table is not populated.
     #insert_seasons(seasons)
