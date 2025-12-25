@@ -10,5 +10,9 @@ package-lock.json
 # IDE configs
 .idea/
 venv/
+# Virtual environments
 
-.env 
+env/
+.frank/
+frank/
+.env
