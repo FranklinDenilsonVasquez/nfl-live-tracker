@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
 from src.backend.db.db_config import get_db_config
-import mysql.connector
+import psycopg2
+from psycopg2 import OperationalError
 
-# Load enviornment variables from .env file
+# Load environment variables from .env file
 load_dotenv()
 
 # Access them
@@ -11,8 +12,8 @@ load_dotenv()
 def get_db_connection():
     try:
         db_config = get_db_config()
-        conn = mysql.connector.connect(**db_config)
+        conn = psycopg2.connect(**db_config)
         return conn
-    except mysql.connector.Error as err:
+    except OperationalError as err:
         print(f"Error: {err}")
         return None

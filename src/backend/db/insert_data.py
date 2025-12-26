@@ -2,6 +2,7 @@ from src.backend.db.db_connection import get_db_connection
 from src.backend.db.db_config import get_db_config
 from src.backend.utils.logging import setup_logger
 import mysql.connector
+import psycopg2
 from datetime import datetime
 from src.backend.api.fetch_data import fetch_player_stats
 from collections import defaultdict
@@ -204,9 +205,9 @@ def insert_seasons(season_years):
     try:
         for year in season_years:
             sql = """
-                INSERT INTO season (seasonYear)
+                INSERT INTO season (season_year)
                 VALUES (%s)
-                ON DUPLICATE KEY UPDATE seasonYear = VALUES(seasonYear)
+                ON CONFLICT (season_year) DO NOTHING;
             """
 
             cursor.execute(sql, (year,))
