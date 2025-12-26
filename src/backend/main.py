@@ -25,10 +25,16 @@ def main():
             team_name = team['name']
             try:
                 players = fetch_players(team_id, season_year)
+                player_length = len(players)
                 logger.info(f"Fetched {len(players)} players for {team_name} (ID {team_id})")
-                insert_players(players, team_id, season_year)
+                if player_length == 0:
+                    logger.warning(f"Zero players for team: {team_name} (ID {team_id})")
+
+                # insert_players(players, team_id, season_year)
+                # TODO: Some player image url's and jersey numbers are not getting added to db and show us as 'NULL'
+                #  even though this data is in the API-FOOTBALL
                 #insert_coach_from_team(team)
-                time.sleep(1)
+                time.sleep(7)
             except Exception as e:
                 logger.warning(f"Failed to fetch players for {team_name} (ID {team_id}): {e}")
         

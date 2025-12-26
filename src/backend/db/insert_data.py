@@ -114,24 +114,30 @@ def insert_players(players, team_id, season):
 
 
             # Prepare insert (ON DUPLICATE KEY UPDATE only updates if player already exists)
-            sql = """
-                INSERT INTO player (playerId, teamId, positionId, positionType, fullName, rosterStatus, seasonYear, 
-                                    imageUrl, jerseyNumber)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            sql_player = """
+                INSERT INTO player (playerId, fullName, imageUrl)
+                VALUES (%s, %s, %s)
                 ON DUPLICATE KEY UPDATE
-                    teamId = VALUES(teamId),
+                    fullName = VALUES(fullName),
+                    imageUrl = VALUES(imageUrl)
+                """
+            player_data = (player_id, full_name, image_url)
+
+            cursor.execute(sql_player, player_data)
+
+            sql_team = """
+                INSERT INTO player_team (playerId, teamId, seasonYear, positionId, positionType, 
+                                         jerseyNumber, rosterStatus)
+                VALUES(%s, %s, %s, %s, %s, %s, %s)
+                ON DUPLICATE KEY UPDATE
                     positionId = VALUES(positionId),
                     positionType = VALUES(positionType),
-                    fullName = VALUES(fullName),
-                    rosterStatus = VALUES(rosterStatus),
-                    seasonYear = VALUES(seasonYear),
-                    imageUrl = VALUES(imageUrl),
-                    jerseyNumber = VALUES(jerseyNumber)
-                """
-            player_data = (player_id, team_id, position_id, position_type, full_name, roster_status, season_year,
-                           image_url, jersey_number)
+                    jerseyNumber = VALUES(jerseyNumber),
+                    rosterStatus = VALUES(rosterStatus)
+            """
 
-            cursor.execute(sql, player_data)
+            player_data_team = (player_id, team_id, season, position_id, position_type, jersey_number, roster_status)
+            cursor.execute(sql_team, player_data_team)
 
         except Exception as e:
             logger.warning(f"Failed to insert player {player.get('id', 'UNKNOWN')}: {e}")
@@ -165,7 +171,7 @@ def insert_coach_from_team(team):
         # strip() = remove leading and trailing characters
         coach_name = coach_name.strip()
         
-        # Prepare the SQL statment to insert coaches into the coach table
+        # Prepare the SQL statement to insert coaches into the coach table
         sql = """
             INSERT INTO coach (coachId, teamId, fullName)
             VALUES (%s, %s, %s)
@@ -225,7 +231,7 @@ def insert_games(games:list):
     cursor = conn.cursor()
 
     try:
-        # Function that goes through the Season table in database and retruns it's primary key
+        # Function that goes through the Season table in database and returns it's primary key
         def get_season_id(cursor, year):
             cursor.execute("SELECT seasonId FROM season WHERE seasonYear = %s",(year,))
             row = cursor.fetchone()
