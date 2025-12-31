@@ -1,5 +1,6 @@
 from src.backend.api.fetch_data import fetch_teams, fetch_players, fetch_season, fetch_game_for_season, fetch_player_stats
-from src.backend.db.insert_data import insert_teams, insert_players, insert_coach_from_team, insert_seasons, insert_games, process_and_insert_stats
+from src.backend.db.insert_data import (insert_teams, insert_players, insert_coach_from_team, insert_seasons,
+                                        insert_games, process_and_insert_stats, insert_stadium)
 from src.backend.utils.logging import setup_logger
 from pprint import pprint   
 import pprint                        # Formats the data cleaner
@@ -17,9 +18,11 @@ def main():
     logger.info(f"Fetched {len(teams)} teams.")
 
 
-    #for season in seasons:
+    # Insert seasons and teams into DB
     try:
-        insert_seasons(seasons)
+        # insert_seasons(seasons)
+        # insert_teams(teams)
+        insert_stadium(teams)
     except Exception as e:
         logger.warning(f"Something went wrong {e}")
 

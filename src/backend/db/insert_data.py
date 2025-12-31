@@ -10,6 +10,40 @@ from collections import defaultdict
 
 logger = setup_logger()
 
+
+def insert_stadium(teams):
+    # Establish database connection
+    conn = get_db_connection()
+    if conn is None:
+        logger.error("Could not connect to the database.")
+        return
+
+    cursor = conn.cursor()
+
+    for team in teams:
+        # Iterate over teams and insert the stadiums
+        sql = """
+                INSERT INTO stadium (stadium_name, capacity, location)
+                VALUES (%s, %s, %s)
+        """
+
+        stadium_data = (
+            team.get('stadium'),
+            None,
+            team.get('city')
+        )
+        try:
+            cursor.execute(sql, stadium_data)
+            logger.info(f"Inserted stadium '{stadium_data}' for team {team.get('name')}")
+        except Exception as e:
+            logger.warning(f"Failed to insert stadium for team: {team}")
+            continue
+
+        conn.commit()
+    cursor.close()
+    conn.close()
+
+
 def insert_teams(teams):
     # Establish database connection
     conn = get_db_connection()
@@ -22,11 +56,12 @@ def insert_teams(teams):
     # Iterate over teams and insert them into the database
     for team in teams:
         
-        sql = """INSERT IGNORE INTO team (teamId, teamName, city, state, logoPath)
+        sql = """INSERT INTO team (team_id, team_name, city, state, logoPath)
                  VALUES (%s, %s, %s, %s, %s)"""
         team_data = (
             team['id'],
             team['name'],
+            team['stadium'],
             team['city'], 
             team['code'],
             team['logo']
