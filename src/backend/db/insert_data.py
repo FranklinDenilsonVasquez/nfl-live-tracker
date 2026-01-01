@@ -55,20 +55,32 @@ def insert_teams(teams):
     
     # Iterate over teams and insert them into the database
     for team in teams:
-        
-        sql = """INSERT INTO team (team_id, team_name, city, state, logoPath)
+
+        # Lookup the stadium_id from the stadium table
+        cursor.execute(
+            "SELECT stadium_id FROM stadium WHERE stadium_name = %s;",
+            (team.get('stadium'),)
+        )
+        result = cursor.fetchone()
+
+        if result is None:
+            logger.warning(f"Stadium '{team.get('stadium')} not found for team {team.get('name')}. Skipping.")
+            continue
+
+        stadium_id = result[0]
+
+        sql = """INSERT INTO team (team_name, stadium_id, city, code, logo_path)
                  VALUES (%s, %s, %s, %s, %s)"""
         team_data = (
-            team['id'],
             team['name'],
-            team['stadium'],
+            stadium_id,
             team['city'], 
             team['code'],
             team['logo']
         )
         try:
             cursor.execute(sql, team_data)
-        except mysql.connector.Error as e:
+        except Exception as e:
             print(f"Error inserting team {team['name']}, {e}")
             continue
     conn.commit()

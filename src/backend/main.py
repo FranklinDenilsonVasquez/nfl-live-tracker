@@ -21,8 +21,8 @@ def main():
     # Insert seasons and teams into DB
     try:
         # insert_seasons(seasons)
-        # insert_teams(teams)
-        insert_stadium(teams)
+        insert_teams(teams)
+        # insert_stadium(teams)
     except Exception as e:
         logger.warning(f"Something went wrong {e}")
 
