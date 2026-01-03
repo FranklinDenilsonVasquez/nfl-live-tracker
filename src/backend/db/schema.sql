@@ -40,6 +40,14 @@
         FOREIGN KEY (team_id) REFERENCES Team(team_id)
     );
 
+    CREATE TABLE Coach_Team_Season (
+        coach_team_season_id SERIAL PRIMARY KEY,
+        coach_id INT NOT NULL REFERENCES coach(coach_id),
+        team_id INT NOT NULL REFERENCES team(team_id),
+        season_id INT NOT NULL REFERENCES season(season_id),
+        role VARCHAR(50)
+    );
+
 --(5) Create the POSITION table
     -- 	CREATE TABLE Position (
     -- 		positionId INT AUTO_INCREMENT PRIMARY KEY,

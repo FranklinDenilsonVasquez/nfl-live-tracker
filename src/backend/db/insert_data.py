@@ -198,7 +198,7 @@ def insert_players(players, team_id, season):
     logger.info(f"Finished inserting players for team ID {team_id}.")
 
 # Function to insert coaches into the database
-def insert_coach_from_team(team):
+def insert_coach_from_team(team, season):
     # Establish database connection
     conn = get_db_connection()
     
@@ -211,6 +211,16 @@ def insert_coach_from_team(team):
         team_id = team['id']
         coach_name = team.get("coach", None)
 
+        # Get the season_id from season table
+        cursor.execute("SELECT season_id FROM season WHERE season_year = '%s'", (season,))
+        season_row = cursor.fetchone()
+
+        if season_row is None:
+            logger.warning(f"Invalid season: {season}")
+            return
+
+        season_id = season_row[0]
+
         # If no coach is listed for the team send a warning 
         if not coach_name:
             logger.warning(f"No coach info found for team {team_id} - {team['name']}")
@@ -220,15 +230,35 @@ def insert_coach_from_team(team):
         coach_name = coach_name.strip()
         
         # Prepare the SQL statement to insert coaches into the coach table
-        sql = """
-            INSERT INTO coach (coachId, teamId, fullName)
-            VALUES (%s, %s, %s)
-            ON DUPLICATE KEY UPDATE 
-                teamId = VALUES(teamId),
-                fullName = VALUES(fullName)
-
+        coach_sql = """
+            INSERT INTO coach (coach_name)
+            VALUES (%s)
+            ON CONFLICT (coach_name) DO NOTHING
+            RETURNING coach_id;
             """
-        cursor.execute(sql, (team_id, coach_name))
+        cursor.execute(coach_sql, (coach_name,))
+        result = cursor.fetchone()
+
+        if result:
+            coach_id = result[0]
+        else:
+            # The coach already exists so extract the coach_id
+            cursor.execute("SELECT coach_id FROM coach WHERE coach_name = %s", (coach_name,))
+            coach_id = cursor.fetchone()[0]
+        # Insert into coach_team_season table
+        coach_team_season_sql = """
+            INSERT INTO coach_team_season (coach_id, team_id, season_id)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (coach_id, team_id, season_id) DO NOTHING;
+            """
+
+        coach_team_season_data = (
+            coach_id,
+            team_id,
+            season_id,
+        )
+
+        cursor.execute(coach_team_season_sql, coach_team_season_data)
 
     except Exception as e:
         logger.warning(f"Failed to insert coach from team {team_id} - {team['name']}: {e}")
@@ -237,7 +267,7 @@ def insert_coach_from_team(team):
         conn.commit()
         cursor.close()
         conn.close()
-        logger.info("Finished inserting coaches into database")
+
 
 
 def insert_seasons(season_years):
