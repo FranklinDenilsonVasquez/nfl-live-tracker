@@ -97,46 +97,57 @@ def insert_players(players, team_id, season):
         return      
     cursor = conn.cursor()
 
-    season_year = season
-    # Normalize the roster status of each player to keep track of their current status
-    def get_roster_status(group):
-            if not group:
-                return 'active'
-            group = group.lower()
-            if "practice" in group:
-                return "practice_squad"
-            elif "injured" in group:
-                return "injured_reserve"
-            return "active"
-    
-    # Normalize position type and get it ready for the database
-    def normalize_position_type(group):
-        if not group:
-            return None
-        group = group.lower()
-        if "offense" in group:
-            return "offense"
-        elif "defense" in group:
-            return "defense"
-        elif "special" in group:
-            return "special_teams"
-        elif "practice" in group or "injured" in group:
-            return None
-        else:
-            logger.warning(f"Unrecognized group label '{group}' for positionType.")
-            return None
+    # # Normalize the roster status of each player to keep track of their current status
+    # def get_roster_status(group):
+    #         if not group:
+    #             return 'active'
+    #         group = group.lower()
+    #         if "practice" in group:
+    #             return "practice_squad"
+    #         elif "injured" in group:
+    #             return "injured_reserve"
+    #         return "active"
+    #
+    # # Normalize position type and get it ready for the database
+    # def normalize_position_type(group):
+    #     if not group:
+    #         return None
+    #     group = group.lower()
+    #     if "offense" in group:
+    #         return "offense"
+    #     elif "defense" in group:
+    #         return "defense"
+    #     elif "special" in group:
+    #         return "special_teams"
+    #     elif "practice" in group or "injured" in group:
+    #         return None
+    #     else:
+    #         logger.warning(f"Unrecognized group label '{group}' for positionType.")
+    #         return None
+    # Get the season_id from season table
+    cursor.execute("SELECT season_id FROM season WHERE season_year = '%s'", (season,))
+    season_row = cursor.fetchone()
 
+    if season_row is None:
+        logger.warning(f"Invalid season: {season}")
+        return
+
+    season_id = season_row[0]
     # Iterate over teams and insert payers into the database
     for player in players:
         try:
+
             # Check required fields
             if 'id' not in player or 'name' not in player or 'position' not in player:
                 logger.warning(f"Skipping malformed player data: {player}")
                 continue
 
-            player_id = player['id']
+            api_player_id = player['id']
             full_name = player['name']
-            position_name = player.get('position') # May be None
+            height = player.get('height')
+            weight = player.get('weight')
+            college = player.get('college')
+            position_name = player.get('position') # It may be None
             group = player.get('group')
             position_type = normalize_position_type(group)
             roster_status = get_roster_status(group)
@@ -144,48 +155,48 @@ def insert_players(players, team_id, season):
             jersey_number = player.get('number')
 
             if position_type is None:
-                logger.warning(f"Unknown positionType for player {player_id} - {full_name}, group='{player.get('group')}', inserting with NULL.")
+                logger.warning(f"Unknown positionType for player {api_player_id} - {full_name}, "
+                               f"group='{player.get('group')}', inserting with NULL.")
 
             # Try to get positionId, if position_name is available
             position_id = None
             if position_name:
-                cursor.execute("SELECT positionId FROM position WHERE positionName = %s", (position_name,))
+                cursor.execute("SELECT position_id FROM position WHERE position_name = %s", (position_name,))
                 result = cursor.fetchone()
                 if result:
                     position_id = result[0]
                 else:
-                    cursor.execute("INSERT INTO position (positionName) VALUES (%s)", (position_name,))
-                    conn.commit()
-                    position_id = cursor.lastrowid
+                    cursor.execute("INSERT INTO position (position_name) VALUES (%s) RETURNING position_id",
+                                    (position_name,)
+                                   )
+                    position_id = cursor.fetchone()[0]
             else:
-                logger.warning(f"Player {player_id} - {full_name} has no positionName.")
+                logger.warning(f"Player {api_player_id} - {full_name} has no positionName.")
 
 
             # Prepare insert (ON DUPLICATE KEY UPDATE only updates if player already exists)
             sql_player = """
-                INSERT INTO player (playerId, fullName, imageUrl)
-                VALUES (%s, %s, %s)
-                ON DUPLICATE KEY UPDATE
-                    fullName = VALUES(fullName),
-                    imageUrl = VALUES(imageUrl)
+                INSERT INTO player (player_name, height, weight, college,
+                                    position_id, player_img, api_player_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (api_player_id) 
+                DO UPDATE SET
+                    player_name = EXCLUDED.player_name,
+                    player_img = EXCLUDED.player_img,
+                    position_id = EXCLUDED.position_id
                 """
-            player_data = (player_id, full_name, image_url)
+            player_data = (full_name, height, weight, college, position_id,
+                           image_url, api_player_id)
 
             cursor.execute(sql_player, player_data)
 
-            sql_team = """
-                INSERT INTO player_team (playerId, teamId, seasonYear, positionId, positionType, 
-                                         jerseyNumber, rosterStatus)
-                VALUES(%s, %s, %s, %s, %s, %s, %s)
-                ON DUPLICATE KEY UPDATE
-                    positionId = VALUES(positionId),
-                    positionType = VALUES(positionType),
-                    jerseyNumber = VALUES(jerseyNumber),
-                    rosterStatus = VALUES(rosterStatus)
+            sql_player_team = """
+                INSERT INTO player_team (api_player_id, team_id, season_id, jersey_number)
+                VALUES(%s, %s, %s, %s)
+                ON CONFLICT (api_player_id, season_id) DO NOTHING;
             """
-
-            player_data_team = (player_id, team_id, season, position_id, position_type, jersey_number, roster_status)
-            cursor.execute(sql_team, player_data_team)
+            player_data_team = (api_player_id, team_id, season_id, jersey_number)
+            cursor.execute(sql_player_team, player_data_team)
 
         except Exception as e:
             logger.warning(f"Failed to insert player {player.get('id', 'UNKNOWN')}: {e}")
@@ -196,6 +207,34 @@ def insert_players(players, team_id, season):
     cursor.close()
     conn.close()
     logger.info(f"Finished inserting players for team ID {team_id}.")
+
+# Normalize the roster status of each player to keep track of their current status
+def get_roster_status(group):
+        if not group:
+            return 'active'
+        group = group.lower()
+        if "practice" in group:
+            return "practice_squad"
+        elif "injured" in group:
+            return "injured_reserve"
+        return "active"
+
+# Normalize position type and get it ready for the database
+def normalize_position_type(group):
+    if not group:
+        return None
+    group = group.lower()
+    if "offense" in group:
+        return "offense"
+    elif "defense" in group:
+        return "defense"
+    elif "special" in group:
+        return "special_teams"
+    elif "practice" in group or "injured" in group:
+        return None
+    else:
+        logger.warning(f"Unrecognized group label '{group}' for positionType.")
+        return None
 
 # Function to insert coaches into the database
 def insert_coach_from_team(team, season):
