@@ -97,34 +97,6 @@ def insert_players(players, team_id, season):
         return      
     cursor = conn.cursor()
 
-    # # Normalize the roster status of each player to keep track of their current status
-    # def get_roster_status(group):
-    #         if not group:
-    #             return 'active'
-    #         group = group.lower()
-    #         if "practice" in group:
-    #             return "practice_squad"
-    #         elif "injured" in group:
-    #             return "injured_reserve"
-    #         return "active"
-    #
-    # # Normalize position type and get it ready for the database
-    # def normalize_position_type(group):
-    #     if not group:
-    #         return None
-    #     group = group.lower()
-    #     if "offense" in group:
-    #         return "offense"
-    #     elif "defense" in group:
-    #         return "defense"
-    #     elif "special" in group:
-    #         return "special_teams"
-    #     elif "practice" in group or "injured" in group:
-    #         return None
-    #     else:
-    #         logger.warning(f"Unrecognized group label '{group}' for positionType.")
-    #         return None
-    # Get the season_id from season table
     cursor.execute("SELECT season_id FROM season WHERE season_year = '%s'", (season,))
     season_row = cursor.fetchone()
 
