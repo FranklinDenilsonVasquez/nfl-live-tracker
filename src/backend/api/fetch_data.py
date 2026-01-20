@@ -125,5 +125,5 @@ def fetch_player_stats(gameId):
     if player_stats:
         return player_stats
     else:
-        logger.warning(f"No player stats found for game ID {gameId}")
+        logger.warning(f"No player stats found for game")
         return []

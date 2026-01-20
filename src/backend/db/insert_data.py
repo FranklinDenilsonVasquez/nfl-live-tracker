@@ -322,7 +322,7 @@ def insert_games(games:list):
     try:
         # Function that goes through the Season table in database and returns it's primary key
         def get_season_id(cursor, year):
-            cursor.execute("SELECT seasonId FROM season WHERE seasonYear = %s",(year,))
+            cursor.execute("SELECT season_id FROM season WHERE season_year = %s",(year,))
             row = cursor.fetchone()
 
             if row:
@@ -363,24 +363,27 @@ def insert_games(games:list):
             season_id = get_season_id(cursor, game_season)
 
             if not season_id:
-                logger.warning(f"SeasonId dosen't exist in database. Skipping game {game_id}")
+                logger.warning(f"SeasonId doesn't exist in database. Skipping game {game_id}")
                 continue
 
 
             sql = """
-                INSERT INTO game(gameId, homeTeamId, awayTeamId, gameDate, 
-                                homeTeamScore, awayTeamScore, seasonId, status, stage, week, venue, city)
+                INSERT INTO game(game_id, home_team_id, away_team_id, game_date, 
+                                home_team_score, away_team_score, season_id, status, stage, week, venue, city)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ON DUPLICATE KEY UPDATE 
-                    homeTeamScore = VALUES(homeTeamScore),
-                    awayTeamScore = VALUES(awayTeamScore),
-                    gameDate = VALUES(gameDate),
-                    seasonId = VALUES(seasonId),
-                    status = VALUES(status), 
-                    stage = VALUES(stage),
-                    week = VALUES(week),
-                    venue = VALUES(venue),
-                    city = VALUES(city) 
+                ON CONFLICT (game_id) DO UPDATE 
+                    SET
+                        home_team_id = EXCLUDED.home_team_id,
+                        away_team_id = EXCLUDED.away_team_id,
+                        game_date = EXCLUDED.game_date,
+                        home_team_score = EXCLUDED.home_team_score,
+                        away_team_score = EXCLUDED.away_team_score,
+                        season_id = EXCLUDED.season_id,
+                        status = EXCLUDED.status, 
+                        stage = EXCLUDED.stage,
+                        week = EXCLUDED.week,
+                        venue = EXCLUDED.venue,
+                        city = EXCLUDED.city 
             """
 
             data = (game_id, home_team, away_team,game_date, home_score, 
@@ -409,20 +412,20 @@ def insert_offensive_player_stats(stats):
 
     try:
         sql = """
-            INSERT INTO offensiveplayerstats(gameId, playerId, teamId, seasonId, passingTouchdowns,
-                receivingTouchdowns, rushingTouchdowns, rushingYards, passingYards, receivingYards,
+            INSERT INTO offensiveplayerstats(game_id, player_id, team_id, season_id, passing_touchdowns,
+                receiving_touchdowns, rushing_touchdowns, rushing_yards, passing_yards, receiving_yards,
                 completions, attempts, rating)
             VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            ON DUPLICATE KEY UPDATE
-                passingTouchdowns = VALUES(passingTouchdowns),
-                receivingTouchdowns = VALUES(receivingTouchdowns), 
-                rushingTouchdowns = VALUES(rushingTouchdowns), 
-                rushingYards = VALUES(rushingYards), 
-                passingYards = VALUES(passingYards), 
-                receivingYards = VALUES(receivingYards),
-                completions = VALUES(completions),
-                attempts = VALUES(attempts),
-                rating = VALUES(rating)
+            ON CONFLICT (gameId) DO UPDATE
+                passing_touchdowns = EXCLUDE.passing_touchdowns,
+                receiving_touchdowns = EXCLUDE.receiving_touchdowns, 
+                rushing_touchdowns = EXCLUDE.rushing_touchdowns, 
+                rushing_yards = EXCLUDE.rushing_yards, 
+                passing_yards = EXCLUDE.passing_yards, 
+                receiving_yards = EXCLUDE.receiving_yards,
+                completions = EXCLUDE.completions,
+                attempts = EXCLUDE.attempts,
+                rating = EXCLUDE.rating
         """
     
         cursor.executemany(sql, stats)
@@ -446,14 +449,14 @@ def insert_defensive_player_stats(stats):
     cursor = conn.cursor()
     try:
         sql = """
-            INSERT INTO defensiveplayerstats(gameId, playerId, teamId, seasonId, tackles, 
-            sacks, interceptions, forcedFumbles)
+            INSERT INTO defensiveplayerstats(game_id, player_id, team_id, season_id, tackles, 
+            sacks, interceptions, forcedfumbles)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            ON DUPLICATE KEY UPDATE 
-                tackles = VALUES(tackles), 
-                sacks = VALUES(sacks),
-                interceptions = VALUES(interceptions),
-                forcedFumbles = VALUES(forcedFumbles)
+            ON CONFLICT (game_id) DO UPDATE 
+                tackles = EXCLUDE.tackles, 
+                sacks = EXCLUDE.sacks,
+                interceptions = EXCLUDE.interceptions,
+                forcedFumbles = EXCLUDE.forcedFumbles
         """
 
         cursor.executemany(sql, stats)
@@ -470,7 +473,7 @@ def insert_defensive_player_stats(stats):
 def process_and_insert_stats(gameId, season):
 
     # Only allow seasons 2021–2023 for free plan
-    if season not in [2021, 2022, 2023]:
+    if season not in [2022, 2023, 2024]:
         logger.info(f"Skipping game {gameId} for season {season} (not available on free plan).")
         return
     
@@ -482,7 +485,7 @@ def process_and_insert_stats(gameId, season):
     cursor = conn.cursor()
 
     player_stats = fetch_player_stats(gameId)
-    print(player_stats)
+    #print(player_stats)
 
     # Aggregate offensive stats by (season, gameId, playerId, teamId)
     offensive_agg = defaultdict(lambda: {

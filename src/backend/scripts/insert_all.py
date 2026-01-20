@@ -49,15 +49,22 @@ def main():
         # logger.info(f"Fetching games for the season {season_year}.")
 
         # Insert Games and Stats for each game.
-        # games = fetch_game_for_season(season_year)
-        # logger.info(f"Fetched {len(games)} games for season {season_year}.")
-        # insert_games(games)
-        # for game in games:
-        #     try:
-        #         process_and_insert_stats(game, season_year)
-        #     except Exception as e:
-        #         logger.warning(f"Failed to insert player stats for game {game} in season {season_year}: {e}")
-        # time.sleep(5)
+        games = fetch_game_for_season(season_year)
+        #logger.info(f"Fetched {len(games)} games for season {season_year}.")
+        insert_games(games)
+        for game in games:
+            api_game_id = None
+            try:
+                api_game_id = game.get("game", {}).get("id")
+
+                if not api_game_id:
+                    logger.warning(f"Skipping game with missing API id: {game}")
+                    continue
+
+                process_and_insert_stats(api_game_id, season_year)
+            except Exception as e:
+                logger.warning(f"Failed to insert player stats for game_id = {api_game_id} in season {season_year}: {e}")
+        time.sleep(5)
 
     # Conditionally run this if the season table is not populated.
     # insert_seasons(seasons)
