@@ -9,4 +9,3 @@ class Player(BaseModel):
     jerseyNumber: int
     season: str
 
-# p.player_id, p.player_name, p.position_id, p.player_img, pt.jersey_number
