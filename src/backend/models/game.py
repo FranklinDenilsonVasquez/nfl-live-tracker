@@ -4,12 +4,12 @@ from src.backend.models.team import Team
 from src.backend.models.season import Season
 
 class Game (BaseModel):
-    gameId: int
-    homeTeam: Team
-    awayTeam: Team
+    game_id: int
+    home_team: Team
+    away_team: Team
     date: date
-    homeTeamScore: int
-    awayTeamScore: int
+    home_team_score: int
+    away_team_score: int
     season: Season
     status: str
     stage: str

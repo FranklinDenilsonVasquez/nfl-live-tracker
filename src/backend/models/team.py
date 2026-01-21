@@ -3,8 +3,8 @@ from src.backend.models.stadium import Stadium
 
 # Base team class
 class Team(BaseModel):
-    teamId: int
-    teamName: str
+    team_id: int
+    team_name: str
     stadium: Stadium
     city: str
     code: str

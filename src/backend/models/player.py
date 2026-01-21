@@ -2,10 +2,10 @@ from pydantic import BaseModel
 
 # Base player class
 class Player(BaseModel):
-    playerId: int
-    playerName: str
+    player_id: int
+    player_name: str
     position: str
     img: str
-    jerseyNumber: int
+    jersey_number: int
     season: str
 

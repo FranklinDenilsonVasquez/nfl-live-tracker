@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 class Season (BaseModel):
-    seasonId: int
-    seasonYear: str
+    season_id: int
+    season_year: str
