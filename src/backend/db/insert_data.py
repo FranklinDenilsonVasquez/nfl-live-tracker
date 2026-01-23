@@ -339,19 +339,12 @@ def insert_games(games:list):
             league_data = game_obj['league']
             teams_data = game_obj['teams']
             scores_data = game_obj['scores']
-
-            # Debug prints right here
-            print("game_data:", game_data)
-            print("league_data:", league_data)
-            print("teams_data:", teams_data)
-            print("scores_data:", scores_data)
             
             # Get data from the "zoomed in" JSON response
             game_id = game_data['id']
             home_team = teams_data['home']['id']
             away_team = teams_data['away']['id']
             game_date = game_data['date']['date'] # e.g., "2023-08-04"
-            print("game_date:", game_date, type(game_date))
 
             home_score = scores_data['home'].get('total', 0) # Get total if set to None return 0 to not raise an error
             away_score = scores_data['away'].get('total', 0) # Get total if set to None return 0 to not raise an error
