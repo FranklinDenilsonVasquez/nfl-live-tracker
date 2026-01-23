@@ -36,7 +36,7 @@ def insert_stadium(teams):
             cursor.execute(sql, stadium_data)
             logger.info(f"Inserted stadium '{stadium_data}' for team {team.get('name')}")
         except Exception as e:
-            logger.warning(f"Failed to insert stadium for team: {team}")
+            logger.warning(f"Failed to insert stadium for team: {team} - {e}")
             continue
 
         conn.commit()
@@ -339,12 +339,19 @@ def insert_games(games:list):
             league_data = game_obj['league']
             teams_data = game_obj['teams']
             scores_data = game_obj['scores']
+
+            # Debug prints right here
+            print("game_data:", game_data)
+            print("league_data:", league_data)
+            print("teams_data:", teams_data)
+            print("scores_data:", scores_data)
             
             # Get data from the "zoomed in" JSON response
             game_id = game_data['id']
             home_team = teams_data['home']['id']
             away_team = teams_data['away']['id']
             game_date = game_data['date']['date'] # e.g., "2023-08-04"
+            print("game_date:", game_date, type(game_date))
 
             home_score = scores_data['home'].get('total', 0) # Get total if set to None return 0 to not raise an error
             away_score = scores_data['away'].get('total', 0) # Get total if set to None return 0 to not raise an error
@@ -353,12 +360,15 @@ def insert_games(games:list):
             home_score = home_score if home_score is not None else 0
             away_score = away_score if away_score is not None else 0
 
-            status = game_data['status']['long']
-            stage = game_data.get('stage')
-            week = game_data.get('week')
-            game_venue = game_data['venue'].get('name', 0)
-            game_city = game_data['venue'].get('city', 0)
-            game_season = league_data['season']
+            status = str(game_data.get('status', {}).get('long', ''))
+            stage = str(game_data.get('stage') or '')
+            week = str(game_data.get('week') or '')
+
+            venue_data = game_data.get('venue', {})
+            game_venue = str(venue_data.get('name') or '')
+            game_city = str(venue_data.get('city') or '')
+
+            game_season = str(league_data.get('season') or '')
 
             season_id = get_season_id(cursor, game_season)
 
@@ -386,12 +396,13 @@ def insert_games(games:list):
                         city = EXCLUDED.city 
             """
 
-            data = (game_id, home_team, away_team,game_date, home_score, 
+            data = (game_id, home_team, away_team, game_date, home_score,
                     away_score, season_id, status, stage, week, game_venue, game_city)
 
             cursor.execute(sql, data)
 
     except Exception as e:
+
         logger.warning(f"Failed to insert game data: {e}")
 
     finally:
@@ -412,20 +423,20 @@ def insert_offensive_player_stats(stats):
 
     try:
         sql = """
-            INSERT INTO offensiveplayerstats(game_id, player_id, team_id, season_id, passing_touchdowns,
-                receiving_touchdowns, rushing_touchdowns, rushing_yards, passing_yards, receiving_yards,
+            INSERT INTO offplayerstats(game_id, player_id, team_id, passing_td,
+                receiving_td, rushing_td, rushing_yards, passing_yards, receiving_yards,
                 completions, attempts, rating)
-            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (gameId) DO UPDATE
-                passing_touchdowns = EXCLUDE.passing_touchdowns,
-                receiving_touchdowns = EXCLUDE.receiving_touchdowns, 
-                rushing_touchdowns = EXCLUDE.rushing_touchdowns, 
-                rushing_yards = EXCLUDE.rushing_yards, 
-                passing_yards = EXCLUDE.passing_yards, 
-                receiving_yards = EXCLUDE.receiving_yards,
-                completions = EXCLUDE.completions,
-                attempts = EXCLUDE.attempts,
-                rating = EXCLUDE.rating
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (game_id, player_id, team_id) DO UPDATE SET
+                passing_td = EXCLUDED.passing_td,
+                receiving_td = EXCLUDED.receiving_td, 
+                rushing_td = EXCLUDED.rushing_td, 
+                rushing_yards = EXCLUDED.rushing_yards, 
+                passing_yards = EXCLUDED.passing_yards, 
+                receiving_yards = EXCLUDED.receiving_yards,
+                completions = EXCLUDED.completions,
+                attempts = EXCLUDED.attempts,
+                rating = EXCLUDED.rating
         """
     
         cursor.executemany(sql, stats)
@@ -449,14 +460,14 @@ def insert_defensive_player_stats(stats):
     cursor = conn.cursor()
     try:
         sql = """
-            INSERT INTO defensiveplayerstats(game_id, player_id, team_id, season_id, tackles, 
+            INSERT INTO defplayerstats(game_id, player_id, team_id, tackles, 
             sacks, interceptions, forcedfumbles)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (game_id) DO UPDATE 
-                tackles = EXCLUDE.tackles, 
-                sacks = EXCLUDE.sacks,
-                interceptions = EXCLUDE.interceptions,
-                forcedFumbles = EXCLUDE.forcedFumbles
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (game_id, player_id, team_id) DO UPDATE SET
+                tackles = EXCLUDED.tackles, 
+                sacks = EXCLUDED.sacks,
+                interceptions = EXCLUDED.interceptions,
+                forcedfumbles = EXCLUDED.forcedfumbles
         """
 
         cursor.executemany(sql, stats)
@@ -473,6 +484,7 @@ def insert_defensive_player_stats(stats):
 def process_and_insert_stats(gameId, season):
 
     # Only allow seasons 2021–2023 for free plan
+
     if season not in [2022, 2023, 2024]:
         logger.info(f"Skipping game {gameId} for season {season} (not available on free plan).")
         return
@@ -485,7 +497,6 @@ def process_and_insert_stats(gameId, season):
     cursor = conn.cursor()
 
     player_stats = fetch_player_stats(gameId)
-    #print(player_stats)
 
     # Aggregate offensive stats by (season, gameId, playerId, teamId)
     offensive_agg = defaultdict(lambda: {
@@ -534,69 +545,69 @@ def process_and_insert_stats(gameId, season):
                             offensive_agg[key]["completions"] += completions
                             offensive_agg[key]["attempts"] += attempts
                         except ValueError:
-                            continue
+                            pass
                         continue
 
                     # skip null values
                     if statValue is None:
                         statValue = 0
 
-                # Convert rating or numeric strings
-                try:
-                    stat_value = float(stat_value) if "." in str(stat_value) else int(stat_value)
-                except (ValueError, TypeError):
-                    stat_value = 0
+                    # Convert rating or numeric strings
+                    try:
+                        statValue = float(statValue) if "." in str(statValue) else int(statValue)
+                    except (ValueError, TypeError):
+                        statValue = 0
 
-                # Map stats into offense
-                if cat_name == "passing":
-                    if statName == "passing touch downs":
-                        offensive_agg[key]["passingTouchdowns"] += statValue
-                    elif statName == "yards":
-                        offensive_agg[key]["passingYards"] += statValue
-                elif cat_name == "rushing":
-                    if statName == "rushing touch downs":
-                        offensive_agg[key]["rushingTouchdowns"] += statValue
-                    elif statName == "yards":
-                        offensive_agg[key]["rushingYards"] += statValue
-                elif cat_name == "receiving":
-                    if statName == "receiving touch downs":
-                        offensive_agg[key]["receivingTouchdowns"] += statValue
-                    elif statName == "yards":
-                        offensive_agg[key]["receivingYards"] += statValue
+                    # Map stats into offense
+                    if cat_name == "passing":
+                        if statName == "passing touch downs":
+                            offensive_agg[key]["passingTouchdowns"] += statValue
+                        elif statName == "yards":
+                            offensive_agg[key]["passingYards"] += statValue
+                    elif cat_name == "rushing":
+                        if statName == "rushing touch downs":
+                            offensive_agg[key]["rushingTouchdowns"] += statValue
+                        elif statName == "yards":
+                            offensive_agg[key]["rushingYards"] += statValue
+                    elif cat_name == "receiving":
+                        if statName == "receiving touch downs":
+                            offensive_agg[key]["receivingTouchdowns"] += statValue
+                        elif statName == "yards":
+                            offensive_agg[key]["receivingYards"] += statValue
 
-                # Map stats into defense
-                elif cat_name == "defensive":
-                    if statName == "tackles":
-                        defensive_agg[key]["tackles"] += statValue
-                    elif statName == "sacks":
-                        defensive_agg[key]["sacks"] += statValue
-                    elif statName == "ff":
-                        defensive_agg[key]["forcedFumbles"] += statValue
+                    # Map stats into defense
+                    elif cat_name == "defensive":
+                        if statName == "tackles":
+                            defensive_agg[key]["tackles"] += statValue
+                        elif statName == "sacks":
+                            defensive_agg[key]["sacks"] += statValue
+                        elif statName == "ff":
+                            defensive_agg[key]["forcedFumbles"] += statValue
 
-                elif cat_name == "interceptions":
-                    if statName == "total interceptions":
-                        defensive_agg[key]["interceptions"] += statValue
+                    elif cat_name == "interceptions":
+                        if statName == "total interceptions":
+                            defensive_agg[key]["interceptions"] += statValue
 
 
     # Prepare and insert offensive stats
     if offensive_agg:
         offensive_batch = [
-            (season, playerId, teamId,
+            (gameId, playerId, teamId,
             stats["passingYards"], stats["passingTouchdowns"],
             stats["rushingYards"], stats["rushingTouchdowns"],
             stats["receivingYards"], stats["receivingTouchdowns"],
             stats["completions"], stats["attempts"], stats["rating"])
-            for (season, playerId, teamId), stats in offensive_agg.items()
+            for (season, gameId, playerId, teamId), stats in offensive_agg.items()
         ]
         insert_offensive_player_stats(offensive_batch)
 
     # Prepare and insert defensive stats
     if defensive_agg:
         defensive_batch= [
-            (season, playerId, teamId,
+            (gameId, playerId, teamId,
              stats["tackles"], stats["sacks"], stats["interceptions"], 
              stats["forcedFumbles"])
-             for (season, playerId, teamId), stats in defensive_agg.items()
+             for (season, gameId, playerId, teamId), stats in defensive_agg.items()
         ]
         insert_defensive_player_stats(defensive_batch)
     

@@ -1,3 +1,5 @@
+from time import sleep
+
 from src.backend.api.fetch_data import fetch_teams, fetch_players, fetch_season, fetch_game_for_season, \
     fetch_player_stats
 from src.backend.db.insert_data import (insert_teams, insert_players, insert_coach_from_team, insert_seasons,
@@ -51,7 +53,7 @@ def main():
         # Insert Games and Stats for each game.
         games = fetch_game_for_season(season_year)
         #logger.info(f"Fetched {len(games)} games for season {season_year}.")
-        insert_games(games)
+        # insert_games(games)
         for game in games:
             api_game_id = None
             try:
@@ -62,6 +64,7 @@ def main():
                     continue
 
                 process_and_insert_stats(api_game_id, season_year)
+                time.sleep(10)
             except Exception as e:
                 logger.warning(f"Failed to insert player stats for game_id = {api_game_id} in season {season_year}: {e}")
         time.sleep(5)
