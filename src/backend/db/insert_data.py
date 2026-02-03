@@ -434,7 +434,7 @@ def insert_offensive_player_stats(stats):
     
         cursor.executemany(sql, stats)
     except Exception as e:
-        logger.warning(f"Failed to insert game data: {e}")
+        logger.warning(f"Failed to insert offensive game data: {e}")
 
     finally:
         conn.commit()
@@ -465,7 +465,7 @@ def insert_defensive_player_stats(stats):
 
         cursor.executemany(sql, stats)
     except Exception as e:
-        logger.warning(f"Failed to insert game data: {e}")
+        logger.warning(f"Failed to insert defensive game  data: {e}")
     
     finally:
         conn.commit()
@@ -523,7 +523,8 @@ def process_and_insert_stats(gameId, season):
             # Loop through all players in this group
             for players_data in group.get("players", []):
                 playerId = players_data["player"]["id"]
-                key = (season, gameId, playerId, teamId)
+                api_player_id = get_player_api_key(cursor, playerId)
+                key = (season, gameId, api_player_id, teamId)
 
                 # Loop through individual stats for the player
                 for stat in players_data.get("statistics", []):
@@ -585,25 +586,45 @@ def process_and_insert_stats(gameId, season):
     # Prepare and insert offensive stats
     if offensive_agg:
         offensive_batch = [
-            (gameId, playerId, teamId,
+            (gameId, api_player_id, teamId,
             stats["passingYards"], stats["passingTouchdowns"],
             stats["rushingYards"], stats["rushingTouchdowns"],
             stats["receivingYards"], stats["receivingTouchdowns"],
             stats["completions"], stats["attempts"], stats["rating"])
-            for (season, gameId, playerId, teamId), stats in offensive_agg.items()
+            for (season, gameId, api_player_id, teamId), stats in offensive_agg.items()
         ]
         insert_offensive_player_stats(offensive_batch)
 
     # Prepare and insert defensive stats
     if defensive_agg:
         defensive_batch= [
-            (gameId, playerId, teamId,
+            (gameId, api_player_id, teamId,
              stats["tackles"], stats["sacks"], stats["interceptions"], 
              stats["forcedFumbles"])
-             for (season, gameId, playerId, teamId), stats in defensive_agg.items()
+             for (season, gameId, api_player_id, teamId), stats in defensive_agg.items()
         ]
         insert_defensive_player_stats(defensive_batch)
     
     cursor.close()
     conn.close()
     logger.info(f"Finished processing stats for game {gameId} in season {season}")
+
+def get_player_api_key (cursor, player_id):
+    if cursor is None:
+        logger.warning("Connection to database/cursor failed")
+        return None
+
+    try:
+        cursor.execute("SELECT player_id FROM player WHERE api_player_id = %s;", (player_id,))
+
+        result = cursor.fetchone()
+
+        if result is None:
+            logger.warning(f"No API player ID found for player_={player_id}")
+            return None
+        return result[0]
+
+    except Exception as e:
+        logger.exception(f"Failed to fetch api_player_id for player_id = {player_id}")
+        return None
+
