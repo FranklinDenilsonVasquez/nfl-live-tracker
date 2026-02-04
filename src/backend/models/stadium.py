@@ -3,5 +3,5 @@ from pydantic import BaseModel
 class Stadium (BaseModel):
     stadium_id: int
     name: str
-    capacity: int
+    capacity: int | None
     location: str

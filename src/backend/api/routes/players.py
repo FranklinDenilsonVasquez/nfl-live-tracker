@@ -18,11 +18,11 @@ def get_team_players (team_id: int, season: int = Query(..., description="Season
         )
     return [
         Player(
-            playerId=row[0],
-            playerName=row[1],
+            player_id=row[0],
+            player_name=row[1],
             position=row[2],
             img=row[3],
-            jerseyNumber=row[4],
+            jersey_number=row[4],
             season=row[5]
         )
         for row in players
