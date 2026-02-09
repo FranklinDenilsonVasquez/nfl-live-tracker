@@ -1,14 +1,7 @@
-from time import sleep
-
-from src.backend.api.fetch_data import fetch_teams, fetch_players, fetch_season, fetch_game_for_season, \
-    fetch_player_stats
-from src.backend.db.insert_data import (insert_teams, insert_players, insert_coach_from_team, insert_seasons,
-                                        insert_games, process_and_insert_stats, insert_stadium)
+from src.backend.api.fetch_data import fetch_teams, fetch_season, fetch_game_for_season
+from src.backend.db.inserts.insert_data import (process_and_insert_stats)
 from src.backend.utils.logging import setup_logger
-from pprint import pprint
-import pprint  # Formats the data cleaner
 import time
-from src.backend.db.db_config import get_db_config
 
 logger = setup_logger()
 

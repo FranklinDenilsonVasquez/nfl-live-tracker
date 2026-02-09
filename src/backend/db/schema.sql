@@ -213,3 +213,193 @@
 		total_passing_yards INT DEFAULT 0,
         UNIQUE (team_id, season)
 	);
+
+
+-- Create group tables that are aligned with how the SportsAPI groups are used to
+-- contain different stats ("defensive" "fumbles" "interceptions" "kick_returns" "kicking" "passing"
+-- "punt_returns" "punting" "receiving" "rushing")
+
+-- "Defensive" stats table
+    CREATE TABLE player_defense_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        tackles INT,
+        unassisted_tackles INT,
+        sacks DECIMAL(4,2),
+        tackles_for_loss INT,
+        passes_defended INT,
+        qb_hits INT,
+        interceptions_for_tds INT,
+        blocked_kicks INT,
+        kick_return_td INT,
+        expected_return_td DECIMAL(5,3),
+        forced_fumbles INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "fumbles" stats table
+    CREATE TABLE player_fumble_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        total_fumbles INT,
+        fumble_lost INT,
+        fumble_recovery INT,
+        fumble_recovery_td INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "interceptions" player stats table
+    CREATE TABLE player_interception_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        total_interceptions INT,
+        yards INT,
+        intercepted_touch_downs INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "kick returns" player stats table
+    CREATE TABLE player_kick_return_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        total_kick_returns INT,
+        kick_return_yards INT,
+        kick_return_average DECIMAL(5,2),
+        kick_return_long INT,
+        td INT,
+        kick_return_td INT,
+        exp_return_td DECIMAL(5,3),
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "kicking" player stats table
+    CREATE TABLE player_kicking_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+
+        --NOTE: the API stores fg_made and fg_attempted together as a fractional stat (ex: 3/4)
+        fg_made INT,
+        fg_attempted INT,
+
+        fg_percentage DECIMAL(5,2),
+        long INT,
+
+        --NOTE: the API stores xp_made and xp_attempted together as a fractional stat (ex: 3/4)
+        xp_made INT,
+        xp_attempted INT,
+
+        points INT,
+        field_goals_from_1_19_yards INT,
+        field_goals_from_20_29_yards INT,
+        field_goals_from_30_39_yards INT,
+        field_goals_from_40_49_yards INT,
+        field_goals_from_50_yards INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "passing" player stats table
+    CREATE TABLE player_passing_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+
+        --NOTE: the API stores passing_completion and passing_attempted together as a fractional stat (ex: 3/4)
+        passing_completion INT,
+        passing_attempted INT,
+
+        passing_yards INT,
+        passing_average DECIMAL(5,2),
+        passing_touch_downs INT,
+        passing_interceptions INT,
+
+        --NOTE: the API stores sacks_min and sacks_max together as a fractional stat (ex: 3/4)
+        sacks_min INT,
+        sacks_max INT,
+
+        passer_rating DECIMAL(5,2),
+        two_point_conversions INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "punt_returns" player stats table
+    CREATE TABLE player_punt_return_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        total INT,
+        yards INT,
+        average DECIMAL(5,2),
+        long INT,
+        touchdown INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "punting" player stats table
+    CREATE TABLE player_punting_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        punt_total INT,
+        punt_yards INT,
+        punt_average DECIMAL(5,2),
+        touchbacks INT,
+        inside_20 INT,
+        long_punt INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "receiving" player stats table
+    CREATE TABLE player_receiving_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        receiving_targets INT,
+        total_receptions INT,
+        receiving_yards INT,
+        receiving_average DECIMAL(5,2),
+        receiving_touchdowns INT,
+        longest_reception INT,
+        two_point_receptions INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
+
+-- "rushing" player stats table
+    CREATE TABLE player_rushing_stats(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        total_rushes INT,
+        rushing_yards INT,
+        rushing_average DECIMAL(5,2),
+        rushing_touchdowns INT,
+        longest_rush INT,
+        two_point_rushes INT,
+        kick_return_touchdowns INT,
+        exp_return_touchdowns INT,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );
