@@ -1,6 +1,6 @@
 from motor.docstrings import cursor_sort_doc
 
-from src.backend.db.db_connection import get_db_connection
+from src.backend.database.db_connection import get_db_connection
 
 def get_players_by_team (team_id: int, season: int):
     conn = get_db_connection()

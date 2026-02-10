@@ -1,5 +1,5 @@
-from src.backend.db.db_connection import get_db_connection
-from src.backend.db.db_config import get_db_config
+from src.backend.database.db_connection import get_db_connection
+from src.backend.database.db_config import get_db_config
 from src.backend.utils.logging import setup_logger
 import mysql.connector
 import psycopg2
@@ -473,7 +473,7 @@ def insert_defensive_player_stats(stats):
         conn.close()
         logger.info("Inserted/updated defensive stats for multiple games")
 
-# Function that processes and inserts stats into the appropriate table in db 
+# Function that processes and inserts stats into the appropriate table in database
 def process_and_insert_stats(gameId, season):
 
     # Only allow seasons 2021–2023 for free plan

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Query
-from src.backend.db.queries import get_all_teams
+from src.backend.database.queries import get_all_teams
 from src.backend.models.team import Team
 from src.backend.models.stadium import Stadium
 

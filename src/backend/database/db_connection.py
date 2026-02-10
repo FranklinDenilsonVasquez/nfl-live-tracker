@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from src.backend.db.db_config import get_db_config
+from src.backend.database.db_config import get_db_config
 import psycopg2
 from psycopg2 import OperationalError
 

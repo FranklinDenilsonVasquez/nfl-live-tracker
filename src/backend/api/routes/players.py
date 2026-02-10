@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Query
-from src.backend.db.queries import get_players_by_team
+from src.backend.database.queries import get_players_by_team
 from src.backend.models.player import Player
 
 router = APIRouter(prefix="/teams", tags=["Players"])

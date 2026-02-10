@@ -1,5 +1,5 @@
 from src.backend.api.fetch_data import fetch_teams, fetch_season, fetch_game_for_season
-from src.backend.db.inserts.insert_data import (process_and_insert_stats)
+from src.backend.database.inserts.insert_data import (process_and_insert_stats)
 from src.backend.utils.logging import setup_logger
 import time
 
