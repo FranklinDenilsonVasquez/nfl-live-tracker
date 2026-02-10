@@ -5,7 +5,7 @@ def normalize_defense_stats(stat_list):
         "sacks" : "sacks",
         "tfl" : "tackles_for_loss",
         "passes defended" : "passes_defended",
-        "qb hits" : "qb_hits",
+        "qb hts" : "qb_hits",
         "interceptions for touch downs" : "interceptions_for_tds",
         "blocked kicks" : "blocked_kicks",
         "kick return td" : "kick_return_td",
