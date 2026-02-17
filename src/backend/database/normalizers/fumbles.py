@@ -1,4 +1,4 @@
-from normalizers.utils import normalize_stat_list
+from .utils import normalize_stat_list
 
 def normalize_fumbles_stats(stat_list):
     fumbles_mapping = {
@@ -8,5 +8,6 @@ def normalize_fumbles_stats(stat_list):
         "rec td" : "fumble_recovery_td"
     }
 
-    normalize_stat_list(stat_list, fumbles_mapping)
+    normalizer = normalize_stat_list(stat_list, fumbles_mapping)
 
+    return normalizer

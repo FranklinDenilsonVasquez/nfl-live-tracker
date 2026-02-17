@@ -1,4 +1,4 @@
-from normalizers.utils import normalize_stat_list
+from .utils import normalize_stat_list
 
 def normalize_defense_stats(stat_list):
     defense_mapping = {
@@ -15,4 +15,6 @@ def normalize_defense_stats(stat_list):
         "ff" : "forced_fumbles"
     }
 
-    normalize_stat_list(stat_list, defense_mapping)
+    normalize = normalize_stat_list(stat_list, defense_mapping)
+
+    return normalize
