@@ -8,6 +8,6 @@ def normalize_fumbles_stats(stat_list):
         "rec td" : "fumble_recovery_td"
     }
 
-    normalizer = normalize_stat_list(stat_list, fumbles_mapping)
+    normalized_fumbles = normalize_stat_list(stat_list, fumbles_mapping)
 
-    return normalizer
+    return normalized_fumbles

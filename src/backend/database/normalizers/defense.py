@@ -15,6 +15,6 @@ def normalize_defense_stats(stat_list):
         "ff" : "forced_fumbles"
     }
 
-    normalize = normalize_stat_list(stat_list, defense_mapping)
+    normalized_defense = normalize_stat_list(stat_list, defense_mapping)
 
-    return normalize
+    return normalized_defense
