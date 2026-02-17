@@ -1,21 +1,9 @@
 from database.normalizers.defense import normalize_defense_stats
+from tests.test_data.sample_defense import sample_defense_stats
 
 def test_defense_normalizer():
-    sample_defense_stats = [
-        {"name": "tackles", "value": "10"},
-        {"name": "unassisted tackles", "value": "8"},
-        {"name": "sacks", "value": "0"},
-        {"name": "tfl", "value": "0"},
-        {"name": "passes defended", "value": "0"},
-        {"name": "qb hts", "value": "0"},
-        {"name": "interceptions for touch downs", "value": "0"},
-        {"name": "blocked kicks","value": "0"},
-        {"name": "kick return td", "value": "0"},
-        {"name": "exp return td","value": "0"},
-        {"name": "ff", "value": "0"}
-        ]
-
     normalized = normalize_defense_stats(sample_defense_stats)
+
     assert normalized["tackles"] == 10
     assert normalized["unassisted_tackles"] == 8
     assert normalized["sacks"] == 0
