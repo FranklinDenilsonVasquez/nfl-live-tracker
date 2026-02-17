@@ -1,7 +1,8 @@
-from database.wrapper.defense import normalize_defense_game_response
+from database.wrapper.defense import normalize_game_response, normalize_defense_stats
 
 
 def test_defense_wrapper():
+    # Sample data that was pulled from the actual API-Sports.IO live demo
     sample_defense_stats = {
         "team": {
             "id": 32,
@@ -77,9 +78,9 @@ def test_defense_wrapper():
         ],
     }
 
-    normalized = normalize_defense_game_response([sample_defense_stats])
+    normalized = normalize_game_response([sample_defense_stats], "defensive",
+                                                 normalize_defense_stats)
     # number of players in the response
-    length = len(normalized)
     assert len(normalized) == 3
     for player in normalized:
         assert isinstance(player, dict)

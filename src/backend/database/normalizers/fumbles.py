@@ -1,8 +1,12 @@
-def normalize_fumbles_stats(stat_line):
-    mapping = {
-        {"name" : "total", "value": "1"},
-        {"name": "lost", "value": "0"},
-        {"name": "rec", "value": "1"},
-        {"name": "rec td", "value": "0"}
+from normalizers.utils import normalize_stat_list
+
+def normalize_fumbles_stats(stat_list):
+    fumbles_mapping = {
+        "total" : "total_fumbles",
+        "lost" : "fumble_lost",
+        "rec" : "fumble_recovery",
+        "rec td" : "fumble_recovery_td"
     }
+
+    normalize_stat_list(stat_list, fumbles_mapping)
 
