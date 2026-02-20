@@ -6,7 +6,7 @@ def test_interception_normalizer():
     normalized_interceptions = normalize_game_response(sample_interceptions_stats, "interceptions",
                                          normalize_interception_stats)
 
-    print(normalized_interceptions)
+    print(f"Data: {normalized_interceptions}")
 
     # ---- Top-level checks ----
     assert isinstance(normalized_interceptions, list)

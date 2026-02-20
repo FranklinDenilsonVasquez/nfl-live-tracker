@@ -15,7 +15,12 @@ def normalize_stat_list(stat_list, mapping):
                 normalized[db_key] = 0
             else:
                 try:
-                    normalized[db_key] = int(value)
+                    # if the given data name is meant to be a float
+                    # cast it into a float else cast it into an int
+                    if name in ["average"]:
+                        normalized[db_key] = float(value)
+                    else:
+                        normalized[db_key] = int(value)
                 except ValueError:
                     # If conversion fails default to 0
                     normalized[db_key] = 0
