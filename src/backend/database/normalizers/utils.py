@@ -28,11 +28,21 @@ def normalize_stat_list(stat_list, mapping):
             elif stat_type == "float":
                 normalized[db_key["column"]] = float(value)
             elif stat_type == "ratio":
-                col1, col2 = db_key["columns"]
-                made, attempted = value.split("/")
-                normalized[col1] = int(made)
-                normalized[col2] = int(attempted)
+                if "/" in value:
+                    delimiter = "/"
+                elif "-" in value:
+                    delimiter = "-"
+                else:
+                    delimiter = None
 
+                col1, col2 = db_key["columns"]
+                if delimiter:
+                    made, attempted = value.split(delimiter)
+                    normalized[col1] = int(made)
+                    normalized[col2] = int(attempted)
+                else:
+                    normalized[col1] = int(value)
+                    normalized[col2] = 0
         except (ValueError, IndexError):
             if stat_type == "ratio":
                 col1, col2 = db_key["columns"]
