@@ -1,12 +1,13 @@
 from database.wrapper.defense import normalize_game_response
 from database.normalizers.interceptions import normalize_interception_stats
 from tests.test_data.sample_interception import sample_interceptions_stats
+from pprint import pprint
 
 def test_interception_normalizer():
     normalized_interceptions = normalize_game_response(sample_interceptions_stats, "interceptions",
                                          normalize_interception_stats)
 
-    print(f"Data: {normalized_interceptions}")
+    pprint(normalized_interceptions)
 
     # ---- Top-level checks ----
     assert isinstance(normalized_interceptions, list)

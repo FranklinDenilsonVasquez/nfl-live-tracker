@@ -1,5 +1,6 @@
 from database.normalizers.defense import normalize_defense_stats
 from tests.test_data.sample_defense import sample_defense_stats
+from pprint import pprint
 
 def test_defense_normalizer():
     normalized = normalize_defense_stats(sample_defense_stats)
@@ -26,8 +27,8 @@ def test_defense_normalizer():
     assert "unknown_stat" not in normalized_edge
 
     print("All defense normalizer test passed!")
-    print(normalized)
-    print(normalized_edge)
+    pprint(normalized)
+    pprint(normalized_edge)
 
 if __name__ == "__main__":
     test_defense_normalizer()

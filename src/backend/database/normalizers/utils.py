@@ -5,24 +5,40 @@ def normalize_stat_list(stat_list, mapping):
     # and the wrapper will iterate through the other data like team_id, game_id
     for stat in stat_list:
         name = stat.get("name", "").lower().strip()
-        value = stat.get("value", 0)
+        value = stat.get("value", "")
 
         db_key = mapping.get(name)
 
-        if db_key:
-            # Handel empty string or dashes
-            if value in ("", "-", None):
-                normalized[db_key] = 0
+        if not db_key:
+            continue
+
+        stat_type = db_key["type"]
+
+        if value in ("", "-", None):
+            if stat_type == "ratio":
+                col1, col2 = db_key["columns"]
+                normalized[col1] = 0
+                normalized[col2] = 0
             else:
-                try:
-                    # if the given data name is meant to be a float
-                    # cast it into a float else cast it into an int
-                    if name in ["average"]:
-                        normalized[db_key] = float(value)
-                    else:
-                        normalized[db_key] = int(value)
-                except ValueError:
-                    # If conversion fails default to 0
-                    normalized[db_key] = 0
+                normalized[db_key["column"]] = 0
+            continue
+        try:
+            if stat_type == "int":
+                normalized[db_key["column"]] = int(value)
+            elif stat_type == "float":
+                normalized[db_key["column"]] = float(value)
+            elif stat_type == "ratio":
+                col1, col2 = db_key["columns"]
+                made, attempted = value.split("/")
+                normalized[col1] = int(made)
+                normalized[col2] = int(attempted)
+
+        except (ValueError, IndexError):
+            if stat_type == "ratio":
+                col1, col2 = db_key["columns"]
+                normalized[col1] = 0
+                normalized[col2] = 0
+            else:
+                normalized[db_key["column"]] = 0
 
     return normalized
