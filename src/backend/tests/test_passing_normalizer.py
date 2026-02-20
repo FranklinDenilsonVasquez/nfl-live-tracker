@@ -36,6 +36,8 @@ def test_passing_normalizer():
     assert garoppolo["passer_rating"] == 14.2
     assert garoppolo["two_point_conversions"] == 0
 
+    print("Passed all passing unit tests!")
+
 
 if __name__ == "__main__":
     test_passing_normalizer()
