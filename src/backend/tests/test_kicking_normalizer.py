@@ -1,4 +1,4 @@
-from database.wrapper.defense import normalize_game_response
+from database.wrapper.game import normalize_game_response
 from database.normalizers.kicking import normalize_kicking_stats
 from tests.test_data.sample_kicking import sample_kicking_data
 from pprint import pprint

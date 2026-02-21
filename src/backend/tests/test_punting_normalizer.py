@@ -1,4 +1,4 @@
-from database.wrapper.defense import normalize_game_response
+from database.wrapper.game import normalize_game_response
 from database.normalizers.punting import normalize_punting_stats
 from tests.test_data.sample_punting import sample_punting_data
 from pprint import pprint

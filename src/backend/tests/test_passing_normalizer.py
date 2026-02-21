@@ -1,4 +1,4 @@
-from database.wrapper.defense import normalize_game_response
+from database.wrapper.game import normalize_game_response
 from database.normalizers.passing import normalize_passing_stats
 from tests.test_data.sample_passing import sample_passing_data
 from pprint import pprint

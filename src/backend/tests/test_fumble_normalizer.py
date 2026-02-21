@@ -1,4 +1,4 @@
-from database.wrapper.defense import normalize_game_response
+from database.wrapper.game import normalize_game_response
 from database.normalizers.fumbles import normalize_fumbles_stats
 from tests.test_data.sample_fumbles import sample_fumbles_stats
 from pprint import pprint

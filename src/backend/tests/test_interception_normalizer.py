@@ -1,4 +1,4 @@
-from database.wrapper.defense import normalize_game_response
+from database.wrapper.game import normalize_game_response
 from database.normalizers.interceptions import normalize_interception_stats
 from tests.test_data.sample_interception import sample_interceptions_stats
 from pprint import pprint

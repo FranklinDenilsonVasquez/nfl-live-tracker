@@ -1,4 +1,4 @@
-from database.wrapper.defense import normalize_game_response, normalize_defense_stats
+from database.wrapper.game import normalize_game_response, normalize_defense_stats
 
 
 def test_defense_wrapper():

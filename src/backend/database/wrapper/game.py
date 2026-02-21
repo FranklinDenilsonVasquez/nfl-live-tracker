@@ -15,12 +15,14 @@ def normalize_game_response(game_response, group_name, normalize_func, game_id=N
                 for player_data in group.get("players", []):
                     player_id = player_data.get("player",{}).get("id")
                     stats_list = player_data.get("statistics", [])
+                    player_name = player_data.get("player", {}).get("name")
 
                     normalized_stats = normalize_func(stats_list)
 
                     # Include game_id, player_id, and team_id for DB insertion
                     normalized_stats["player_id"] = player_id
                     normalized_stats["team_id"] = team_id
+                    normalized_stats["player_name"] = player_name
                     if game_id is not None:
                         normalized_stats["game_id"] = game_id
 
