@@ -624,7 +624,7 @@ def get_player_api_key (cursor, player_id):
             return None
         return result[0]
 
-    except Exception as e:
+    except ValueError as e:
         logger.exception(f"Failed to fetch api_player_id for player_id = {player_id}")
         return None
 
