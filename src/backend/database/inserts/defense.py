@@ -1,3 +1,6 @@
+from inserts.utils.bulk_insert import bulk_insert
+from utils.logging import logger
+
 # Function that takes in a cursor, flat stat list, and the player mapping
 # and inserts the defense player stats into PostgreSQL
 def insert_defense_player_stat(cursor, stat_list, player_map):
@@ -6,6 +9,7 @@ def insert_defense_player_stat(cursor, stat_list, player_map):
         internal_player_id = player_map.get(s["player_id"])
 
         if not internal_player_id:
+            logger.warning(f"Unknown player_id {s['player_id']}")
             continue
 
         defense_values.append(
@@ -24,22 +28,27 @@ def insert_defense_player_stat(cursor, stat_list, player_map):
             s["forced_fumbles"])
         )
 
-    defensive_query = """
-        INSERT INTO player_defense_stats (
-            player_id,
-            game_id,
-            tackles,
-            unassisted_tackles,
-            sacks,
-            tackles_for_loss,
-            passes_defended,
-            qb_hits,
-            interceptions_for_tds,
-            blocked_kicks,
-            kick_return_td,
-            expected_return_td,
-            forced_fumbles
-        )
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """
-    cursor.executemany(defensive_query, defense_values)
+    if not defense_values:
+        return
+
+    bulk_insert(
+        cursor=cursor,
+        table_name="player_defense_stats",
+        columns=[
+            "player_id",
+            "game_id",
+            "tackles",
+            "unassisted_tackles",
+            "sacks",
+            "tackles_for_loss",
+            "passes_defended",
+            "qb_hits",
+            "interceptions_for_tds",
+            "blocked_kicks",
+            "kick_return_td",
+            "expected_return_td",
+            "forced_fumbles"
+        ],
+        values=defense_values,
+        conflict_columns=["player_id", "game_id"]
+    )
