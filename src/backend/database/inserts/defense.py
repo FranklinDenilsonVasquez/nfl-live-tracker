@@ -1,4 +1,6 @@
 from inserts.utils.bulk_insert import bulk_insert
+import psycopg2
+from psycopg2 import DatabaseError, IntegrityError
 from utils.logging import logger
 
 # Function that takes in a cursor, flat stat list, and the player mapping
@@ -29,26 +31,32 @@ def insert_defense_player_stat(cursor, stat_list, player_map):
         )
 
     if not defense_values:
+        logger.warning(f"No defense data present")
         return
 
-    bulk_insert(
-        cursor=cursor,
-        table_name="player_defense_stats",
-        columns=[
-            "player_id",
-            "game_id",
-            "tackles",
-            "unassisted_tackles",
-            "sacks",
-            "tackles_for_loss",
-            "passes_defended",
-            "qb_hits",
-            "interceptions_for_tds",
-            "blocked_kicks",
-            "kick_return_td",
-            "expected_return_td",
-            "forced_fumbles"
-        ],
-        values=defense_values,
-        conflict_columns=["player_id", "game_id"]
-    )
+    try:
+        bulk_insert(
+            cursor=cursor,
+            table_name="player_defense_stats",
+            columns=[
+                "player_id",
+                "game_id",
+                "tackles",
+                "unassisted_tackles",
+                "sacks",
+                "tackles_for_loss",
+                "passes_defended",
+                "qb_hits",
+                "interceptions_for_tds",
+                "blocked_kicks",
+                "kick_return_td",
+                "expected_return_td",
+                "forced_fumbles"
+            ],
+            values=defense_values,
+            conflict_columns=["player_id", "game_id"]
+        )
+    except IntegrityError as e:
+        logger.warning(f"Duplicate entry detected or constraint violation: {e}")
+    except DatabaseError as e:
+        logger.error(f"Database error occurred: {e}")
