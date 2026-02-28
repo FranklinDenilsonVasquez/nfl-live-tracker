@@ -1,7 +1,7 @@
 import requests
 import os
 from dotenv import load_dotenv
-from utils.logging import setup_logger
+from src.backend.utils.logging import setup_logger
 
 logger = setup_logger()
 

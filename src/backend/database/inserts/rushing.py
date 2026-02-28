@@ -1,7 +1,7 @@
-from inserts.utils.bulk_insert import bulk_insert
+from src.backend.database.inserts.utils.bulk_insert import bulk_insert
 import psycopg2
 from psycopg2 import DatabaseError, IntegrityError
-from utils.logging import logger
+from src.backend.utils.logging import logger
 
 # Function that takes in a cursor, flat stat list, and the player mapping
 # and inserts the rushing player stats into PostgreSQL

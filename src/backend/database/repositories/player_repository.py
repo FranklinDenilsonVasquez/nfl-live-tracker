@@ -4,6 +4,10 @@ def get_player_map_for_stats(cursor, stat_list):
     if not stat_list:
         return {}
 
+    # Debugging
+    for i, s in enumerate(stat_list):
+        if not isinstance(s, dict):
+            print(f"Element {i} in stat_list if not a dict: {s}")
     api_player_ids = list({
         s["player_id"]
         for s in stat_list

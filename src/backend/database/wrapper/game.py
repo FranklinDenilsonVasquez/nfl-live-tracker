@@ -1,4 +1,4 @@
-from database.normalizers.defense import normalize_defense_stats
+from src.backend.database.normalizers.defense import normalize_defense_stats
 
 # Wrapper: Loops over team -> players -> calls normalize_player_defense
 def normalize_game_response(game_response, group_name, normalize_func, game_id=None):

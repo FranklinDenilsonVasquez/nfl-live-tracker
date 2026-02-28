@@ -1,7 +1,7 @@
-from inserts.utils.bulk_insert import bulk_insert
+from src.backend.database.inserts.utils.bulk_insert import bulk_insert
 import psycopg2
 from psycopg2 import DatabaseError, IntegrityError
-from utils.logging import logger
+from src.backend.utils.logging import logger
 
 # Function that takes in a cursor, flat stat list, and the player mapping
 # and inserts the passing player stats into PostgreSQL
@@ -24,7 +24,7 @@ def insert_player_passing_stats(cursor, stat_list, player_map):
             s["passing_touch_downs"],
             s["passing_interceptions"],
             s["sacks_total"],
-            s["sack_yards"],
+            s["sacks_yards"],
             s["passer_rating"],
             s["two_point_conversions"]
         ))
@@ -47,7 +47,7 @@ def insert_player_passing_stats(cursor, stat_list, player_map):
                 "passing_touch_downs",
                 "passing_interceptions",
                 "sacks_total",
-                "sack_yards",
+                "sacks_yards",
                 "passer_rating",
                 "two_point_conversions"
             ],
