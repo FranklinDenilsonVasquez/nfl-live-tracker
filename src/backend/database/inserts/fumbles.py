@@ -45,4 +45,5 @@ def insert_fumble_player_stats(cursor, stat_list, player_map):
         logger.warning(f"Duplicate entry detected or constraint violation: {e}")
     except DatabaseError as e:
         logger.error(f"Database error occurred: {e}")
+        raise
 

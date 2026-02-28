@@ -28,7 +28,7 @@ def insert_kick_return_player_stats(cursor, stat_list, player_map):
         ))
 
     if not kick_return_values:
-        logger.warning(f"No kick return data present")
+        logger.warning("No kick return data present")
         return
 
     try:
@@ -49,8 +49,8 @@ def insert_kick_return_player_stats(cursor, stat_list, player_map):
             values=kick_return_values,
             conflict_columns=["player_id", "game_id"]
         )
-
     except IntegrityError as e:
         logger.warning(f"Duplicate entry detected or constraint violation: {e}")
     except DatabaseError as e:
         logger.error(f"Database error occurred: {e}")
+        raise
