@@ -35,7 +35,6 @@ def orchestrate_player_game_stats(game_response, game_id=None):
                     normalized_func,
                     game_id
                     )
-        print(f"Added group = {group}")
 
         grouped_stats[group] = stats
     return grouped_stats
@@ -54,7 +53,7 @@ from src.backend.database.repositories.player_repository import get_player_map_f
 from src.backend.utils.logging import logger
 
 def process_player_game_stats(conn, game_response, game_id=None):
-    logger.info("Starting player game stat ingestion")
+    logger.info(f"Starting player game stat ingestion for game_id = {game_id}")
 
     grouped_stats = orchestrate_player_game_stats(game_response, game_id)
 
@@ -79,7 +78,7 @@ def process_player_game_stats(conn, game_response, game_id=None):
             insert_rushing_player_stats(cursor, grouped_stats["rushing"], player_map)
 
             conn.commit()
-            logger.info("Successfully inserted all player game stats")
+            logger.info(f"Successfully inserted all player game stats for game_id = {game_id}")
     except Exception:
         conn.rollback()
         logger.exception("Player game stat ingestion failed")

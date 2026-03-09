@@ -1,29 +1,37 @@
 from fastapi import APIRouter, HTTPException, Query
-from src.backend.database.queries import get_players_by_team
+from src.backend.services.player_service import fetch_player
 from src.backend.models.player import Player
 
-router = APIRouter(prefix="/teams", tags=["Players"])
+router = APIRouter(prefix="/players", tags=["Players"])
 
-@router.get("/{team_id}/players", response_model=list[Player])
-def get_team_players (team_id: int, season: int = Query(..., description="Season year")):
-    """
-    Get all players for a team in a specific season
-    """
-    players = get_players_by_team(team_id, season)
+# Search player by name
+@router.get("/search", response_model=list[Player])
+def search_players(name: str = Query(...,
+                                     description="Player name or partial name"),
+                   season: int = Query(..., description="Season year"),
+                   team_id: int | None = Query(None, description="Optional team filter")
+                   ):
+    from src.backend.services.player_service import search_player_by_name
+
+    players = search_player_by_name(name, season, team_id)
 
     if not players:
         raise HTTPException(
             status_code=404,
-            detail=f"No players found for team {team_id} in season {season}"
+            detail="No players found"
         )
-    return [
-        Player(
-            player_id=row[0],
-            player_name=row[1],
-            position=row[2],
-            img=row[3],
-            jersey_number=row[4],
-            season=row[5]
+    return players
+
+# Search player by player_id and season
+@router.get("/{player_id}", response_model=Player)
+def get_player(player_id: int, season: int):
+    player = fetch_player(player_id, season)
+
+    if not player:
+        raise HTTPException(
+            status_code=404,
+            detail="No player found"
         )
-        for row in players
-    ]
+    return player
+
+# Search players by name for a given season. Can also filter by team.

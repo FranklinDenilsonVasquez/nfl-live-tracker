@@ -7,13 +7,20 @@ def get_players_by_team (team_id: int, season: int):
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT p.player_id, p.player_name, pos.position_name, p.player_img, pt.jersey_number, s.season_year
-        FROM player AS p INNER JOIN player_team AS pt ON p.api_player_id = pt.api_player_id 
-            INNER JOIN position AS pos ON p.position_id = pos.position_id
-            INNER JOIN season AS s ON pt.season_id = s.season_id
-        WHERE pt.team_id = %s AND pt.season_id = %s
-        ORDER BY player_name;
-    """, (team_id, season))
+        SELECT 
+            p.player_id, 
+            p.player_name, 
+            pos.position_name, 
+            p.player_img, 
+            pt.jersey_number, 
+            s.season_year
+        FROM player_team AS pt
+        JOIN player AS p ON pt.api_player_id = p.api_player_id
+        JOIN position AS pos ON p.position_id = pos.position_id
+        JOIN season AS s ON pt.season_id = s.season_id
+        WHERE pt.team_id = %s AND s.season_year = %s
+        ORDER BY p.player_name;
+    """, (team_id, str(season)))
 
     rows = cur.fetchall()
 
