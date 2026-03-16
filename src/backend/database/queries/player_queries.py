@@ -1,3 +1,4 @@
+from src.backend.utils.logging import logger
 # All player queries
 
 # Get player by id
@@ -53,4 +54,29 @@ def get_player_by_name(cursor, name: str, season: int, team_id: int | None):
 
     cursor.execute(base_query, params)
     return cursor.fetchall()
+
+# Get player stats (filter by season if given season parameter)
+def get_player_stats(cursor, player_id: int, season: int | None):
+    # Query that uses the predefined function to display a
+    # players seasons data (Derrick Carr, 2024)
+    try:
+        query_function = """
+               SELECT * FROM get_player_season_stats(%s, %s) AS stats
+            """
+
+        params = [player_id, season]
+        # Return DB column names along with the data as a dict
+        from psycopg2.extras import RealDictCursor
+        cursor = cursor.connection.cursor(cursor_factory=RealDictCursor)
+        cursor.execute(query_function, params)
+
+        # Unwrap the data
+        row = cursor.fetchone()
+        data = row['stats']
+        return data
+
+    except Exception as e:
+        logger.warning(f"Error when executing get_player_season_stats(): {e}")
+        return None
+
 
