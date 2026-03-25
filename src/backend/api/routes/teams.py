@@ -7,6 +7,7 @@ from src.backend.models.player import Player
 
 router = APIRouter(prefix="/teams", tags=["Teams"])
 
+# Get all current teams
 @router.get("/", response_model=list[Team])
 def get_teams():
     teams = get_all_teams()
@@ -34,6 +35,7 @@ def get_teams():
     ) for row in teams
     ]
 
+# Get all players that play for a specific team on the given season
 @router.get("/{team_id}/players", response_model=list[Player])
 def get_team_players (team_id: int, season: int = Query(..., description="Season year")):
     """

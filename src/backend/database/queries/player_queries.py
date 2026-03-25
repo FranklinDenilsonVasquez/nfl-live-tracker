@@ -1,4 +1,5 @@
 from src.backend.utils.logging import logger
+from psycopg2.extras import RealDictCursor
 # All player queries
 
 # Get player by id
@@ -66,7 +67,6 @@ def get_player_stats(cursor, player_id: int, season: int | None):
 
         params = [player_id, season]
         # Return DB column names along with the data as a dict
-        from psycopg2.extras import RealDictCursor
         cursor = cursor.connection.cursor(cursor_factory=RealDictCursor)
         cursor.execute(query_function, params)
 
@@ -80,3 +80,26 @@ def get_player_stats(cursor, player_id: int, season: int | None):
         return None
 
 
+def get_all_player_games_stats(cursor, player_id: int, season_id: int,
+                               team_id: int | None):
+    try:
+        base_query = """
+                SELECT * FROM get_all_player_game_stats(%s, %s) AS stats
+            """
+
+        params = [player_id, season_id]
+
+        if team_id:
+            base_query += " WHERE team_id = %s"
+            params.append(team_id)
+
+        cursor = cursor.connection.cursor(cursor_factory=RealDictCursor)
+        cursor.execute(base_query, params)
+        data = cursor.fetchone()
+        stats = data['stats']
+
+        return stats
+
+    except Exception as e:
+        logger.warning(f"Error when executing get_all_player_games_stats(): {e}")
+        return None

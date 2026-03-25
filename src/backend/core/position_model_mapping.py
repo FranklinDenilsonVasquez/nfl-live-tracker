@@ -1,12 +1,15 @@
-from src.backend.models.player_stats import (QBStats, SkillStats, DefenseStats, KickerStats, PunterStats,
-                                             KickReturnerStats, PuntReturnerStats)
+from src.backend.models.player_stats import (QBStats, SkillStats, DefenseStats, KickerStats, KickingStats,
+                                             PunterStats, KickReturnerStats, PuntReturnerStats,
+                                             LinemenStats)
 
-POSITION_MODEL_MAP = {
+POSITION_MODEL_MAP_PER_SEASON = {
     "QB": QBStats,
     "RB": SkillStats,
     "FB": SkillStats,
     "WR": SkillStats,
     "TE": SkillStats,
+    "G" : LinemenStats,
+    "OT" : LinemenStats,
     "DE": DefenseStats,
     "DT": DefenseStats,
     "LB": DefenseStats,
@@ -16,5 +19,27 @@ POSITION_MODEL_MAP = {
     "PK": KickerStats,
     "P": PunterStats,
     "KR": KickReturnerStats,
+    "PR": PuntReturnerStats,
+}
+
+from src.backend.models.player_stats import (QBStatsPerGame, SkillStatsPerGame, LinemanStatsPerGame,
+                                             DefenseStatsPerGame, KickingStatsPerGame, PunterStatsPerGame)
+POSITION_MODEL_MAP_PER_GAME = {
+    "QB": QBStatsPerGame,
+    "RB": SkillStatsPerGame,
+    "FB": SkillStatsPerGame,
+    "WR": SkillStatsPerGame,
+    "TE": SkillStatsPerGame,
+    "G" : LinemanStatsPerGame,
+    "OT" : LinemanStatsPerGame,
+    "DE": DefenseStatsPerGame,
+    "DT": DefenseStatsPerGame,
+    "LB": DefenseStatsPerGame,
+    "CB": DefenseStatsPerGame,
+    "S": DefenseStatsPerGame,
+    "DB": DefenseStatsPerGame,
+    "PK": KickingStatsPerGame,
+    "P": PunterStatsPerGame,
+    "KR": KickingStatsPerGame,
     "PR": PuntReturnerStats,
 }
