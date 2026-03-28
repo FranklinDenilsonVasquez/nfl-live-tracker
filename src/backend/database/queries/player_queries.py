@@ -61,6 +61,8 @@ def get_player_stats(cursor, player_id: int, season: int | None):
     # Query that uses the predefined function to display a
     # players seasons data (Derrick Carr, 2024)
     try:
+
+
         query_function = """
                SELECT * FROM get_player_season_stats(%s, %s) AS stats
             """

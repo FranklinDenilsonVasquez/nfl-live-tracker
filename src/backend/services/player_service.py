@@ -51,7 +51,7 @@ def search_player_by_name(name: str, season: int, team_id: int | None):
                     position=row[1],
                     player_img=row[2],
                     jersey_number=row[3],
-                    season=str(season),
+                    season_id=season,
                     height=row[4],
                     weight=row[5],
                     college=row[6],
@@ -65,13 +65,13 @@ def search_player_by_name(name: str, season: int, team_id: int | None):
 
 
 # Service for fetching player stats (filter by specific season)
-def get_player_season_stats(player_id: int, season: int | None):
+def get_player_season_stats(player_id: int, season_id: int | None):
     conn = get_db_connection()
     if not conn:
         raise Exception("Failed to connect to database")
     try:
         with conn.cursor() as cursor:
-            player_stat_row = get_player_stats(cursor, player_id, season)
+            player_stat_row = get_player_stats(cursor, player_id, season_id)
 
             if not player_stat_row:
                 logger.warning("No player data found")
@@ -93,12 +93,15 @@ def get_player_season_stats(player_id: int, season: int | None):
 
 
 # Service for fetching all games a certain player has played in along with his stats for each game
-def get_player_game_stats(player_id: int, team_id: int | None, season_id: int):
+def get_player_game_stats(player_id: int, team_id: int | None, season_year: int):
     conn = get_db_connection()
     if not conn:
         raise Exception("Failed to connect to database")
     try:
         with conn.cursor() as cursor:
+            from src.backend.api.utils.utils import get_season_id
+            season_id = get_season_id(cursor, season_year)
+            print(season_id)
             player_stats = get_all_player_games_stats(cursor, player_id, team_id, season_id)
 
             if not player_stats:

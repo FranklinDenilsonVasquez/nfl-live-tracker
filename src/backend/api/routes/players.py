@@ -40,7 +40,7 @@ def get_player(player_id: int, season: int):
 # Search player season stats with player_id
 @router.get("/{player_id}/stats", response_model=Union[QBStats, SkillStats, DefenseStats, KickerStats, PunterStats,
                                              KickReturnerStats, PuntReturnerStats, LinemenStats])
-def get_player_season_stats(player_id: int, season: int = Query(None)):
+def get_player_season_stats(player_id: int, season: int):
     player_stats = player_service.get_player_season_stats(player_id, season)
 
     if not player_stats:

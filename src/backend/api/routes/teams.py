@@ -53,9 +53,23 @@ def get_team_players (team_id: int, season: int = Query(..., description="Season
             player_id=row[0],
             player_name=row[1],
             position=row[2],
-            img=row[3],
+            player_img=row[3],
             jersey_number=row[4],
-            season=row[5]
+            season_id=row[5]
         )
         for row in players
     ]
+
+from src.backend.models.team import Team
+from src.backend.services.team_services import get_team_details
+# Get team details
+@router.get('/{team_id}', response_model=Team)
+def get_team_details_by_team_id(team_id: int):
+    team_info = get_team_details(team_id)
+
+    if not team_info:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No team details found for team {team_id}"
+        )
+    return team_info
