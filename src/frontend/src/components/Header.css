@@ -15,8 +15,9 @@
     display: flex;
     position: relative;
     width: 260px; /* adjust as needed */
-    margin-right: 100px;
-    align-content: center;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
 }
 
 .search-icon{

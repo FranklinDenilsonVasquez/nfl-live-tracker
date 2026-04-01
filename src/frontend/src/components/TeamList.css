@@ -22,8 +22,9 @@ ul{
     resize: horizontal;
     overflow: auto;
     margin: 20px 10px;
-    background-color: rgb(36, 35, 35);
+    background-color: rgb(15,15,15);
     border-radius: 10px;
+    border: 1px solid #808080;
     padding: 10px;
     display: inline-flex;
     font-family: Georgia, "Times New Roman", Times, serif;

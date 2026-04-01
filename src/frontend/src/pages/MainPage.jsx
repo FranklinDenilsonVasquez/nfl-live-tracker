@@ -3,13 +3,13 @@ import "./MainPage.css";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import TeamList from "../components/TeamList";
-import DateScroller from "../components/DateScroller";
+import WeekScroller from "../components/WeekScroller";
 
 export default function HomePage() {
   return (
     <div className="app-container">
       <Header />
-      <DateScroller />
+      <WeekScroller />
       <TeamList/>
       <Footer />
     </div>
