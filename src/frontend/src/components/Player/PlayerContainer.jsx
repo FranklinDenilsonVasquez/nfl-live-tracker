@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./PlayerContainer.css";
-import cjStroud from "../img/cj_stroud.jpg";
+import cjStroud from "../../img/cj_stroud.jpg";
 import PlayerButton from "./PlayerButton";
 
 function PlayerContainer({team}) {

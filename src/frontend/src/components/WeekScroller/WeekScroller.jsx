@@ -1,6 +1,7 @@
 import React from "react";
 import "./WeekScroller.css";
-import { useWeekStore } from "../store/weekStore"
+import { useWeekStore } from "../../store/weekStore"
+import SeasonSelector from "../SeasonSelector/SeasonSelector";
 
 
 function WeekScroller() {
@@ -12,12 +13,12 @@ function WeekScroller() {
                 <button  className="arrow-button" onClick={() => setWeek(Math.max(selectedWeek - 1, 1))}>
                     &lt;
                 </button>
-                    <span> Week {selectedWeek} </span>
+                    <span style={{ fontSize: "15px" }}> Week {selectedWeek} </span>
                 <button  className="arrow-button" onClick={() => setWeek(Math.min(selectedWeek + 1, 18))}>
                     &gt;
                 </button>
+                <SeasonSelector/>
             </div>
-
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./TeamList.css";
-import FieldContainer from "./FieldContainer";
-import StandingsContainer from "./StandingsContainer";
+import FieldContainer from "../Field/FieldContainer";
+import StandingsContainer from "../Standings/StandingsContainer";
 
 function TeamList(){
 

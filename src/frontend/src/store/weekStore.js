@@ -9,7 +9,5 @@ import { create } from "zustand";
 // useWeekStore stores the selected week & season while also holding two set functions
 export const useWeekStore = create((set) => ({
     selectedWeek: 1,
-    selectedSeason: 2022,
     setWeek: (week) => set({ selectedWeek: week}),
-    setSeason: (season) => set({ selectedSeason: season})
 }));

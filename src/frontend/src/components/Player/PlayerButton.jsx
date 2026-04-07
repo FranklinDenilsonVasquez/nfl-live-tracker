@@ -1,4 +1,4 @@
-import cjStroud from "../img/cj_stroud.jpg";
+import cjStroud from "../../img/cj_stroud.jpg";
 
 function PlayerButton({imgUrl, className}) {
     return(

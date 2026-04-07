@@ -1,6 +1,6 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import "./Header.css"
+import "../Header/Header.css"
 
 function SearchBar({placeholder, onChange}){
 

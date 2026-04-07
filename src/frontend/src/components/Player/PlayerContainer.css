@@ -3,10 +3,21 @@
     height: clamp(25px, 4vw, 60px);
     width: clamp(25px, 4vw, 60px);
     background-color: #262525;
-    border: 2px solid white;
+    border: 3px solid white;
     color: white;
     position: absolute;
     background-image: url('src/frontend/src/img/cj_stroud.jpg');
+
+}
+
+.player-button:hover {
+    cursor: pointer;
+    border-color: antiquewhite;
+    transform: scale(1.3);
+}
+
+.player-button:active {
+    transform: scale(1.1);
 }
 
 .QB {

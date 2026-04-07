@@ -1,5 +1,5 @@
 import "./FieldContainer.css";
-import PlayerContainer from "./PlayerContainer";
+import PlayerContainer from "../Player/PlayerContainer";
 import Field from "./Field"
 
 function FieldContainer({team}){

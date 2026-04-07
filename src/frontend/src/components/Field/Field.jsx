@@ -1,5 +1,5 @@
 import React from "react";
-import YardLine from "./YardLine";
+import YardLine from "../YardLine/YardLine";
 import "./Field.css"
 
 const Field = () => {
