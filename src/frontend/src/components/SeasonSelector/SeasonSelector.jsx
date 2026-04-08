@@ -14,7 +14,9 @@ function SeasonSelector() {
                 value={ selectedSeason }
                 onChange={(e) => setSeason(Number(e.target.value))}>
                 {seasons.map((year) => (
-                    <option key={year} value={year}>{year}</option>
+                    <option key={year} value={year}>
+                        {year} Season
+                    </option>
                 ))}
             </select>
         </div>

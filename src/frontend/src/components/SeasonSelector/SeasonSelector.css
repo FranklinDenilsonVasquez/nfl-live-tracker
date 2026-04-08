@@ -5,11 +5,19 @@
     padding: 0 20px;
     margin-right: 10px;
     border: 1px solid white;
-    width: 75px;
+    width: 120px;
     height: 30px;
     border-radius: 15px;
     position: absolute;
     right: 0;
+    background-color: rgb(15,15,15);
+    transition: filter 0.2s;
+    cursor: pointer;
+}
+
+.season-dropdown-container:hover {
+    filter: brightness(150%);
+
 }
 
 .season-dropdown {
@@ -23,4 +31,6 @@
     font-size: 15px;
     height: 100%;
     padding-right: 14px;
+    cursor: pointer;
 }
+

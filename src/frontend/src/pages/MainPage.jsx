@@ -2,7 +2,7 @@ import React from "react";
 import "./MainPage.css";
 import Footer from "../components/Footer/footer";
 import Header from "../components/Header/Header";
-import TeamList from "../components/TeamList/TeamList";
+import GameList from "../components/GameList/GameList";
 import WeekScroller from "../components/WeekScroller/WeekScroller";
 
 export default function HomePage() {
@@ -10,7 +10,7 @@ export default function HomePage() {
     <div className="app-container">
       <Header />
       <WeekScroller />
-      <TeamList/>
+      <GameList/>
       <Footer />
     </div>
   );

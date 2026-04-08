@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./TeamList.css";
+import "./GameList.css";
 import FieldContainer from "../Field/FieldContainer";
 import StandingsContainer from "../Standings/StandingsContainer";
 
-function TeamList(){
+function GameList(){
 
     const [teamSelected, setTeamSelected] = useState("");
 
@@ -37,4 +37,4 @@ function TeamList(){
     )
 }
 
-export default TeamList
+export default GameList
