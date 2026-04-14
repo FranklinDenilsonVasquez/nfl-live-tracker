@@ -9,11 +9,13 @@ const useGameStore = create((set, get) => ({
     week: "Week 1",
     stage: "Regular Season",
     loading: false,
+    showScore: false,
     error: null,
 
     setSeason: (season) => set({ season, week: "Week 1", stage: "Regular Season", error: null }),
     setWeek: (week) => set({ week }),
     setStage: (stage) => set({ stage }),
+    setShowScore: (showScore) => set({ showScore }),
 
     fetchGames: async () => {
         const { season, week , stage } = get();
