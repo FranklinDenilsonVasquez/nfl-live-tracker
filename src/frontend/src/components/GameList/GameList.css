@@ -2,7 +2,8 @@ li {
     border-radius: 30px;
     margin-top: 10px;
     color:grey;
-    
+    width: clamp(200px, 80%, 500px);
+    text-align: center;
 }
 
 li:hover {
@@ -13,7 +14,10 @@ li:hover {
 }
 
 ul{
-    padding: 0px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .resizable-div-container{
@@ -30,3 +34,41 @@ ul{
     font-family: Georgia, "Times New Roman", Times, serif;
 }
 
+.team_logo{
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin: 0 5px;
+    vertical-align: middle;
+}
+
+.game-list-header {
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #444;
+}
+
+.loading-wheel {
+    width: 25px;
+    height: 25px;
+    border: 3px solid #444;
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-text {
+    text-align: center;
+    color: red;
+    font-style: italic;
+}

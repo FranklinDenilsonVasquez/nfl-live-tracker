@@ -2,13 +2,13 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Keeps top and bottom zones separated */
+    justify-content: space-between;
     color: white;
     background-color: rgb(15,15,15);
     border: thick;
     border-radius: 5px;
-    height: 120vh; /* 80% of viewport height */
-    width: 60vw;/* Example: make it responsive */
+    height: 120vh;
+    width: 60vw;
     margin: 0;
     padding: 0;
 }
@@ -22,7 +22,7 @@
     justify-content: center;
     align-items: center;
     border: inherit;
-    box-sizing: border-box; /* ensures borders are included in width */
+    box-sizing: border-box;
 }
 
 .top-endzone {
@@ -46,4 +46,26 @@
 html, body {
     margin: 0;
     padding: 0;
+}
+
+.endzone-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.endzone-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.endzone-name {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
 }

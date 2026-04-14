@@ -73,6 +73,7 @@ footer,
     padding: 10px;
     vertical-align: top;
     border: 1px solid #808080;
+    overflow-y: auto;
 }
 
 .schedule-div-container{
@@ -100,6 +101,15 @@ footer,
     list-style-type: none;
     padding: 10px 20px;
     resize: both;
+}
+
+.team-info-division-list:hover {
+    background-color: #0c5623;
+    transform: scale(1.2);
+}
+
+.team-info-division-list:active {
+    transform: scale(.95);
 }
 
 

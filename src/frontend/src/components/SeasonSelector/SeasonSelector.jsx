@@ -1,20 +1,23 @@
-import React from "react"
-import "./SeasonSelector.css"
+import React from "react";
+import "./SeasonSelector.css";
 import { useSeasonStore} from "../../store/seasonStore";
+import useGameStore from "../../store/useGameStore";
 
 function SeasonSelector() {
 
-    const { seasons, selectedSeason, setSeason } = useSeasonStore();
+    const { season, setSeason} = useGameStore();
 
+    const seasons = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i);
+    if (season === undefined) return null;
 
     return(
         <div className="season-dropdown-container">
             <select
                 className="season-dropdown"
-                value={ selectedSeason }
+                value={ season }
                 onChange={(e) => setSeason(Number(e.target.value))}>
                 {seasons.map((year) => (
-                    <option key={year} value={year}>
+                    <option key={year.toString()} value={year.toString()}>
                         {year} Season
                     </option>
                 ))}
