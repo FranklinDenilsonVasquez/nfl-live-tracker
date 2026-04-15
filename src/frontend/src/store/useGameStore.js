@@ -12,7 +12,7 @@ const useGameStore = create((set, get) => ({
     showScore: false,
     error: null,
 
-    setSeason: (season) => set({ season, week: "Week 1", stage: "Regular Season", error: null }),
+    setSeason: (season) => set({ season, error: null }),
     setWeek: (week) => set({ week }),
     setStage: (stage) => set({ stage }),
     setShowScore: (showScore) => set({ showScore }),
