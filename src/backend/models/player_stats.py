@@ -2,77 +2,77 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 class PassingStats(BaseModel):
-    passing_attempted: int | None = 0
-    passing_completion: int | None = 0
-    passing_average: float | None = 0
-    passing_yards: int | None = 0
-    passing_touchdowns: int | None = 0
-    passing_interceptions: int | None = 0
+    passing_attempted: Optional[int] = None
+    passing_completion: Optional[int] = None
+    passing_average: Optional[float] = None
+    passing_yards: Optional[int] = None
+    passing_touch_downs: Optional[int] = None
+    passing_interceptions: Optional[int] = None
 
 # For QB position
 class RushingStats(BaseModel):
-    total_rushes: int | None = 0
-    rushing_yards: int | None = 0
-    rushing_average: float | None = 0
-    rushing_touchdowns: int | None = 0
+    total_rushes: Optional[int] = None
+    rushing_yards: Optional[int] = None
+    rushing_average: Optional[float] = None
+    rushing_touchdowns: Optional[int] = None
 
 class RushingDetails(BaseModel):
-    total_rushes: int | None = 0
-    rushing_yards: int | None = 0
-    rushing_average: float | None = 0
-    rushing_touchdowns: int | None = 0
-    longest_rush: int | None = 0
-    two_point_rushes: int | None = 0
-    kick_return_touchdowns: int | None = 0
-    exp_return_touchdowns: int | None = 0
+    total_rushes: Optional[int] = None
+    rushing_yards: Optional[int] = None
+    rushing_average: Optional[float] = None
+    rushing_touchdowns: Optional[int] = None
+    longest_rush: Optional[int] = None
+    two_point_rushes: Optional[int] = None
+    kick_return_touchdowns: Optional[int] = None
+    exp_return_touchdowns: Optional[int] = None
 
 class FumbleStats(BaseModel):
-    total_fumbles: int | None = 0
-    fumble_lost: int | None = 0
-    fumble_recovery: int | None = 0
-    fumble_recovery_td: int | None = 0
+    total_fumbles: Optional[int] = None
+    fumble_lost: Optional[int] = None
+    fumble_recovery: Optional[int] = None
+    fumble_recovery_td: Optional[int] = None
 
 class FumbleDetails(BaseModel):
-    total_fumbles : int | None = 0
-    fumble_lost : int | None = 0
-    fumble_recovery : int | None = 0
-    fumble_recovery_td : int | None = 0
+    total_fumbles : Optional[int] = None
+    fumble_lost : Optional[int] = None
+    fumble_recovery : Optional[int] = None
+    fumble_recovery_td : Optional[int] = None
 
 class ReceivingStats(BaseModel):
-    receiving_targets: int | None = 0
-    total_receptions: int | None = 0
-    receiving_yards: int | None = 0
-    receiving_average: float | None = 0
-    receiving_touchdowns: int | None = 0
-    longest_reception: int | None = 0
-    two_point_receptions: int | None = 0
+    receiving_targets: Optional[int] = None
+    total_receptions: Optional[int] = None
+    receiving_yards: Optional[int] = None
+    receiving_average: Optional[float] = None
+    receiving_touchdowns: Optional[int] = None
+    longest_reception: Optional[int] = None
+    two_point_receptions: Optional[int] = None
 
 class DefenseDetails(BaseModel):
-    tackles: int | None = 0
-    unassisted_tackles: int | None = 0
-    sacks: int | None = 0
-    tackles_for_loss: int | None = 0
-    passes_defended: int | None = 0
-    qb_hits: int | None = 0
+    tackles: Optional[int] = None
+    unassisted_tackles: Optional[int] = None
+    sacks: Optional[int] = None
+    tackles_for_loss: Optional[int] = None
+    passes_defended: Optional[int] = None
+    qb_hits: Optional[int] = None
 
 class InterceptionStats(BaseModel):
-    total_interceptions: int | None = 0
-    yards: int | None = 0
-    intercepted_touch_downs: int | None = 0
+    total_interceptions: Optional[int] = None
+    yards: Optional[int] = None
+    intercepted_touch_downs: Optional[int] = None
 
 class KickingStats(BaseModel):
-    fg_made: int
-    fg_attempted: int
-    fg_percentage: float
-    fg_long: int
-    xp_made: int
-    xp_attempted: int
-    points: int
-    field_goals_from_1_19_yards: int | None = 0
-    field_goals_from_20_29_yards: int | None = 0
-    field_goals_from_30_39_yards: int | None = 0
-    field_goals_from_40_49_yards: int | None = 0
-    field_goals_from_50_yards: int | None = 0
+    fg_made: Optional[int] = None
+    fg_attempted: Optional[int] = None
+    fg_percentage: Optional[float] = None
+    fg_long: Optional[int] = None
+    xp_made: Optional[int] = None
+    xp_attempted: Optional[int] = None
+    points: Optional[int] = None
+    field_goals_from_1_19_yards: Optional[int] = None
+    field_goals_from_20_29_yards: Optional[int] = None
+    field_goals_from_30_39_yards: Optional[int] = None
+    field_goals_from_40_49_yards: Optional[int] = None
+    field_goals_from_50_yards: Optional[int] = None
 
 class KickingGameStats(BaseModel):
     game_id: int
@@ -91,28 +91,28 @@ class KickingStatsPerGame(BaseModel):
     games : List[KickingGameStats]
 
 class PuntingStats(BaseModel):
-    punt_total: int
-    punt_yards: int
-    punt_average: float
-    touchbacks: int
-    inside_20: int
-    long_punt: int
+    punt_total: Optional[int] = None
+    punt_yards: Optional[int] = None
+    punt_average: Optional[float] = None
+    touchbacks: Optional[int] = None
+    inside_20: Optional[int] = None
+    long_punt: Optional[int] = None
 
 class KickReturnStats(BaseModel):
-    total_kick_returns: int
-    kick_return_yards: int
-    kick_return_average: float
-    kick_return_long: int
-    td: int
-    kick_return_td: int
-    exp_return_td: float
+    total_kick_returns: Optional[int] = None
+    kick_return_yards: Optional[int] = None
+    kick_return_average: Optional[float] = None
+    kick_return_long: Optional[int] = None
+    td: Optional[int] = None
+    kick_return_td: Optional[int] = None
+    exp_return_td: Optional[float] = None
 
 class PuntReturnStats(BaseModel):
-    punt_return_total: int
-    punt_return_yards: int
-    punt_return_average: float
-    punt_return_long: int
-    punt_return_touchdowns: int
+    punt_return_total: Optional[int] = None
+    punt_return_yards: Optional[int] = None
+    punt_return_average: Optional[float] = None
+    punt_return_long: Optional[int] = None
+    punt_return_touchdowns: Optional[int] = None
 
 # Nested model for QB per game stats
 class QBGameStats(BaseModel):

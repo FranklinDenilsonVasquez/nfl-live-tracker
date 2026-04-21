@@ -43,3 +43,4 @@ POSITION_MODEL_MAP_PER_GAME = {
     "KR": KickingStatsPerGame,
     "PR": PuntReturnerStats,
 }
+

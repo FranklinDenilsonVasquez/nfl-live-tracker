@@ -49,3 +49,27 @@ class PlayerGamesResponse(BaseModel):
     player_img : str
     player_name: str
     games: List[GameInfo]
+
+class PlayerStats(BaseModel):
+    fumble: Optional[FumbleStats] = None
+    defense: Optional[DefenseDetails] = None
+    kicking: Optional[KickingStats] = None
+    passing: Optional[PassingStats] = None
+    punting: Optional[PuntingStats] = None
+    rushing: Optional[RushingDetails] = None
+    receiving: Optional[ReceivingStats] = None
+    kick_return: Optional[KickReturnStats] = None
+    punt_return: Optional[PuntReturnStats] = None
+    interception: Optional[InterceptionStats] = None
+
+class PlayerGameStatsResponse(BaseModel):
+    player_id: int
+    player_name: str
+    player_img: str
+    position: Optional[str] = None
+    stats: PlayerStats
+
+class GamePlayerStatsResponse(BaseModel):
+    away_team: List[PlayerGameStatsResponse]
+    home_team: List[PlayerGameStatsResponse]
+

@@ -60,3 +60,16 @@ def get_game_list(cursor, week: str, season: int, stage: str):
     cursor.execute(query, params)
     return cursor.fetchall()
 
+def get_player_game_stats(cursor, game_id: int):
+    query = """
+        SELECT get_player_game_stats(%s);
+    """
+
+    param = [game_id]
+
+    cursor = cursor.connection.cursor(cursor_factory=RealDictCursor)
+    cursor.execute(query, param)
+
+    result = cursor.fetchone()
+    return result["get_player_game_stats"] if result else None
+
