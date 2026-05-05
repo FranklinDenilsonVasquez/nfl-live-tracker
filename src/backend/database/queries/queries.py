@@ -8,7 +8,7 @@ def get_players_by_team (team_id: int, season: int):
 
     cur.execute("""
         SELECT 
-            p.player_id, 
+            p.api_player_id, 
             p.player_name, 
             pos.position_name, 
             p.player_img, 

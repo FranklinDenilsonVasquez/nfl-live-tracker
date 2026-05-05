@@ -5,7 +5,8 @@ import useGameStore from "../../store/useGameStore";
 
 function SeasonSelector() {
 
-    const { season, setSeason} = useGameStore();
+    const { season } = useGameStore();
+    const { setSeason } = useSeasonStore()
 
     const seasons = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i);
     if (season === undefined) return null;

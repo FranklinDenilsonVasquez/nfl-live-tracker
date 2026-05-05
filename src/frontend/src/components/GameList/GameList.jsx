@@ -10,7 +10,8 @@ function GameList(){
 
     const [selectedGame, setGameSelected] = useState(null);
 
-    const { games, week, season, loading, error, setSeason, setWeek, fetchGames, showScore, setShowScore} =
+    const { games, week, season, loading, error, setSeason, setWeek,
+            fetchGames, showScore, setShowScore, selectedGameId, setSelectedGameId} =
         useGameStore();
 
     const { selectedSeason } = useSeasonStore();
@@ -31,11 +32,22 @@ function GameList(){
         }
     }, [season, week, fetchGames]);
 
+    const onClickGameIdSelect = (gameId) => {
+        console.log("Selected game: ", gameId)
+        setSelectedGameId(gameId)
+    }
 
     const onClickTeamSelect = (game) => {
+        console.log("Selected game: ", game)
         setGameSelected(game);
     };
-    console.log("Games array:", games);
+
+    const handleGameClick = (game) => {
+        onClickTeamSelect(game)
+        onClickGameIdSelect(game.game_id)
+    }
+
+    // console.log("Games array:", games);
     return (
         <div>
             <main className="main-container">
@@ -58,7 +70,7 @@ function GameList(){
                                <li
                                 key={idx}
                                 className="team-info-division-list"
-                                onClick={() => onClickTeamSelect(game)}>
+                                onClick={() => handleGameClick(game)}>
                                    <img
                                        src={game.home_team.logo}
                                        alt={game.home_team.team_name}

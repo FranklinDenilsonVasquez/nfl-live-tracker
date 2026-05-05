@@ -6,8 +6,6 @@
     border: 3px solid white;
     color: white;
     position: absolute;
-    background-image: url('src/frontend/src/img/cj_stroud.jpg');
-
 }
 
 .player-button:hover {
@@ -16,41 +14,52 @@
     transform: scale(1.3);
 }
 
+.hover-text{
+    display: none;
+    text-align: center;
+    font-weight: bold;
+}
+
+.player-button:hover .hover-text {
+    display: inline;
+    text-align: center;
+}
+
 .player-button:active {
     transform: scale(1.1);
 }
 
-.QB {
+.QB1 {
     top: 65%;
     left: 47%;
 }
 
-.OL-C {
+.C1 {
     top: 50%;
     left: 47%;
 }
 
-.OL-RG {
+.OG2 {
     left: 55%;
     top: 52%
 }
 
-.OL-RT {
+.OT2 {
     left: 63%;
     top: 52%
 }
 
-.OL-LG {
+.OG1 {
     left: 39%;
     top: 52%
 }
 
-.OL-LT {
+.OT1 {
     left: 31%;
     top: 52%
 }
 
-.RB {
+.RB1 {
     top: 70%;
     left: 54%;
 }
@@ -70,7 +79,7 @@
     left: 90%
 }
 
-.TE {
+.TE1 {
     top: 54%;
     left: 74%
 }
@@ -129,13 +138,13 @@
     left: 57%
 }
 
-.FS {
+.S1 {
     background-color: #3d1724;
     top: 15%;
     left: 67%
 }
 
-.SS {
+.S2 {
     background-color: #3d1724;
     top: 15%;
     left: 32%

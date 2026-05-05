@@ -8,6 +8,10 @@ class PassingStats(BaseModel):
     passing_yards: Optional[int] = None
     passing_touch_downs: Optional[int] = None
     passing_interceptions: Optional[int] = None
+    sacks_total: Optional[int] = None
+    sacks_yards: Optional[int] = None
+    passer_rating: Optional[float] = None
+    two_point_conversions: Optional[int] = None
 
 # For QB position
 class RushingStats(BaseModel):
@@ -54,6 +58,11 @@ class DefenseDetails(BaseModel):
     tackles_for_loss: Optional[int] = None
     passes_defended: Optional[int] = None
     qb_hits: Optional[int] = None
+    interceptions_for_tds: Optional[int] = None
+    blocked_kicks: Optional[int] = None
+    kick_return_td: Optional[int] = None
+    expected_return_td: Optional[int] = None
+    forced_fumbles: Optional[int] = None
 
 class InterceptionStats(BaseModel):
     total_interceptions: Optional[int] = None

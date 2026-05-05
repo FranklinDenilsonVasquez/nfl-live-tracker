@@ -39,6 +39,7 @@ def get_game_player_stats(game_id: int):
                     "home_team": []
                 }
 
+            #pprint(player_stats)
             return player_stats
 
     finally:

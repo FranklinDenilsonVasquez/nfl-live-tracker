@@ -11,15 +11,24 @@ const useGameStore = create((set, get) => ({
     loading: false,
     showScore: false,
     error: null,
+    selectedGameId: null,
 
     setSeason: (season) => set({ season, error: null }),
     setWeek: (week) => set({ week }),
     setStage: (stage) => set({ stage }),
     setShowScore: (showScore) => set({ showScore }),
+    setGames: (games) => set({ games }),
+    setSelectedGameId: (gameId) => {
+        console.log("Setting Game ID:", gameId)
+        set({
+            selectedGameId: gameId,
+            homeTeamId: gameId.home_team_id,
+            awayTeamId: gameId.away_team_id
+        })},
 
     fetchGames: async () => {
         const { season, week , stage } = get();
-        console.log("Fetching games for:", season, `${week}`, `${stage}`);
+        // console.log("Fetching games for:", season, `${week}`, `${stage}`);
         set({loading: true});
 
         try {
