@@ -138,7 +138,6 @@ function PlayerContainer({game, players}) {
                         <span className="hover-text"> {player ? player.player_name : slot.id} </span>
                     </button>
                 );
-
             })}
             {lineup.defense.map(slot => {
                 const index = getIndexFromSlot(slot.id);
@@ -160,8 +159,6 @@ function PlayerContainer({game, players}) {
                 )
             })}
         </div>
-
-
     )
 }
 

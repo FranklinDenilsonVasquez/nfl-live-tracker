@@ -70,20 +70,30 @@ function GameList(){
                                <li
                                 key={idx}
                                 className="team-info-division-list"
+                                style={selectedGame === game ? {
+                                    backgroundColor: "#0c5623",
+
+                                    }: {}}
                                 onClick={() => handleGameClick(game)}>
                                    <img
                                        src={game.home_team.logo}
                                        alt={game.home_team.team_name}
                                        className="team_logo"
                                    />
-                                   {showScore ? <>{game.home_team_score} - {game.away_team_score}</> : <>vs.</> }
+
+
+                                   {showScore ?
+                                       <>{game.home_team_score} - {game.away_team_score}</> :
+                                       <span style={{color: "white"}}>vs. </span> }
                                    <img
                                        src={game.away_team.logo}
                                        alt={game.away_team.team_name}
                                        className="team_logo"
                                    />
+
                                </li>
                            ))}
+
                        </ul>
                    )}
                    {!loading && !error && games.length === 0 && <p>No games found.</p>}
