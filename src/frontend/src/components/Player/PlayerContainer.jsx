@@ -7,6 +7,7 @@ import { calculateImpactScore } from "../../utils/calculateImpactScore";
 import { lineup } from "../../utils/lineupConfig";
 import { getIndexFromSlot } from "../../utils/getIndexFromSlot";
 import {useSeasonStore} from "../../store/seasonStore";
+import { MdAccountCircle } from "react-icons/md";
 
 function PlayerContainer({game, players}) {
     const { fetchGameRoster, fetchGamePlayers, setRoster, rosters } = usePlayerStore()
@@ -114,16 +115,26 @@ function PlayerContainer({game, players}) {
                 const player = groupedPlayers.groupedHomePlayers[slot.position]?.[index];
                 return (
                     <button
-                    key={slot.id}
-                    className={`player-button ${slot.id}`}
-                    style={{
-                        backgroundImage: player?.player_img
-                            ? `url(${player.player_img})`
-                            : "none",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center"
-                    }}
+                        key={slot.id}
+                        className={`player-button ${slot.id}`}
+                        style={{
+                            backgroundImage: player?.player_img
+                                ? `url(${player.player_img})`
+                                : "none",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center"
+                        }}
                     >
+                        {!player && (
+                            <MdAccountCircle style={{
+                                position: "absolute",
+                                inset: 0,
+                                width: "100%",
+                                height: "100%",
+                                opacity: 0.25,
+                                }}
+                            />
+                        )}
                         <span className="hover-text"> {player ? player.player_name : slot.id} </span>
                     </button>
                 );
