@@ -125,7 +125,7 @@ function PlayerContainer({game, players}) {
                             backgroundPosition: "center"
                         }}
                     >
-                        {!player && (
+                        {(!player || !game) && (
                             <MdAccountCircle style={{
                                 position: "absolute",
                                 inset: 0,
@@ -154,6 +154,16 @@ function PlayerContainer({game, players}) {
                         backgroundPosition: "center"
                     }}
                     >
+                        {(!player || !game) && (
+                            <MdAccountCircle style={{
+                                position: "absolute",
+                                inset: 0,
+                                width: "100%",
+                                height: "100%",
+                                opacity: 0.25,
+                                }}
+                            />
+                        )}
                         <span className="hover-text"> {player ? player.player_name : slot.id} </span>
                     </button>
                 )
