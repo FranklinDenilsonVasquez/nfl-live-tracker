@@ -8,10 +8,12 @@ import { lineup } from "../../utils/lineupConfig";
 import { getIndexFromSlot } from "../../utils/getIndexFromSlot";
 import {useSeasonStore} from "../../store/seasonStore";
 import { MdAccountCircle } from "react-icons/md";
+import usePlayerCardStore from "../../store/usePlayerCardStore";
 
 function PlayerContainer({game, players}) {
-    const { fetchGameRoster, fetchGamePlayers, setRoster, rosters } = usePlayerStore()
-    const { selectedSeason } = useSeasonStore()
+    const { fetchGameRoster, fetchGamePlayers, setRoster, rosters } = usePlayerStore();
+    const { selectedSeason } = useSeasonStore();
+    const { setPlayer } = usePlayerCardStore();
 
     const homePlayers = players?.home_team || [];
     const awayPlayers = players?.away_team || [];
@@ -43,7 +45,7 @@ function PlayerContainer({game, players}) {
             statsPlayers.map(p => [Number(p.player_id), p])
         );
 
-        console.log("Stats Map: ", statsMap)
+        // console.log("Stats Map: ", statsMap)
 
             return roster.map(player => {
                 const stats = statsMap.get(Number(player.player_id));
@@ -101,8 +103,8 @@ function PlayerContainer({game, players}) {
     //     console.log("length: ", count)
 
     // Debugging
-    console.log("This is the player list for home players: ", groupedPlayers.groupedHomePlayers)
-    console.log("This is the player list for away players: ", groupedPlayers.groupedAwayPlayers)
+    // console.log("This is the player list for home players: ", groupedPlayers.groupedHomePlayers)
+    // console.log("This is the player list for away players: ", groupedPlayers.groupedAwayPlayers)
 
     // console.log("Impact array for home players: ", playerImpactCalculation.homePlayerImpactRanking)
     // console.log("Impact array for away players: ", playerImpactCalculation.awayPlayerImpactRanking)
@@ -113,6 +115,7 @@ function PlayerContainer({game, players}) {
             {lineup.offense.map(slot => {
                 const index = getIndexFromSlot(slot.id);
                 const player = groupedPlayers.groupedHomePlayers[slot.position]?.[index];
+
                 return (
                     <button
                         key={slot.id}
@@ -124,6 +127,7 @@ function PlayerContainer({game, players}) {
                             backgroundSize: "cover",
                             backgroundPosition: "center"
                         }}
+                        onClick={() => setPlayer(player?.player_id)}
                     >
                         {(!player || !game) && (
                             <MdAccountCircle style={{
@@ -153,6 +157,7 @@ function PlayerContainer({game, players}) {
                         backgroundSize: "cover",
                         backgroundPosition: "center"
                     }}
+                    onClick={() => setPlayer(player?.player_id)}
                     >
                         {(!player || !game) && (
                             <MdAccountCircle style={{

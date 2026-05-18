@@ -3,7 +3,7 @@ import axios from "axios"
 import useGameStore from "./useGameStore";
 
 const usePlayersStore = create((set) => ({
-    players: null,
+    players: [],
     rosters: {
         home: [],
         away: []

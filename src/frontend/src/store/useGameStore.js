@@ -12,6 +12,8 @@ const useGameStore = create((set, get) => ({
     showScore: false,
     error: null,
     selectedGameId: null,
+    homeTeamId: null,
+    awayTeamId: null,
 
     setSeason: (season) => set({ season, error: null }),
     setWeek: (week) => set({ week }),
