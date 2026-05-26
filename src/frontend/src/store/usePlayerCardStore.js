@@ -15,10 +15,13 @@ const usePlayerCardStore = create((set) => ({
             isOpen: true
         }),
 
-    closePlayerCard: () => ({
-        selectedPlayer: null,
-        isOpen: false
-    })
+    closePlayerCard: () =>
+        set ({
+            selectedPlayer: null,
+            isOpen: false,
+
+        }),
+
 
 }));
 

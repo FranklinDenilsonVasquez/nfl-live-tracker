@@ -1,0 +1,52 @@
+.player-stats-section {
+  border: 1px solid white;
+  border-radius: 10px;
+  flex: 1;
+  overflow-x: auto;
+  min-height: 0; /* VERY important in flex layouts */
+  padding: 10px;
+  margin: 5px;
+}
+
+.group-name {
+  display: flex;
+  font-size: large;
+  border: 1px solid white;
+  border-radius: 50px;
+  justify-content: center;
+  padding: 10px;
+}
+
+.stat-group {
+  padding-bottom: 15px;
+  /* border: 1px solid white; */
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dotted rgb(46, 46, 46);
+  font-size: medium;
+  padding: 4px;
+  margin: 10px;
+
+  /* border-left: 1px solid white;
+  border-right: 1px solid white; */
+}
+
+.stat-value {
+  /* border: 1px solid white; */
+}
+
+.stat-label {
+  /* border: 1px solid white; */
+}
+
+.no-data-found {
+  display: flex;
+  font-size: larger;
+  font-weight: bolder;
+  font-style: italic;
+  color: red;
+  justify-content: center;
+}

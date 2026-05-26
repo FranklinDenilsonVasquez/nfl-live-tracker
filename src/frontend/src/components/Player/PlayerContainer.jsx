@@ -13,7 +13,7 @@ import usePlayerCardStore from "../../store/usePlayerCardStore";
 function PlayerContainer({game, players}) {
     const { fetchGameRoster, fetchGamePlayers, setRoster, rosters } = usePlayerStore();
     const { selectedSeason } = useSeasonStore();
-    const { setPlayer } = usePlayerCardStore();
+    const { setPlayer, openPlayerCard } = usePlayerCardStore();
 
     const homePlayers = players?.home_team || [];
     const awayPlayers = players?.away_team || [];
@@ -109,6 +109,12 @@ function PlayerContainer({game, players}) {
     // console.log("Impact array for home players: ", playerImpactCalculation.homePlayerImpactRanking)
     // console.log("Impact array for away players: ", playerImpactCalculation.awayPlayerImpactRanking)
 
+    const handleClick = (player) => {
+        if (!player) return;
+
+        setPlayer(player?.player_id);
+        openPlayerCard(player?.player_id);
+    }
 
     return(
         <div>
@@ -127,7 +133,7 @@ function PlayerContainer({game, players}) {
                             backgroundSize: "cover",
                             backgroundPosition: "center"
                         }}
-                        onClick={() => setPlayer(player?.player_id)}
+                        onClick={() => handleClick(player)}
                     >
                         {(!player || !game) && (
                             <MdAccountCircle style={{
@@ -157,7 +163,7 @@ function PlayerContainer({game, players}) {
                         backgroundSize: "cover",
                         backgroundPosition: "center"
                     }}
-                    onClick={() => setPlayer(player?.player_id)}
+                    onClick={() => handleClick(player)}
                     >
                         {(!player || !game) && (
                             <MdAccountCircle style={{
