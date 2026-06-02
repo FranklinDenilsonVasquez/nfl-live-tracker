@@ -15,3 +15,4 @@ def bulk_insert(cursor, table_name, columns, values, conflict_columns):
     """
 
     execute_values(cursor, query, values)
+    # print("Insertion executed")

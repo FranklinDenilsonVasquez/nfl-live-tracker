@@ -43,6 +43,8 @@ def normalize_stat_list(stat_list, mapping):
                 else:
                     normalized[col1] = int(value)
                     normalized[col2] = 0
+            elif stat_type == "varchar":
+                normalized[db_key["column"]] = value
         except (ValueError, IndexError):
             if stat_type == "ratio":
                 col1, col2 = db_key["columns"]
@@ -52,3 +54,20 @@ def normalize_stat_list(stat_list, mapping):
                 normalized[db_key["column"]] = 0
 
     return normalized
+
+def parse_record(value): 
+    if not value or value in (" ", "-"):
+        return 0, 0
+    
+    try:
+        value = str(value).strip()
+        value = value.replace(":", "-").replace("-", "-")
+
+        parts = value.split("-")
+        if len(parts) != 2:
+            return 0, 0
+        
+        wins, losses = parts
+        return int(wins), int(losses)
+    except (ValueError, AttributeError):
+        return 0, 0

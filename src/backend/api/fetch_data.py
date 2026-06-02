@@ -127,3 +127,31 @@ def fetch_player_stats(gameId):
     else:
         logger.warning(f"No player stats found for game")
         return []
+    
+def fetch_standings(league, season):
+    url = "https://v1.american-football.api-sports.io/standings"
+    params = {
+        "league": league,
+        "season": season
+    }
+
+    headers = {
+        "x-rapidapi-host": "v1.american-football.api-sports.io",
+        "x-rapidapi-key": API_KEY  
+    }
+
+    try:
+        response = requests.get(url, headers=headers, params=params, timeout=10)
+        response.raise_for_status()
+
+        data = response.json()
+        standings_stats = data.get("response", [])
+
+        if not standings_stats:
+            logger.warning(f"No standings available for season {season}")
+            
+        return standings_stats
+    
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Failed to fetch standings for season {season}: {e}")
+        return []

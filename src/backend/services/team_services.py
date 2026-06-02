@@ -12,7 +12,7 @@ def get_team_details(team_id: int):
         with conn.cursor() as cursor:
             from src.backend.database.queries.team_queries import get_team_info
             team_details = get_team_info(cursor, team_id)
-            pprint(team_details)
+            # pprint(team_details)
 
             if not team_details:
                 logger.warning(f"Error getting team details for team : {team_id}")

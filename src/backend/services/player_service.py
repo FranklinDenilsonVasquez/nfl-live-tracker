@@ -77,7 +77,7 @@ def get_player_season_stats(player_id: int, season_id: int | None):
                 logger.warning("No player data found")
                 return None
 
-            pprint(player_stat_row, sort_dicts=False)
+            # pprint(player_stat_row, sort_dicts=False)
 
             from src.backend.core.position_model_mapping import POSITION_MODEL_MAP_PER_SEASON
             position = player_stat_row['position']

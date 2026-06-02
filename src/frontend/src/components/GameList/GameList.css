@@ -1,90 +1,94 @@
 li {
-    border-radius: 30px;
-    margin-top: 10px;
-    color:grey;
-    width: clamp(200px, 80%, 500px);
-    text-align: center;
+  border-radius: 30px;
+  margin-top: 10px;
+  color: grey;
+  width: clamp(200px, 80%, 500px);
+  text-align: center;
 }
 
 li:hover {
-    cursor: pointer;
-    background-color: rgb(90, 90, 90);
-    padding-left: 30px;
-    color: whitesmoke;
+  cursor: pointer;
+  background-color: rgb(90, 90, 90);
+  padding-left: 30px;
+  color: whitesmoke;
 }
 
-ul{
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+ul {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.resizable-div-container{
-    width: 60vw;
-    height: fit-content;
-    resize: horizontal;
-    overflow: auto;
-    margin: 20px 10px;
-    background-color: rgb(15,15,15);
-    border-radius: 10px;
-    border: 1px solid #808080;
-    padding: 10px;
-    display: inline-flex;
-    font-family: Georgia, "Times New Roman", Times, serif;
+.resizable-div-container {
+  width: 60vw;
+  height: fit-content;
+  resize: horizontal;
+  overflow: auto;
+  margin: 20px 10px;
+  background-color: rgb(15, 15, 15);
+  border-radius: 10px;
+  border: 1px solid #808080;
+  padding: 10px;
+  display: inline-flex;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-.team_logo{
-    width: 25px;
-    height: 25px;
-    object-fit: contain;
-    margin: 0 5px;
-    vertical-align: middle;
+.team_logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin: 0 5px;
+  vertical-align: middle;
 }
 
 .game-list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: large;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: large;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #444;
 }
 
 .loading-wheel {
-    width: 25px;
-    height: 25px;
-    border: 3px solid #444;
-    border-top: 3px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 10px auto;
+  width: 25px;
+  height: 25px;
+  border: 3px solid #444;
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error-text {
-    text-align: center;
-    color: red;
-    font-style: italic;
+  text-align: center;
+  color: red;
+  font-style: italic;
 }
 
 .eye-button {
-    display: flex;
-    margin-left: auto;
-    background-color: inherit;
-    border: 0;
-    color: white;
-    cursor: pointer;
+  display: flex;
+  margin-left: auto;
+  background-color: inherit;
+  border: 0;
+  color: white;
+  cursor: pointer;
 }
 
 .eye-button:hover {
-    transform: scale(1.3);
+  transform: scale(1.3);
 }

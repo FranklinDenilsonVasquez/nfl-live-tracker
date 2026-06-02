@@ -16,7 +16,7 @@ def get_games_list(week: str, season: int, stage: str):
                 logger.warning(f"No game data found")
                 return []
 
-            pprint(game_list, sort_dicts=False)
+            # pprint(game_list, sort_dicts=False)
 
             return game_list
     finally:
