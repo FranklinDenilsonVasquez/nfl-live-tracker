@@ -6,20 +6,20 @@ from src.backend.database.db_connection import get_db_connection
 
 def get_season_year(cursor, season_id : int):
     try:
-        with cursor:
-            query = """
-                SELECT s.season_id 
-                FROM season s 
-                WHERE s.season_year = %s
-            """
+    
+        query = """
+            SELECT s.season_year 
+            FROM season s 
+            WHERE s.season_id = %s
+        """
 
-            cursor.execute(query, (season_id, ))
-            data = cursor.fetchone()
+        cursor.execute(query, (season_id, ))
+        data = cursor.fetchone()
 
-            if not data:
-                logger.warning(f"No season_year exists with season_id: {season_id}")
-                return None
-            return data[0]
+        if not data:
+            logger.warning(f"No season_year exists with season_id: {season_id}")
+            return None
+        return data[0]
     except Exception as e:
         raise Exception(f"Error when running 'get_season_year' function: {e}")
 

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query  
 from src.backend.database.queries.queries import get_all_teams, get_players_by_team
 from src.backend.models.team import Team
 from src.backend.models.stadium import Stadium

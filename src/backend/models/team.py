@@ -9,3 +9,8 @@ class Team(BaseModel):
     city: str
     code: str
     logo: str
+
+class TeamSummary(BaseModel):
+    team_id: int
+    team_name: str
+    logo: str
