@@ -1,5 +1,5 @@
 from src.backend.services.standing_service import get_season_standings
 
 if __name__ == "__main__":
-    result = get_season_standings(4)
+    result = get_season_standings(2022)
     print(result)

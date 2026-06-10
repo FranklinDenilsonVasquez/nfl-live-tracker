@@ -2,11 +2,11 @@ from src.backend.utils.logging import logger
 from pprint import pprint
 from src.backend.database.db_connection import get_db_connection
 from src.backend.database.queries.standing_queries import get_standings
-from src.backend.api.utils.utils import get_season_year
+from src.backend.api.utils.utils import get_season_id
 from src.backend.models.standings import StandingResponse, StandingResponseWrapper
 from src.backend.models.team import TeamSummary
 
-def get_season_standings(season_id: int):
+def get_season_standings(season_year: int):
     conn = get_db_connection()
     
 
@@ -15,7 +15,8 @@ def get_season_standings(season_id: int):
     
     try:
         cursor = conn.cursor()
-        season_year = get_season_year(cursor, season_id)
+        season_id = get_season_id(cursor, season_year)
+        # print(f"HHHHHHHHHH {season_id}")
         rows = get_standings(cursor, season_id)
 
         if not season_year or not rows:

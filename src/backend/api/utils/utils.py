@@ -8,9 +8,9 @@ def get_season_year(cursor, season_id : int):
     try:
     
         query = """
-            SELECT s.season_year 
+            SELECT s.season_id 
             FROM season s 
-            WHERE s.season_id = %s
+            WHERE s.season_year = %s
         """
 
         cursor.execute(query, (season_id, ))

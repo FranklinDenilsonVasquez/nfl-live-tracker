@@ -21,7 +21,7 @@ function PlayerCard() {
   const selectedGame = useGameStore((state) =>
     state.games.find((g) => g.game_id === state.selectedGameId),
   );
-  console.log(selectedGame);
+  // console.log(selectedGame);
 
   const allPlayers = useMemo(
     () => ({
@@ -45,7 +45,7 @@ function PlayerCard() {
     };
   }, [rosters, allPlayers, selectedPlayer]);
 
-  console.log("players: ", player);
+  // console.log("players: ", player);
   //   console.log(
   //     "Rosters: ",
   //     rosters?.home?.find((p) => p.player_id === selectedPlayer)?.jersey_number,
