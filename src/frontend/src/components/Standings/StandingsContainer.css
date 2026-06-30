@@ -26,12 +26,13 @@
 
 .conference-container {
   display: grid;
-  border: 1px solid white;
+  border: 1px solid rgb(20, 20, 20);
+  background: rgb(20, 20, 20);
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
   overflow-x: auto;
-  width: 100%;
+  width: 95%;
 }
 
 .table-wrapper {
@@ -41,7 +42,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 2fr repeat(20, 1fr);
+  grid-template-columns: 2fr repeat(17, 1fr);
   align-items: center;
   min-width: max-content;
   position: relative;
@@ -50,10 +51,10 @@
 
 .row-header {
   display: grid;
-  grid-template-columns: 2fr repeat(20, 1fr);
+  grid-template-columns: 2fr repeat(17, 1fr);
   font-weight: bold;
   background: rgb(20, 20, 20);
-  align-items: center;
+  align-items: end;
   min-width: max-content;
   border-bottom: 1px solid rgb(154, 154, 154);
 }
@@ -61,32 +62,31 @@
 .division-container {
   border: 1px solid white;
   overflow-x: scroll;
-  width: 100%;
+  width: 95%;
   padding-top: 10px;
   margin: 10px;
   background-color: rgb(20, 20, 20);
   border-radius: 10px;
 }
 
-/* .division-container > div {
-  display: flex;
-  border: 1px solid red;
-  justify-content: center;
-  align-items: center;
-} */
-
 .legend-stat {
   display: flex;
   justify-content: center;
   align-items: center;
   color: rgb(107, 107, 107);
+  padding: 5px;
+  width: 30px;
+  height: 100%;
 }
 
 .row-header .legend-stat:first-child {
   position: sticky;
-  left: 0;
+  left: 0px;
   z-index: 10;
-  background-color: rgb(20, 20, 20);
+  background-color: rgb(10, 10, 10);
+  width: 54px;
+  height: 100%;
+  text-align: bottom;
 }
 
 .team-display {
@@ -100,6 +100,7 @@
   justify-content: center;
   border-right: 1px solid #222;
   padding: 8px;
+  width: max-content;
 }
 
 .standing-team-logo {
@@ -112,6 +113,8 @@
   justify-content: center;
   align-items: center;
   background-color: rgb(20, 20, 20);
+  padding: 5px;
+  width: 30px;
 }
 
 .conference-header {
