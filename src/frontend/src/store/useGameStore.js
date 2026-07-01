@@ -14,12 +14,18 @@ const useGameStore = create((set, get) => ({
   selectedGameId: null,
   homeTeamId: null,
   awayTeamId: null,
+  offensiveSide: "home",
 
   setSeason: (season) => set({ season, error: null }),
   setWeek: (week) => set({ week }),
   setStage: (stage) => set({ stage }),
   setShowScore: (showScore) => set({ showScore }),
   setGames: (games) => set({ games }),
+  toggleOffensiveSide: () =>
+    set((state) => ({
+      offensiveSide: state.offensiveSide === "home" ? "away" : "home",
+    })),
+
   setSelectedGameId: (gameId) => {
     console.log("Setting Game ID:", gameId);
     set({

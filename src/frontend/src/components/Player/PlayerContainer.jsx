@@ -15,7 +15,7 @@ function PlayerContainer({ game, players }) {
     usePlayerStore();
   const { selectedSeason } = useSeasonStore();
   const { setPlayer, openPlayerCard } = usePlayerCardStore();
-  const { week } = useGameStore();
+  const { week, offensiveSide } = useGameStore();
 
   const homePlayers = players?.home_team || [];
   const awayPlayers = players?.away_team || [];
@@ -98,11 +98,14 @@ function PlayerContainer({ game, players }) {
       return result;
     };
 
+    const groupedHome = groupAndRank(homeRoster, homeMerged);
+    const groupedAway = groupAndRank(awayRoster, awayMerged);
+
     return {
-      groupedHomePlayers: groupAndRank(homeRoster, homeMerged),
-      groupedAwayPlayers: groupAndRank(awayRoster, awayMerged),
+      offensePlayers: offensiveSide === "home" ? groupedHome : groupedAway,
+      defensePlayers: offensiveSide === "home" ? groupedAway : groupedHome,
     };
-  }, [homePlayers, awayPlayers, rosters]);
+  }, [homePlayers, awayPlayers, rosters, offensiveSide]);
 
   // Debug for loop to count the players in groupedHomePlayers for correctness
   // let count = 0;
@@ -129,8 +132,7 @@ function PlayerContainer({ game, players }) {
     <div>
       {lineup.offense.map((slot) => {
         const index = getIndexFromSlot(slot.id);
-        const player =
-          groupedPlayers.groupedHomePlayers[slot.position]?.[index];
+        const player = groupedPlayers.offensePlayers[slot.position]?.[index];
 
         return (
           <button
@@ -165,8 +167,7 @@ function PlayerContainer({ game, players }) {
       })}
       {lineup.defense.map((slot) => {
         const index = getIndexFromSlot(slot.id);
-        const player =
-          groupedPlayers.groupedAwayPlayers[slot.position]?.[index];
+        const player = groupedPlayers.defensePlayers[slot.position]?.[index];
         return (
           <button
             key={slot.id}

@@ -56,8 +56,10 @@ Before implementing:
 
 1. Analyze exisitng code.
 2. Identify reusable components/functions.
-3. Present a short plan.
-4. Wait for approval before major refactors.
+3. Identify existing patterns and conversions.
+4. Implement new functionality using those patterns.
+5. Present a short plan.
+6. Wait for approval before major refactors.
 
 After implementing:
 
