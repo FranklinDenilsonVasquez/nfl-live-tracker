@@ -41,9 +41,9 @@ function FieldContainer({ game }) {
           title="Swap offensive and defensive sides"
         >
           {offensiveSide === "home" ? (
-            <CgToggleSquareOff />
+            <CgToggleSquareOff className="toggle-icon" />
           ) : (
-            <CgToggleSquare />
+            <CgToggleSquare className="toggle-icon" />
           )}
         </button>
       )}

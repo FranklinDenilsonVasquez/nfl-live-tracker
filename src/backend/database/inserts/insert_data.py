@@ -1,6 +1,7 @@
 from src.backend.database.db_connection import get_db_connection
 from src.backend.database.db_config import get_db_config
 from src.backend.utils.logging import setup_logger
+from src.backend.scripts.utils.player_exists import player_exists
 import mysql.connector
 import psycopg2
 from datetime import datetime
@@ -125,6 +126,10 @@ def insert_players(players, team_id, season):
             roster_status = get_roster_status(group)
             image_url = player.get('image')
             jersey_number = player.get('number')
+
+            if player_exists(cursor, api_player_id): 
+                logger.log(f"Player ({full_name} : {api_player_id}) alreayd exists. Skip ingestion.")
+                continue
 
             if position_type is None:
                 logger.warning(f"Unknown positionType for player {api_player_id} - {full_name}, "

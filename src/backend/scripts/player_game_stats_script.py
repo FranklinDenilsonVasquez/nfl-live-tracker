@@ -1,5 +1,5 @@
 from src.backend.api.fetch_data import fetch_player_stats as api_player_stats
-from services import process_player_game_stats
+from src.backend.services.player_game_stats_service import process_player_game_stats
 from src.backend.database.db_connection import get_db_connection
 from src.backend.api.fetch_data import fetch_game_for_season
 from src.backend.scripts.utils.game_already_ingested import game_already_exists

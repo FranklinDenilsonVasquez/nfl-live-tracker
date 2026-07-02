@@ -1,5 +1,5 @@
 from src.backend.api.fetch_data import fetch_standings
-from backend.database.inserts.standings import insert_standings
+from src.backend.database.inserts.standings import insert_standings
 from src.backend.database.normalizers.standings import normalize_standing_stats
 from src.backend.utils.logging import setup_logger as logger
 from src.backend.database.db_connection import get_db_connection
@@ -15,7 +15,7 @@ def main():
             logger.warning("Connection to database failed")
             return
     
-        season = 2022
+        season = 2024
         standings = fetch_standings(1, season)
 
         if not standings:
