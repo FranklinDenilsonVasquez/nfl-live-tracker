@@ -1,5 +1,5 @@
-import axios from "axios";
 import { create } from "zustand";
+import { apiClient } from "../utils/apiClient";
 
 const useStandingStore = create((set, get) => ({
   data: [],
@@ -13,8 +13,8 @@ const useStandingStore = create((set, get) => ({
     });
 
     try {
-      const { data } = await axios.get(
-        `http://127.0.0.1:8000/standing/${season_year}`,
+      const { data } = await apiClient.get(
+        `/standing/${season_year}`,
       );
       // console.log("Standings data: ", data);
 

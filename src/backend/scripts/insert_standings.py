@@ -15,20 +15,20 @@ def main():
             logger.warning("Connection to database failed")
             return
     
-        season = 2024
+        season = 2025
         standings = fetch_standings(1, season)
 
         if not standings:
             logger.warning(f"Unable to fetch standings for season {season}")
             return 
         
-        # print(f"Raw standings: ")
-        # pprint(standings)
+        print(f"Raw standings: ")
+        pprint(standings)
 
         normalize_standings = normalize_standing_stats(cursor, standings)
 
-        # print(f"Normalized standings: ")
-        # pprint(normalize_standings)
+        print(f"Normalized standings: ")
+        pprint(normalize_standings)
 
         if normalize_standings:
             insert_standings(cursor, normalize_standings)

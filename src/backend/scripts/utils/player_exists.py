@@ -1,11 +1,12 @@
 
-def player_exists(cursor, player_id):
+def player_exists(cursor, player_id, season_id, team_id):
     query = """
-        SELECT player
-        FROM player
-        WHERE api_player_id = %s  
+        SELECT 1
+        FROM player_team
+        WHERE api_player_id = %s  AND season_id = %s AND team_id = %s
         LIMIT 1 
     """
 
-    cursor.execute(query, (player_id,))
+    params = [player_id, season_id, team_id]
+    cursor.execute(query, params)
     return cursor.fetchone() is not None

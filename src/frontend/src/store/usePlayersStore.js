@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "axios"
+import { apiClient } from "../utils/apiClient";
 import useGameStore from "./useGameStore";
 
 const usePlayersStore = create((set) => ({
@@ -23,8 +23,8 @@ const usePlayersStore = create((set) => ({
         set({ loadingPlayers: true });
 
         try {
-            const { data } = await axios.get(
-                `http://127.0.0.1:8000/games/${game_id}/player-stats`
+            const { data } = await apiClient.get(
+                `/games/${game_id}/player-stats`
             );
 
             console.log("Game Id: ", game_id)
@@ -45,8 +45,8 @@ const usePlayersStore = create((set) => ({
 
     fetchGameRoster: async (team_id, season) => {
         try{
-            const { data } = await axios.get(
-                `http://127.0.0.1:8000/teams/${team_id}/players?season=${season}`
+            const { data } = await apiClient.get(
+                `/teams/${team_id}/players?season=${season}`
             );
 
             return data;

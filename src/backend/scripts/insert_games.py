@@ -6,7 +6,7 @@ import time
 
 def insert_game():
     # Insert Games and Stats for each game.
-    season_year = 2024
+    season_year = 2026
     games = fetch_game_for_season(season_year)
     logger().info(f"Fetched {len(games)} games for season {season_year}.")
     insert_games(games)

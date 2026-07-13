@@ -1,5 +1,5 @@
-import axios from "axios";
 import { create } from "zustand";
+import { apiClient } from "../utils/apiClient";
 
 const currentYear = new Date().getFullYear();
 
@@ -41,8 +41,8 @@ const useGameStore = create((set, get) => ({
     set({ loading: true });
 
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/games/game_list?season=${season}&week=${encodeURIComponent(
+      const response = await apiClient.get(
+        `/games/game_list?season=${season}&week=${encodeURIComponent(
           week,
         )}&stage=${encodeURIComponent(stage)}`,
       );

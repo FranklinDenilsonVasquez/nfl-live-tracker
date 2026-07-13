@@ -19,8 +19,8 @@ function PlayerContainer({ game, players }) {
 
   const homePlayers = players?.home_team || [];
   const awayPlayers = players?.away_team || [];
-  // console.log("HHHHHHH", homePlayers)
-  // console.log("PPPPP", awayPlayers)
+  // console.log("HHHHHHH", homePlayers);
+  // console.log("PPPPP", awayPlayers);
 
   useEffect(() => {
     if (
@@ -73,12 +73,12 @@ function PlayerContainer({ game, players }) {
     const homeRoster = rosters.home;
     const awayRoster = rosters.away;
     const homeMerged = mergeRosterWithStats(homeRoster, homePlayers);
-    // console.log("Home roster before merge: ", homeRoster)
-    // console.log("HomeMerged: ", homeMerged)
+    // console.log("Home roster before merge: ", homeRoster);
+    // console.log("HomeMerged: ", homeMerged);
 
     const awayMerged = mergeRosterWithStats(awayRoster, awayPlayers);
-    // console.log("Away roster before merge: ", awayRoster)
-    // console.log("AwayMerged: ", awayMerged)
+    console.log("Away roster before merge: ", awayRoster);
+    console.log("AwayMerged: ", awayMerged);
 
     const groupAndRank = (rosters, players) => {
       const grouped = groupPlayersByPosition(players);
@@ -115,17 +115,30 @@ function PlayerContainer({ game, players }) {
   //     console.log("length: ", count)
 
   // Debugging
-  // console.log("This is the player list for home players: ", groupedPlayers.groupedHomePlayers)
-  // console.log("This is the player list for away players: ", groupedPlayers.groupedAwayPlayers)
+  console.log(
+    "This is the player list for home players: ",
+    groupedPlayers.offensePlayers,
+  );
+  console.log(
+    "This is the player list for away players: ",
+    groupedPlayers.defensePlayers,
+  );
 
-  // console.log("Impact array for home players: ", playerImpactCalculation.homePlayerImpactRanking)
-  // console.log("Impact array for away players: ", playerImpactCalculation.awayPlayerImpactRanking)
+  // console.log(
+  //   "Impact array for home players: ",
+  //   playerImpactCalculation.homePlayerImpactRanking,
+  // );
+  // console.log(
+  //   "Impact array for away players: ",
+  //   playerImpactCalculation.awayPlayerImpactRanking,
+  // );
 
   const handleClick = (player) => {
     if (!player) return;
 
     setPlayer(player?.player_id);
     openPlayerCard(player?.player_id);
+    console.log(player);
   };
 
   return (

@@ -106,6 +106,7 @@ def insert_players(players, team_id, season):
         return
 
     season_id = season_row[0]
+
     # Iterate over teams and insert payers into the database
     for player in players:
         try:
@@ -127,8 +128,8 @@ def insert_players(players, team_id, season):
             image_url = player.get('image')
             jersey_number = player.get('number')
 
-            if player_exists(cursor, api_player_id): 
-                logger.log(f"Player ({full_name} : {api_player_id}) alreayd exists. Skip ingestion.")
+            if player_exists(cursor, api_player_id, season_id, team_id): 
+                logger.info(f"Player ({full_name} : {api_player_id}) alreayd exists. Skip ingestion.")
                 continue
 
             if position_type is None:
@@ -174,6 +175,8 @@ def insert_players(players, team_id, season):
             """
             player_data_team = (api_player_id, team_id, season_id, jersey_number)
             cursor.execute(sql_player_team, player_data_team)
+
+            logger.info(f"Player: {full_name} (ID: {api_player_id}) has been added to player_team table.")
 
         except Exception as e:
             logger.warning(f"Failed to insert player {player.get('id', 'UNKNOWN')}: {e}")

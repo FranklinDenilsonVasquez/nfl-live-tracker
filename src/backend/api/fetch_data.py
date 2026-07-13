@@ -8,6 +8,12 @@ logger = setup_logger()
 # Load API key from .env file
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+RATE_LIMIT_BUFFER = int(os.getenv("RATE_LIMIT_BUFFER", 2))
+
+
+class RateLimitExceeded(Exception):
+    """Raised when the API-Sports request quota is exhausted or nearly so."""
+    pass
 
 
 # Define league & seasons
@@ -117,6 +123,17 @@ def fetch_player_stats(gameId):
     }
     
     response = requests.get(url, headers=headers, params=params)
+
+    remaining = response.headers.get("x-ratelimit-requests-remaining")
+    if remaining is not None and int(remaining) <= RATE_LIMIT_BUFFER:
+        raise RateLimitExceeded(
+            f"Only {remaining} API-Sports requests remaining today "
+            f"(buffer={RATE_LIMIT_BUFFER}); stopping to avoid exhausting the quota."
+        )
+
+    if response.status_code == 429:
+        raise RateLimitExceeded("API-Sports returned 429 Too Many Requests.")
+
     response.raise_for_status()
 
     data = response.json()

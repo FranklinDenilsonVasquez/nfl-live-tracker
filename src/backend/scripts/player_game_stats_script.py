@@ -1,4 +1,4 @@
-from src.backend.api.fetch_data import fetch_player_stats as api_player_stats
+from src.backend.api.fetch_data import fetch_player_stats as api_player_stats, RateLimitExceeded
 from src.backend.services.player_game_stats_service import process_player_game_stats
 from src.backend.database.db_connection import get_db_connection
 from src.backend.api.fetch_data import fetch_game_for_season
@@ -13,7 +13,7 @@ def ingest_player_game_stats():
         logger.warning("Connection to database failed")
         return
     try:
-        for year in range(2022,2023):
+        for year in range(2024,2026):
             logger.info(f"Processing season {year}")
             games = fetch_game_for_season(year)
             for game in games:
@@ -36,6 +36,9 @@ def ingest_player_game_stats():
 
                     process_player_game_stats(conn, game_response, game_id)
                     time.sleep(7)
+                except RateLimitExceeded as e:
+                    logger.warning(f"Halting ingestion for season {year} at game_id={game_id}: {e}")
+                    return
                 except Exception:
                     logger.exception(f"Failed processing game_id={game_id}")
 
