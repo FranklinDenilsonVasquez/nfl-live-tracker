@@ -17,4 +17,7 @@ env/
 frank/
 .env
 
+# DB backups
+*.sql
+
 
