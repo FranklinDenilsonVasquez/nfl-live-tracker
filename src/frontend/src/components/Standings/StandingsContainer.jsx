@@ -4,6 +4,7 @@ import { useSeasonStore } from "../../store/seasonStore";
 import "./StandingsContainer.css";
 import { groupStandings } from "../../utils/groupStandings";
 import useGameStore from "../../store/useGameStore";
+import useUiStore from "../../store/useUiStore";
 import ConferenceStandings from "./ConferenceStandings";
 
 function StandingsContainer({ team }) {
@@ -11,6 +12,7 @@ function StandingsContainer({ team }) {
   const { data, fetchStandings } = useStandingStore();
   const { selectedSeason } = useSeasonStore();
   const { homeTeamId, awayTeamId } = useGameStore();
+  const { activePanel } = useUiStore();
 
   useEffect(() => {
     if (selectedSeason !== undefined) {
@@ -31,7 +33,11 @@ function StandingsContainer({ team }) {
   const nfc = grouped["National Football Conference"] || {};
 
   return (
-    <div className="team-info-div-container">
+    <div
+      className={`team-info-div-container standings-panel ${
+        activePanel === "standings" ? "open" : ""
+      }`}
+    >
       <p className="standing-list-header">Standings</p>
       <ConferenceStandings label="AFC" divisions={afc} />
       <ConferenceStandings label="NFC" divisions={nfc} />

@@ -4,6 +4,7 @@ import { useSeasonStore } from "../../store/seasonStore";
 import FieldContainer from "../Field/FieldContainer";
 import StandingsContainer from "../Standings/StandingsContainer";
 import useGameStore from "../../store/useGameStore";
+import useUiStore from "../../store/useUiStore";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 function GameList() {
@@ -25,10 +26,25 @@ function GameList() {
   } = useGameStore();
 
   const { selectedSeason } = useSeasonStore();
+  const { activePanel, togglePanel, closePanel } = useUiStore();
 
   useEffect(() => {
     setShowScore(false);
   }, []);
+
+  // Close open drawer on Escape and lock body scroll while it is open
+  useEffect(() => {
+    if (!activePanel) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closePanel();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [activePanel, closePanel]);
 
   useEffect(() => {
     if (selectedSeason !== undefined) {
@@ -55,13 +71,35 @@ function GameList() {
   const handleGameClick = (game) => {
     onClickTeamSelect(game);
     onClickGameIdSelect(game.game_id);
+    closePanel();
   };
 
   // console.log("Games array:", games);
   return (
     <div>
       <main className="main-container">
-        <div className="team-info-div-container">
+        <button
+          className="drawer-toggle drawer-toggle-left"
+          onClick={() => togglePanel("games")}
+          aria-expanded={activePanel === "games"}
+        >
+          Games
+        </button>
+        <button
+          className="drawer-toggle drawer-toggle-right"
+          onClick={() => togglePanel("standings")}
+          aria-expanded={activePanel === "standings"}
+        >
+          Standings
+        </button>
+        {activePanel && (
+          <div className="drawer-backdrop" onClick={closePanel} />
+        )}
+        <div
+          className={`team-info-div-container games-panel ${
+            activePanel === "games" ? "open" : ""
+          }`}
+        >
           <p className="game-list-header">
             Games
             <button

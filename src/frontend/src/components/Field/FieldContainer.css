@@ -99,3 +99,15 @@ body {
 .side-toggle-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* Mobile: field fills the width freed up by the off-canvas panels */
+@media (max-width: 1023px) {
+  .field-container {
+    width: 100%;
+  }
+
+  .top-endzone,
+  .bottom-endzone {
+    min-height: 80px;
+  }
+}

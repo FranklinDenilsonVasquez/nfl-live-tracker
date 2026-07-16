@@ -7,7 +7,7 @@ function Header() {
     <div className="main-div">
       <div className="header">
         <h1 className="h1-header">FootyStats</h1>
-        <SearchBar onChange={handleSearch} />
+        {/* <SearchBar onChange={handleSearch} /> */}
         <div className="right-buttons">
           <button className="info-button">About</button>
           <button className="info-button">Git</button>

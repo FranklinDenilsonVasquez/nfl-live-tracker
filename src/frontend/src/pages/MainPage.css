@@ -111,3 +111,96 @@ footer,
 .team-info-division-list:active {
   transform: scale(0.95);
 }
+
+/* Drawer controls only exist on mobile */
+.drawer-toggle,
+.drawer-backdrop {
+  display: none;
+}
+
+/* ---------- Mobile: side panels become off-canvas drawers ---------- */
+@media (max-width: 1023px) {
+  .header {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .main-container {
+    display: block;
+  }
+
+  .team-info-div-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: min(85vw, 320px);
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 1100;
+    transition: transform 0.25s ease;
+  }
+
+  .games-panel {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .standings-panel {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  .games-panel.open,
+  .standings-panel.open {
+    transform: translateX(0);
+  }
+
+  .drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1050;
+  }
+
+  .drawer-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    z-index: 1040;
+    min-width: 32px;
+    min-height: 44px;
+    padding: 12px 6px;
+    background-color: rgb(15, 15, 15);
+    color: white;
+    border: 1px solid #808080;
+    cursor: pointer;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    writing-mode: vertical-rl;
+  }
+
+  .drawer-toggle-left {
+    left: 0;
+    transform: translateY(-50%);
+    border-left: 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .drawer-toggle-right {
+    right: 0;
+    transform: translateY(-50%);
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-info-div-container {
+    transition: none;
+  }
+}
