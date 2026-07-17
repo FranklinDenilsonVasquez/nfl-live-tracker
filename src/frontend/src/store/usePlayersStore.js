@@ -12,6 +12,14 @@ const usePlayersStore = create((set) => ({
     loadingRosters: false,
     error: null,
 
+    clearPlayers: () => set({
+        players: [],
+        rosters: {
+            home: [],
+            away: []
+        }
+    }),
+
     setRoster: (type, data) => set((state) => ({
         rosters: {
             ...state.rosters,

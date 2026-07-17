@@ -1,5 +1,5 @@
 .player-stats-section {
-  border: 1px solid white;
+  border: 1px solid rgb(30, 30, 30);
   border-radius: 10px;
   flex: 1;
   overflow-x: auto;
@@ -8,10 +8,17 @@
   margin: 5px;
 }
 
+@media (max-width: 1023px) {
+  .player-stats-section {
+    width: 70dvw;
+  }
+}
+
 .group-name {
   display: flex;
   font-size: large;
-  border: 1px solid white;
+  border: 1px solid rgb(29, 29, 29);
+  background-color: rgb(30, 30, 30);
   border-radius: 50px;
   justify-content: center;
   padding: 10px;

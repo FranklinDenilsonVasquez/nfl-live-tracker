@@ -17,6 +17,13 @@
   align-items: center;
 }
 
+@media (max-width: 1023px) {
+  .player-card-container {
+    width: 80dvw;
+    height: 80dvh;
+  }
+}
+
 .player-card {
   display: grid;
   grid-template-rows: 1fr 3fr;
@@ -31,16 +38,28 @@
   overflow: auto;
 }
 
+@media (max-width: 1023px) {
+  .player-card {
+    width: 100dvw;
+  }
+}
+
 .player-image-section {
   display: flex;
   flex-direction: column;
-  border: 1px solid white;
-  border-radius: 10px;
+  border-bottom: 1px solid rgb(255, 255, 255);
+  /* border-radius: 10px; */
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   padding: 10px;
   margin: 5px;
+}
+
+@media (max-width: 1023px) {
+  .player-image-section {
+    width: 70dvw;
+  }
 }
 
 .close-player-card-btn {

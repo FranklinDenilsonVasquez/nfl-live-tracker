@@ -35,6 +35,14 @@ const useGameStore = create((set, get) => ({
     });
   },
 
+  clearSelectedGame: () =>
+    set({
+      selectedGameId: null,
+      homeTeamId: null,
+      awayTeamId: null,
+      offensiveSide: "home",
+    }),
+
   fetchGames: async () => {
     const { season, week, stage } = get();
     // console.log("Fetching games for:", season, `${week}`, `${stage}`);

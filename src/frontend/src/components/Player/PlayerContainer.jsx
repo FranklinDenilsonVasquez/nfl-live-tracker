@@ -30,6 +30,11 @@ function PlayerContainer({ game, players }) {
     )
       return;
 
+    // Cancellation flag: if the game or season changes (or the game is
+    // cleared) while these fetches are in flight, drop the results so a
+    // stale response can't re-populate rosters after a reset.
+    let cancelled = false;
+
     const loadRosters = async () => {
       setRoster("home", []);
       setRoster("away", []);
@@ -43,12 +48,18 @@ function PlayerContainer({ game, players }) {
         selectedSeason,
       );
 
+      if (cancelled) return;
+
       setRoster("home", home);
       setRoster("away", away);
       // console.log("HomeRoster: ", home)
     };
 
     loadRosters();
+
+    return () => {
+      cancelled = true;
+    };
   }, [game?.home_team?.team_id, game?.away_team?.team_id, selectedSeason]);
 
   const mergeRosterWithStats = (roster, statsPlayers) => {

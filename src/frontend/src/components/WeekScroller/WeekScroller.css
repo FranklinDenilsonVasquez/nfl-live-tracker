@@ -2,9 +2,11 @@
   margin: 2px;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+
 .week_scroller {
-  margin-top: 65px;
-  /* margin-bottom: -10px; */
+  margin-top: 85px;
+  margin-bottom: -10px;
   margin-left: 10px;
   margin-right: 10px;
   padding: 15px;
@@ -15,8 +17,15 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  font-family: sans-serif;
+  font-family: "Anton", sans-serif;
   border-radius: 10px;
+}
+
+@media (max-width: 1023px) {
+  .week_scroller {
+    margin-top: 60px;
+    margin-bottom: 0px;
+  }
 }
 
 .arrow-button {

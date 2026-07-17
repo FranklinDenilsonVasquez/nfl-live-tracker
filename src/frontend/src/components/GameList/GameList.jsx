@@ -4,6 +4,7 @@ import { useSeasonStore } from "../../store/seasonStore";
 import FieldContainer from "../Field/FieldContainer";
 import StandingsContainer from "../Standings/StandingsContainer";
 import useGameStore from "../../store/useGameStore";
+import usePlayersStore from "../../store/usePlayersStore";
 import useUiStore from "../../store/useUiStore";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
@@ -23,8 +24,10 @@ function GameList() {
     setShowScore,
     selectedGameId,
     setSelectedGameId,
+    clearSelectedGame,
   } = useGameStore();
 
+  const { clearPlayers } = usePlayersStore();
   const { selectedSeason } = useSeasonStore();
   const { activePanel, togglePanel, closePanel } = useUiStore();
 
@@ -49,8 +52,12 @@ function GameList() {
   useEffect(() => {
     if (selectedSeason !== undefined) {
       setSeason(selectedSeason);
+      // Reset the field to its default state when the season changes
+      setGameSelected(null);
+      clearSelectedGame();
+      clearPlayers();
     }
-  }, [selectedSeason, setSeason]);
+  }, [selectedSeason, setSeason, clearSelectedGame, clearPlayers]);
 
   useEffect(() => {
     if (season !== undefined && week !== undefined) {
