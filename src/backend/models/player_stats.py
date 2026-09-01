@@ -90,6 +90,7 @@ class KickingGameStats(BaseModel):
     home_team_score: int
     away_team_score: int
     kicking : Optional[KickingStats] = None
+    rating: Optional[float] = None
 
 class KickingStatsPerGame(BaseModel):
     player_id: int
@@ -133,6 +134,7 @@ class QBGameStats(BaseModel):
     passing : Optional[PassingStats] = None
     rushing : Optional[RushingStats] = None
     fumbles: Optional[FumbleStats] = None
+    rating: Optional[float] = None
 
 # Nested model for the top level QB json response
 class QBStatsPerGame(BaseModel):
@@ -183,6 +185,7 @@ class SkillGameStats(BaseModel):
     receiving : Optional[ReceivingStats] = None
     rushing : Optional[RushingStats] = None
     fumbles : Optional[FumbleStats] = None
+    rating: Optional[float] = None
 
 # Nested model for QB per game stats
 class SkillStatsPerGame(BaseModel):
@@ -215,6 +218,7 @@ class DefenseGameStats(BaseModel):
     defense: Optional[DefenseDetails] = None
     int_stats: Optional[InterceptionStats] = None
     fumbles: Optional[FumbleStats] = None
+    rating: Optional[float] = None
 
 class DefenseStatsPerGame(BaseModel):
     player_id: int
@@ -241,6 +245,7 @@ class PunterGameStats(BaseModel):
     home_team_score: int
     away_team_score: int
     punting : Optional[PuntingStats] = None
+    rating: Optional[float] = None
 
 class PunterStatsPerGame(BaseModel):
     player_id: int

@@ -52,6 +52,28 @@
   transform: scale(1.2);
 }
 
+.player-rating-badge-small {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 16px;
+  padding: 0 3px;
+  border-radius: 6px;
+  border: 1px solid rgb(15, 15, 15);
+  color: rgb(15, 15, 15);
+  font-size: clamp(6px, 1.4vw, 10px);
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.player-button:hover .player-rating-badge-small {
+  font-size: clamp(8px, 1vw, 11px);
+}
+
 .QB1 {
   top: 65%;
   left: 47%;

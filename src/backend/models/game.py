@@ -68,6 +68,7 @@ class PlayerGameStatsResponse(BaseModel):
     player_img: str
     position: Optional[str] = None
     stats: PlayerStats
+    rating: Optional[float] = None
 
 class GamePlayerStatsResponse(BaseModel):
     away_team: List[PlayerGameStatsResponse]

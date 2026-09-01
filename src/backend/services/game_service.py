@@ -1,6 +1,6 @@
 from src.backend.database.db_connection import get_db_connection
 from src.backend.utils.logging import logger
-from src.backend.database.queries.game_queries import get_game_list, get_player_game_stats
+from src.backend.database.queries.game_queries import get_game_list, get_player_game_stats, get_ratings_for_game
 from pprint import pprint
 
 def get_games_list(week: str, season: int, stage: str):
@@ -38,6 +38,11 @@ def get_game_player_stats(game_id: int):
                     "away_team": [],
                     "home_team": []
                 }
+
+            ratings_by_player = get_ratings_for_game(cursor, game_id)
+            for side in ("home_team", "away_team"):
+                for player in player_stats.get(side, []):
+                    player["rating"] = ratings_by_player.get(player.get("player_id"))
 
             #pprint(player_stats)
             return player_stats

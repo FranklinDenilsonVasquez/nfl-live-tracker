@@ -23,14 +23,14 @@ export const calculateImpactScore = (player) => {
             return base_score + (
                 (player.stats?.receiving?.receiving_yards || 0) * 1
                 + (player.stats?.receiving?.receiving_touchdowns || 0) * 45
-                - (player.stats?.fumble?.total_fumbles || 0) * 30
+                - (player.stats?.fumbles?.total_fumbles || 0) * 30
                 + (player.stats?.receiving?.total_receptions || 0) * 2
             );
         case "TE":
             return base_score + (
                 (player.stats?.receiving?.receiving_yards || 0) * 1
                 + (player.stats?.receiving?.receiving_touchdowns || 0) * 45
-                - (player.stats?.fumble?.total_fumbles || 0) * 30
+                - (player.stats?.fumbles?.total_fumbles || 0) * 30
                 + (player.stats?.receiving?.total_receptions || 0) * 2
             );
         case "CB":
@@ -41,8 +41,8 @@ export const calculateImpactScore = (player) => {
                 + (player.stats?.defense?.passes_defended || 0) * 5
                 + (player.stats?.interception?.total_interceptions || 0) * 25
                 + (player.stats?.interception?.intercepted_touch_downs || 0) * 30
-                + (player.stats?.fumble?.fumble_recovery || 0) * 8
-                + (player.stats?.fumble?.fumble_recovery_td || 0) * 20
+                + (player.stats?.fumbles?.fumble_recovery || 0) * 8
+                + (player.stats?.fumbles?.fumble_recovery_td || 0) * 20
                 + (player.stats?.defense?.forced_fumbles || 0) * 10
             );
         case "DE":
@@ -52,8 +52,8 @@ export const calculateImpactScore = (player) => {
                 + (player.stats?.defense?.tackles_for_loss || 0) * 4
                 + (player.stats?.defense?.qb_hits || 0) * 5
                 + (player.stats?.defense?.forced_fumbles || 0) * 10
-                + (player.stats?.fumble?.fumble_recovery || 0) * 8
-                + (player.stats?.fumble?.fumble_recovery_td || 0) * 20
+                + (player.stats?.fumbles?.fumble_recovery || 0) * 8
+                + (player.stats?.fumbles?.fumble_recovery_td || 0) * 20
             );
         case "DT":
             return base_score + (
@@ -62,8 +62,8 @@ export const calculateImpactScore = (player) => {
                 + (player.stats?.defense?.tackles_for_loss || 0) * 4
                 + (player.stats?.defense?.qb_hits || 0) * 5
                 + (player.stats?.defense?.forced_fumbles || 0) * 10
-                + (player.stats?.fumble?.fumble_recovery || 0) * 8
-                + (player.stats?.fumble?.fumble_recovery_td || 0) * 20
+                + (player.stats?.fumbles?.fumble_recovery || 0) * 8
+                + (player.stats?.fumbles?.fumble_recovery_td || 0) * 20
             );
         case "LB":
             return base_score + (
@@ -74,8 +74,8 @@ export const calculateImpactScore = (player) => {
                 + (player.stats?.defense?.tackles_for_loss || 0) * 4
                 + (player.stats?.interception?.total_interceptions || 0) * 25
                 + (player.stats?.interception?.intercepted_touch_downs || 0) * 30
-                + (player.stats?.fumble?.fumble_recovery || 0) * 8
-                + (player.stats?.fumble?.fumble_recovery_td || 0) * 20
+                + (player.stats?.fumbles?.fumble_recovery || 0) * 8
+                + (player.stats?.fumbles?.fumble_recovery_td || 0) * 20
                 + (player.stats?.defense?.forced_fumbles || 0) * 10
             );
         case "S":
@@ -86,8 +86,8 @@ export const calculateImpactScore = (player) => {
                 + (player.stats?.defense?.passes_defended || 0) * 5
                 + (player.stats?.interception?.total_interceptions || 0) * 25
                 + (player.stats?.interception?.intercepted_touch_downs || 0) * 30
-                + (player.stats?.fumble?.fumble_recovery || 0) * 8
-                + (player.stats?.fumble?.fumble_recovery_td || 0) * 20
+                + (player.stats?.fumbles?.fumble_recovery || 0) * 8
+                + (player.stats?.fumbles?.fumble_recovery_td || 0) * 20
                 + (player.stats?.defense?.forced_fumbles || 0) * 10
             );
 

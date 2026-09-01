@@ -2,12 +2,13 @@ import { create } from "zustand";
 import "./PlayerCard.css";
 import usePlayerStore from "../../store/usePlayersStore";
 import usePlayerCardStore from "../../store/usePlayerCardStore";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import usePlayersStore from "../../store/usePlayersStore";
 import useGameStore from "../../store/useGameStore";
 import { MdHighlightOff, MdAccountCircle } from "react-icons/md";
 import { findPlayerTeam } from "../../utils/findPlayerTeam";
 import { useSeasonStore } from "../../store/seasonStore";
+import { getRatingColor } from "../../utils/ratingColor";
 import StatsSection from "./StatsSection";
 
 function PlayerCard() {
@@ -55,39 +56,79 @@ function PlayerCard() {
     closePlayerCard();
   }, [selectedGameId, selectedSeason]);
 
+  const cardScrollRef = useRef(null);
+  const imageSectionRef = useRef(null);
+  const collapseRafRef = useRef(null);
+
+  const COLLAPSE_SCROLL_RANGE = 80;
+
+  const handleCardScroll = () => {
+    if (collapseRafRef.current) return;
+    collapseRafRef.current = requestAnimationFrame(() => {
+      collapseRafRef.current = null;
+      const scrollEl = cardScrollRef.current;
+      const imageSection = imageSectionRef.current;
+      if (!scrollEl || !imageSection) return;
+      const collapse = Math.min(
+        1,
+        Math.max(0, scrollEl.scrollTop / COLLAPSE_SCROLL_RANGE),
+      );
+      imageSection.style.setProperty("--collapse", collapse);
+    });
+  };
+
+  useEffect(() => {
+    if (cardScrollRef.current) {
+      cardScrollRef.current.scrollTop = 0;
+    }
+    if (imageSectionRef.current) {
+      imageSectionRef.current.style.setProperty("--collapse", 0);
+    }
+  }, [selectedPlayer]);
+
   return (
     <>
       {isOpen && (
         <div>
           <div className="player-card-container" style={{ color: "white" }}>
-            <div className="player-card">
-              <div className="player-image-section">
-                <div className="image-container">
-                  {player?.player_img ? (
-                    <img
-                      src={player?.player_img}
-                      alt={player?.player_name}
-                    ></img>
-                  ) : (
-                    <MdAccountCircle
-                      style={{
-                        inset: 0,
-                        height: "100%",
-                        width: "100%",
-                        opacity: 0.25,
-                      }}
-                    />
+            <div
+              className="player-card"
+              ref={cardScrollRef}
+              onScroll={handleCardScroll}
+            >
+              <div className="player-image-section" ref={imageSectionRef}>
+                <div className="player-rating-wrapper">
+                  <div
+                    className="image-container"
+                    style={{
+                      borderColor: getRatingColor(player?.rating) || undefined,
+                    }}
+                  >
+                    {player?.player_img ? (
+                      <img
+                        src={player?.player_img}
+                        alt={player?.player_name}
+                      ></img>
+                    ) : (
+                      <MdAccountCircle
+                        style={{
+                          inset: 0,
+                          height: "100%",
+                          width: "100%",
+                          opacity: 0.25,
+                        }}
+                      />
+                    )}
+                  </div>
+                  {player?.rating != null && (
+                    <div
+                      className="player-rating-badge"
+                      style={{ backgroundColor: getRatingColor(player.rating) }}
+                    >
+                      {player.rating.toFixed(1)}
+                    </div>
                   )}
-                </div>
-                <div className="bio-section">
-                  <div className="name-section">
-                    {player ? player.player_name : "Unknown"}
-                  </div>
-                  <div className="position-section">
-                    {player ? player.position : "N/A"}
-                    <div className="bio-shadow-text"> Position </div>
-                  </div>
-                  <div className="team-section">
+                  <div className="team-badge">
                     {player && player?.team?.team === "home" ? (
                       <img
                         src={selectedGame?.home_team?.logo}
@@ -99,18 +140,28 @@ function PlayerCard() {
                         alt={selectedGame?.away_team?.team_name}
                       ></img>
                     )}
-                    <div className="bio-shadow-text"> Team </div>
                   </div>
-                  <div className="jersey-num-section">
-                    #{" "}
-                    {player && player?.team?.team === "home"
-                      ? rosters?.home?.find(
-                          (p) => p.player_id === selectedPlayer,
-                        )?.jersey_number
-                      : rosters?.away?.find(
-                          (p) => p.player_id === selectedPlayer,
-                        )?.jersey_number}
-                    <div className="bio-shadow-text"> Number </div>
+                </div>
+                <div className="bio-section">
+                  <div className="name-section">
+                    {player ? player.player_name : "Unknown"}
+                  </div>
+                  <div className="meta-row">
+                    <div className="position-section">
+                      {player ? player.position : "N/A"}
+                      <div className="bio-shadow-text"> Position </div>
+                    </div>
+                    <div className="jersey-num-section">
+                      #{" "}
+                      {player && player?.team?.team === "home"
+                        ? rosters?.home?.find(
+                            (p) => p.player_id === selectedPlayer,
+                          )?.jersey_number
+                        : rosters?.away?.find(
+                            (p) => p.player_id === selectedPlayer,
+                          )?.jersey_number}
+                      <div className="bio-shadow-text"> Number </div>
+                    </div>
                   </div>
                 </div>
               </div>

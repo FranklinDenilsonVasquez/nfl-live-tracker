@@ -74,3 +74,16 @@ def get_player_game_stats(cursor, game_id: int):
     # logger.info(f" {result}")
     return result["get_player_game_stats"] if result else None
 
+# Get the stored Player Game Rating (see CONTEXT.md) for every player in one
+# game, keyed by api_player_id (get_player_game_stats() above returns players
+# keyed by api_player_id, not the internal player_id player_game_rating uses)
+def get_ratings_for_game(cursor, game_id: int):
+    cursor.execute("""
+        SELECT p.api_player_id AS "api_player_id", pgr.rating AS "rating"
+        FROM player_game_rating AS pgr
+        INNER JOIN player AS p ON pgr.player_id = p.player_id
+        WHERE pgr.game_id = %s;
+    """, (game_id,)
+    )
+    return {row[0]: float(row[1]) for row in cursor.fetchall()}
+

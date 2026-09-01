@@ -25,40 +25,47 @@
 }
 
 .player-card {
-  display: grid;
-  grid-template-rows: 1fr 3fr;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
   width: 90%;
+  min-width: 0;
   height: 95%;
-  padding: 5px;
+  padding: 0;
   margin: 5px;
+  box-sizing: border-box;
   /*border: 2px solid white;*/
   border-radius: 10px;
   font-size: 20px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @media (max-width: 1023px) {
   .player-card {
-    width: 100dvw;
+    width: 100%;
   }
 }
 
 .player-image-section {
   display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid rgb(255, 255, 255);
-  /* border-radius: 10px; */
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  gap: calc(14px - 6px * var(--collapse, 0));
+  border-bottom: 1px solid rgb(255, 255, 255);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background-color: rgb(15, 15, 15);
   flex-shrink: 0;
-  padding: 10px;
-  margin: 5px;
+  padding: calc(10px - 4px * var(--collapse, 0)) 12px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 1023px) {
   .player-image-section {
-    width: 70dvw;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -84,15 +91,22 @@
   color: white;
 }
 
+.player-rating-wrapper {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+}
+
 .image-container {
   display: flex;
-  border: 2px solid white;
-  width: 100px;
-  height: 100px;
+  border: 3px solid white;
+  width: calc(84px - 32px * var(--collapse, 0));
+  height: calc(84px - 32px * var(--collapse, 0));
   border-radius: 50%;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  transition: border-color 0.2s;
 }
 
 .image-container img {
@@ -102,56 +116,88 @@
   background-color: rgb(10, 10, 10);
 }
 
+.player-rating-badge {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) scale(calc(1 - 0.3 * var(--collapse, 0)));
+  min-width: 28px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 2px solid rgb(15, 15, 15);
+  color: rgb(15, 15, 15);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.team-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: calc(24px - 8px * var(--collapse, 0));
+  height: calc(24px - 8px * var(--collapse, 0));
+  border-radius: 50%;
+  background-color: rgb(15, 15, 15);
+  border: 2px solid rgb(15, 15, 15);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .bio-section {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: auto auto;
-  gap: 1rem;
-  margin: 10px;
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
 }
 
 .name-section {
-  grid-column: 1 / -1;
   display: flex;
-  justify-content: center;
-  /*border: 1px solid red;*/
+  justify-content: flex-start;
+  font-size: calc(20px - 4px * var(--collapse, 0));
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+}
+
+.meta-row {
+  display: flex;
+  gap: 20px;
+  align-items: baseline;
 }
 
 .position-section {
   display: flex;
   flex-direction: column;
-  /*border: 1px solid red;*/
-  justify-content: center;
   align-items: center;
+  font-size: calc(17px - 2px * var(--collapse, 0));
 }
 
 .bio-shadow-text {
   display: flex;
   color: rgb(80, 80, 80);
-  margin-top: 8px;
-  font-size: 15px;
-}
-
-.team-section {
-  display: flex;
-  flex-direction: column;
-  /*border: 1px solid red;*/
-  justify-content: center;
-  align-items: center;
-}
-
-.team-section img {
-  height: 40px;
-  width: 40px;
-  /*border: 1px solid white;*/
+  margin-top: calc(6px - 6px * var(--collapse, 0));
+  font-size: calc(14px - 14px * var(--collapse, 0));
+  max-height: calc(16px - 16px * var(--collapse, 0));
+  opacity: calc(1 - var(--collapse, 0));
+  overflow: hidden;
 }
 
 .jersey-num-section {
   display: flex;
   flex-direction: column;
-  /*border: 1px solid red;*/
-  justify-content: center;
   align-items: center;
-  text-align: center;
+  font-size: calc(17px - 2px * var(--collapse, 0));
 }
