@@ -403,3 +403,16 @@
         FOREIGN KEY (player_id) REFERENCES player(player_id),
         FOREIGN KEY (game_id) REFERENCES game(game_id)
     );
+
+-- Player Game Rating (see CONTEXT.md, docs/adr/0001-absolute-baseline-player-game-rating.md)
+-- Derived/re-derivable cache: recomputed and upserted whenever a game's stats
+-- are (re)ingested, not a source of truth in its own right.
+    CREATE TABLE player_game_rating(
+        player_id INT NOT NULL,
+        game_id INT NOT NULL,
+        rating DECIMAL(3,1) NOT NULL,
+
+        PRIMARY KEY (player_id, game_id),
+        FOREIGN KEY (player_id) REFERENCES player(player_id),
+        FOREIGN KEY (game_id) REFERENCES game(game_id)
+    );

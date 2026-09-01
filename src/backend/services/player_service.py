@@ -2,7 +2,8 @@ from src.backend.core.position_model_mapping import POSITION_MODEL_MAP_PER_SEASO
 from src.backend.database.queries.player_queries import get_all_player_games_stats
 from src.backend.database.db_connection import get_db_connection
 from src.backend.database.queries.player_queries import (get_player_by_id, get_player_by_name,
-                                                         get_player_stats, get_all_player_games_stats)
+                                                         get_player_stats, get_all_player_games_stats,
+                                                         get_player_game_ratings)
 from src.backend.models.player import Player
 from src.backend.models.player_stats import (QBStats, SkillStats, DefenseStats, KickerStats, PunterStats,
                                              KickReturnerStats, PuntReturnerStats)
@@ -107,6 +108,10 @@ def get_player_game_stats(player_id: int, team_id: int | None, season_year: int)
             if not player_stats:
                 logger.warning("No player data found.")
                 return None
+
+            ratings_by_game = get_player_game_ratings(cursor, player_id, season_id)
+            for game in player_stats.get("games", []):
+                game["rating"] = ratings_by_game.get(game.get("game_id"))
         pprint(player_stats, sort_dicts=False)
 
         position = player_stats.get('position')

@@ -105,3 +105,15 @@ def get_all_player_games_stats(cursor, player_id: int, season_id: int,
     except Exception as e:
         logger.warning(f"Error when executing get_all_player_games_stats(): {e}")
         return None
+
+# Get the stored Player Game Rating (see CONTEXT.md) for every game a player
+# played in a given season, keyed by game_id
+def get_player_game_ratings(cursor, player_id: int, season_id: int):
+    cursor.execute("""
+        SELECT pgr.game_id AS "game_id", pgr.rating AS "rating"
+        FROM player_game_rating AS pgr
+        INNER JOIN game AS g ON pgr.game_id = g.game_id
+        WHERE pgr.player_id = %s AND g.season_id = %s;
+    """, (player_id, season_id)
+    )
+    return {row[0]: float(row[1]) for row in cursor.fetchall()}

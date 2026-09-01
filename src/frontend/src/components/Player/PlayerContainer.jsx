@@ -9,6 +9,7 @@ import { getIndexFromSlot } from "../../utils/getIndexFromSlot";
 import { useSeasonStore } from "../../store/seasonStore";
 import { MdAccountCircle } from "react-icons/md";
 import usePlayerCardStore from "../../store/usePlayerCardStore";
+import { getRatingColor } from "../../utils/ratingColor";
 
 function PlayerContainer({ game, players }) {
   const { fetchGameRoster, fetchGamePlayers, setRoster, rosters } =
@@ -76,6 +77,7 @@ function PlayerContainer({ game, players }) {
       return {
         ...player,
         stats: stats?.stats ?? null,
+        rating: stats?.rating ?? null,
       };
     });
   };
@@ -168,6 +170,7 @@ function PlayerContainer({ game, players }) {
                 : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
+              borderColor: getRatingColor(player?.rating) || undefined,
             }}
             onClick={() => handleClick(player)}
           >
@@ -181,6 +184,14 @@ function PlayerContainer({ game, players }) {
                   opacity: 0.25,
                 }}
               />
+            )}
+            {player?.rating != null && (
+              <span
+                className="player-rating-badge-small"
+                style={{ backgroundColor: getRatingColor(player.rating) }}
+              >
+                {player.rating.toFixed(1)}
+              </span>
             )}
             <span className="hover-text">
               {" "}
@@ -202,6 +213,7 @@ function PlayerContainer({ game, players }) {
                 : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
+              borderColor: getRatingColor(player?.rating) || undefined,
             }}
             onClick={() => handleClick(player)}
           >
@@ -215,6 +227,14 @@ function PlayerContainer({ game, players }) {
                   opacity: 0.25,
                 }}
               />
+            )}
+            {player?.rating != null && (
+              <span
+                className="player-rating-badge-small"
+                style={{ backgroundColor: getRatingColor(player.rating) }}
+              >
+                {player.rating.toFixed(1)}
+              </span>
             )}
             <span className="hover-text">
               {" "}

@@ -26,3 +26,21 @@ def get_player_map_for_stats(cursor, stat_list):
 
     rows = cursor.fetchall()
     return {row[0]: row[1] for row in rows}
+
+# Function that takes internal player_id values and returns each player's
+# position name, for use by the rating calculation (which is position-specific)
+def get_player_position_map(cursor, internal_player_ids):
+    if not internal_player_ids:
+        return {}
+
+    cursor.execute("""
+        SELECT p.player_id, ps.position_name
+        FROM player AS p
+        INNER JOIN position AS ps ON p.position_id = ps.position_id
+        WHERE p.player_id = ANY(%s);
+    """,
+        (list(internal_player_ids),)
+    )
+
+    rows = cursor.fetchall()
+    return {row[0]: row[1] for row in rows}

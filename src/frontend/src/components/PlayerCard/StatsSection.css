@@ -1,22 +1,17 @@
 .player-stats-section {
   border: 1px solid rgb(30, 30, 30);
   border-radius: 10px;
-  flex: 1;
-  overflow-x: auto;
-  min-height: 0; /* VERY important in flex layouts */
+  width: 100%;
+  min-width: 0; /* let the grid track shrink instead of overflowing */
+  flex-shrink: 0;
+  box-sizing: border-box;
   padding: 10px;
-  margin: 5px;
-}
-
-@media (max-width: 1023px) {
-  .player-stats-section {
-    width: 70dvw;
-  }
+  margin: 5px 0;
 }
 
 .group-name {
   display: flex;
-  font-size: large;
+  font-size: medium;
   border: 1px solid rgb(29, 29, 29);
   background-color: rgb(30, 30, 30);
   border-radius: 50px;
@@ -32,21 +27,22 @@
 .stat-row {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
   border-bottom: 1px dotted rgb(46, 46, 46);
   font-size: medium;
   padding: 4px;
-  margin: 10px;
-
-  /* border-left: 1px solid white;
-  border-right: 1px solid white; */
+  margin: 10px 0;
 }
 
 .stat-value {
-  /* border: 1px solid white; */
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .stat-label {
-  /* border: 1px solid white; */
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .no-data-found {

@@ -50,6 +50,7 @@ from src.backend.database.inserts.punting import insert_punting_player_stats
 from src.backend.database.inserts.receiving import insert_receiving_player_stats
 from src.backend.database.inserts.rushing import insert_rushing_player_stats
 from src.backend.database.repositories.player_repository import get_player_map_for_stats
+from src.backend.services.rating_service import compute_and_store_ratings
 from src.backend.utils.logging import logger
 
 def process_player_game_stats(conn, game_response, game_id=None):
@@ -76,6 +77,8 @@ def process_player_game_stats(conn, game_response, game_id=None):
             insert_punting_player_stats(cursor, grouped_stats["punting"], player_map)
             insert_receiving_player_stats(cursor, grouped_stats["receiving"], player_map)
             insert_rushing_player_stats(cursor, grouped_stats["rushing"], player_map)
+
+            compute_and_store_ratings(cursor, grouped_stats, player_map)
 
             conn.commit()
             logger.info(f"Successfully inserted all player game stats for game_id = {game_id}")
