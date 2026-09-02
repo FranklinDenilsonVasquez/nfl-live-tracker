@@ -73,7 +73,7 @@
     CREATE TABLE player (
         player_id SERIAL PRIMARY KEY,
         player_name VARCHAR(50),
-        age INT NOT NULL,
+        age INT,
         height SMALLINT,
         weight SMALLINT,
         college VARCHAR(50),

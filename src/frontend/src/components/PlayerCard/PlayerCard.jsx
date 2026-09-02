@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef } from "react";
 import usePlayersStore from "../../store/usePlayersStore";
 import useGameStore from "../../store/useGameStore";
 import { MdHighlightOff, MdAccountCircle } from "react-icons/md";
+import { X } from "lucide-react";
 import { findPlayerTeam } from "../../utils/findPlayerTeam";
 import { useSeasonStore } from "../../store/seasonStore";
 import { getRatingColor } from "../../utils/ratingColor";
@@ -46,11 +47,11 @@ function PlayerCard() {
     };
   }, [rosters, allPlayers, selectedPlayer]);
 
-  // console.log("players: ", player);
-  //   console.log(
-  //     "Rosters: ",
-  //     rosters?.home?.find((p) => p.player_id === selectedPlayer)?.jersey_number,
-  //   );
+  console.log("player: ", player);
+  // console.log(
+  //   "Rosters: ",
+  //   rosters?.home?.find((p) => p.player_id === selectedPlayer)?.jersey_number,
+  // );
 
   useEffect(() => {
     closePlayerCard();
@@ -147,11 +148,11 @@ function PlayerCard() {
                     {player ? player.player_name : "Unknown"}
                   </div>
                   <div className="meta-row">
-                    <div className="position-section">
+                    <div className="bio-stat-section">
                       {player ? player.position : "N/A"}
                       <div className="bio-shadow-text"> Position </div>
                     </div>
-                    <div className="jersey-num-section">
+                    <div className="bio-stat-section">
                       #{" "}
                       {player && player?.team?.team === "home"
                         ? rosters?.home?.find(
@@ -162,13 +163,33 @@ function PlayerCard() {
                           )?.jersey_number}
                       <div className="bio-shadow-text"> Number </div>
                     </div>
+                    <div className="bio-stat-section">
+                      {player && player?.team?.team === "home"
+                        ? rosters?.home?.find(
+                            (p) => p.player_id === selectedPlayer,
+                          )?.college
+                        : rosters?.away?.find(
+                            (p) => p.player_id === selectedPlayer,
+                          )?.college}
+                      <div className="bio-shadow-text"> College </div>
+                    </div>
+                    <div className="bio-stat-section">
+                      {player && player?.team?.team === "home"
+                        ? rosters?.home?.find(
+                            (p) => p.player_id === selectedPlayer,
+                          )?.age
+                        : rosters?.away?.find(
+                            (p) => p.player_id === selectedPlayer,
+                          )?.age}
+                      <div className="bio-shadow-text"> Age </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <StatsSection player={player} roster={rosters} />
             </div>
             <button className="close-player-card-btn" onClick={closePlayerCard}>
-              <MdHighlightOff />
+              <X size={10} />
             </button>
           </div>
         </div>

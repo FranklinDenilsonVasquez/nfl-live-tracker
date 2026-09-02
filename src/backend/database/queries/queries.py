@@ -13,6 +13,10 @@ def get_players_by_team (team_id: int, season: int):
             pos.position_name, 
             p.player_img, 
             pt.jersey_number, 
+            p.college,
+            p.age,
+            p.height,
+            p.weight,
             s.season_year
         FROM player_team AS pt
         JOIN player AS p ON pt.api_player_id = p.api_player_id

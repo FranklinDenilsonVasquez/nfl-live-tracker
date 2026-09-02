@@ -9,7 +9,7 @@ logger = setup_logger()
 def insert_player():
     teams = fetch_teams() 
     # Insert players and coach team by team
-    for season_year in range(2025, 2026):  # range(2022,2025) to run from 2022-2024 because of the free plan (API)
+    for season_year in range(2022, 2024):  # range(2022,2025) to run from 2022-2024 because of the free plan (API)
         logger.info(f"Processing season : {season_year}")
         for team in teams:
             team_id = team['id']

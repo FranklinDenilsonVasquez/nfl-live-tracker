@@ -1,7 +1,3 @@
-.week-scroller-container {
-  margin: 2px;
-}
-
 @import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 
 .week_scroller {
@@ -26,6 +22,10 @@
     margin-top: 60px;
     margin-bottom: 0px;
   }
+}
+
+.week-scroller-container {
+  margin: 2px;
 }
 
 .arrow-button {

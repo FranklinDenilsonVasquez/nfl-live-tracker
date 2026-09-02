@@ -55,7 +55,11 @@ def get_team_players (team_id: int, season: int = Query(..., description="Season
             position=row[2],
             player_img=row[3],
             jersey_number=row[4],
-            season_id=row[5]
+            college=row[5],
+            age=row[6],
+            height=row[7],
+            weight=row[8],
+            season_id=row[9]
         )
         for row in players
     ]
