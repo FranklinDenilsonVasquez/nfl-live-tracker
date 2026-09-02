@@ -122,15 +122,17 @@ def insert_players(players, team_id, season):
             weight = player.get('weight')
             college = player.get('college')
             position_name = player.get('position') # It may be None
+            age = player.get('age')
             group = player.get('group')
             position_type = normalize_position_type(group)
             roster_status = get_roster_status(group)
             image_url = player.get('image')
             jersey_number = player.get('number')
 
-            if player_exists(cursor, api_player_id, season_id, team_id): 
-                logger.info(f"Player ({full_name} : {api_player_id}) alreayd exists. Skip ingestion.")
-                continue
+            player_team_exists = player_exists(cursor, api_player_id, season_id, team_id)
+            if player_team_exists:
+                logger.info(f"Player ({full_name} : {api_player_id}) already exists in player_team. "
+                            f"Skipping player_team insert, still refreshing player row.")
 
             if position_type is None:
                 logger.warning(f"Unknown positionType for player {api_player_id} - {full_name}, "
@@ -154,31 +156,37 @@ def insert_players(players, team_id, season):
 
             # Prepare insert (ON DUPLICATE KEY UPDATE only updates if player already exists)
             sql_player = """
-                INSERT INTO player (player_name, height, weight, college,
+                INSERT INTO player (player_name, height, weight, college, age,
                                     position_id, player_img, api_player_id)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (api_player_id) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (api_player_id)
                 DO UPDATE SET
                     player_name = EXCLUDED.player_name,
                     player_img = EXCLUDED.player_img,
-                    position_id = EXCLUDED.position_id
+                    position_id = EXCLUDED.position_id,
+                    age = EXCLUDED.age,
+                    height = EXCLUDED.height,
+                    weight = EXCLUDED.weight,
+                    college = EXCLUDED.college
                 """
-            player_data = (full_name, height, weight, college, position_id,
-                           image_url, api_player_id)
+            player_data = (full_name, height, weight, college, age,
+                           position_id, image_url, api_player_id)
 
             cursor.execute(sql_player, player_data)
 
-            sql_player_team = """
-                INSERT INTO player_team (api_player_id, team_id, season_id, jersey_number)
-                VALUES(%s, %s, %s, %s)
-                ON CONFLICT (api_player_id, season_id) DO NOTHING;
-            """
-            player_data_team = (api_player_id, team_id, season_id, jersey_number)
-            cursor.execute(sql_player_team, player_data_team)
+            if not player_team_exists:
+                sql_player_team = """
+                    INSERT INTO player_team (api_player_id, team_id, season_id, jersey_number)
+                    VALUES(%s, %s, %s, %s)
+                    ON CONFLICT (api_player_id, season_id) DO NOTHING;
+                """
+                player_data_team = (api_player_id, team_id, season_id, jersey_number)
+                cursor.execute(sql_player_team, player_data_team)
 
-            logger.info(f"Player: {full_name} (ID: {api_player_id}) has been added to player_team table.")
+                logger.info(f"Player: {full_name} (ID: {api_player_id}) has been added to player_team table.")
 
         except Exception as e:
+            conn.rollback()
             logger.warning(f"Failed to insert player {player.get('id', 'UNKNOWN')}: {e}")
             continue
 

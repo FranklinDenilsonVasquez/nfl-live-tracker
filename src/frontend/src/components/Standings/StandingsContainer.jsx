@@ -26,7 +26,7 @@ function StandingsContainer({ team }) {
     return groupStandings(data);
   }, [data]);
 
-  console.log("Grouped Standings: ", grouped);
+  // console.log("Grouped Standings: ", grouped);
   // console.log("Home team: ", homeTeamId);
   // console.log("Away team: ", awayTeamId);
   const afc = grouped["American Football Conference"] || {};

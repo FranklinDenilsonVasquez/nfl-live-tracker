@@ -71,7 +71,7 @@ def get_player_game_stats(cursor, game_id: int):
     cursor.execute(query, param)
 
     result = cursor.fetchone()
-    # logger.info(f" {result}")
+    logger.info(f" {result}")
     return result["get_player_game_stats"] if result else None
 
 # Get the stored Player Game Rating (see CONTEXT.md) for every player in one

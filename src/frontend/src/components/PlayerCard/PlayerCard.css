@@ -10,7 +10,7 @@
   max-width: 500px;
   height: 75%;
   max-height: 700px;
-  z-index: 9999;
+  z-index: 998;
   background-color: rgb(15, 15, 15);
   border-radius: 5%;
   justify-content: center;
@@ -74,6 +74,7 @@
   position: fixed;
   right: 3%;
   top: 2%;
+  z-index: 999;
   color: #919090;
   background: transparent;
   border-color: transparent;
@@ -195,9 +196,12 @@
   overflow: hidden;
 }
 
-.jersey-num-section {
+.bio-stat-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: calc(17px - 2px * var(--collapse, 0));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

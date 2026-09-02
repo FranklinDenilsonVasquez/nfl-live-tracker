@@ -44,7 +44,7 @@ def get_game_player_stats(game_id: int):
                 for player in player_stats.get(side, []):
                     player["rating"] = ratings_by_player.get(player.get("player_id"))
 
-            #pprint(player_stats)
+            pprint(player_stats)
             return player_stats
 
     finally:

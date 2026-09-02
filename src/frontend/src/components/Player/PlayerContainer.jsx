@@ -128,14 +128,14 @@ function PlayerContainer({ game, players }) {
   //     console.log("length: ", count)
 
   // Debugging
-  console.log(
-    "This is the player list for home players: ",
-    groupedPlayers.offensePlayers,
-  );
-  console.log(
-    "This is the player list for away players: ",
-    groupedPlayers.defensePlayers,
-  );
+  // console.log(
+  //   "This is the player list for home players: ",
+  //   groupedPlayers.offensePlayers,
+  // );
+  // console.log(
+  //   "This is the player list for away players: ",
+  //   groupedPlayers.defensePlayers,
+  // );
 
   // console.log(
   //   "Impact array for home players: ",
@@ -170,6 +170,7 @@ function PlayerContainer({ game, players }) {
                 : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
+              border: "3px solid",
               borderColor: getRatingColor(player?.rating) || undefined,
             }}
             onClick={() => handleClick(player)}
@@ -213,6 +214,7 @@ function PlayerContainer({ game, players }) {
                 : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
+              border: "3px solid",
               borderColor: getRatingColor(player?.rating) || undefined,
             }}
             onClick={() => handleClick(player)}

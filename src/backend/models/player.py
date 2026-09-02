@@ -9,6 +9,7 @@ class Player(BaseModel):
     player_img: str
     jersey_number: int
     season_id: int
+    age: int | None = None
     height: str | None = None
     weight: str | None = None
     college: str | None = None

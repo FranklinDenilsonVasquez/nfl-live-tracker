@@ -1,8 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+
 .main-div {
   border: 50px;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 
 .header .h1-header {
   display: flex;
